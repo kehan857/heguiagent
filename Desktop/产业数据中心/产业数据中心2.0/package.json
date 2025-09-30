@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "deploy": "npm run build && gh-pages -d dist",
+    "deploy:force": "npm run build && gh-pages -d dist --remove"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
@@ -23,6 +25,7 @@
     "@vue/eslint-config-prettier": "^9.0.0",
     "eslint": "^8.55.0",
     "eslint-plugin-vue": "^9.19.2",
+    "gh-pages": "^6.3.0",
     "prettier": "^3.1.0",
     "sass": "^1.69.5",
     "vite": "^5.0.0"
