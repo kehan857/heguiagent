@@ -269,6 +269,11 @@ const handleMenuClick = ({ key }) => {
       border-bottom-color: $primary-color;
       background: transparent;
     }
+    
+    // 移除Ant Design默认的下划线
+    &::after {
+      display: none !important;
+    }
   }
 }
 
@@ -328,6 +333,11 @@ const handleMenuClick = ({ key }) => {
         font-size: 12px;
         margin-right: 2px;
       }
+      
+      // 移除Ant Design默认的下划线
+      &::after {
+        display: none !important;
+      }
     }
   }
 }
@@ -356,6 +366,11 @@ const handleMenuClick = ({ key }) => {
       .anticon {
         font-size: 11px;
         margin-right: 1px;
+      }
+      
+      // 移除Ant Design默认的下划线
+      &::after {
+        display: none !important;
       }
     }
   }
