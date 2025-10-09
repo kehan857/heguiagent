@@ -1,242 +1,161 @@
-# GitHub Pages 部署完整指南
+# 天云产业数据中心 - 部署指南
 
-## 🎯 项目信息
-- **项目名称**: 天云产业数据中心
-- **GitHub仓库**: https://github.com/kehan857/chanyeshujuzhongxin4.0.git
-- **部署地址**: https://kehan857.github.io/chanyeshujuzhongxin4.0/
-- **技术栈**: Vue.js 3 + Vite + Ant Design Vue
+## 📋 部署经验总结
 
-## 📋 部署前检查清单
+基于多次部署实践，总结出以下关键成功要素和最佳实践。
 
-### 1. 项目配置检查
-- [ ] `vite.config.js` 中 `base` 路径正确设置
-- [ ] `package.json` 中部署脚本正确
-- [ ] 项目依赖完整安装
+## 🔑 关键成功要素
 
-### 2. 关键配置文件
+### 1. 正确的配置
+- **vite.config.js** 中的 `base` 路径必须与仓库名完全一致
+  - 生产环境：`/chanyeshujuzhongxin4.0/`
+  - 开发环境：`/`
+- **public/404.html** 文件必须存在，用于SPA路由重定向
+- **GitHub Actions** 工作流配置正确
 
-#### `vite.config.js` 配置
-```javascript
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
-
-export default defineConfig({
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
-  },
-  // 关键：生产环境base路径必须与仓库名一致
-  base: process.env.NODE_ENV === 'production' ? '/chanyeshujuzhongxin4.0/' : '/',
-  server: {
-    port: 3000,
-    open: true,
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "@/styles/variables.scss" as *;`,
-        api: 'modern-compiler'
-      }
-    }
-  }
-})
-```
-
-#### `package.json` 部署脚本
-```json
-{
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist",
-    "deploy:force": "npm run build && gh-pages -d dist --remove"
-  },
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
-  }
-}
-```
-
-## 🚀 标准部署流程
-
-### 方法一：使用 gh-pages 工具（推荐）
-
+### 2. 标准部署流程
 ```bash
-# 1. 确保在main分支
-git checkout main
+# 标准部署
+npm run build && npm run deploy
 
-# 2. 安装依赖（如果需要）
-npm install
-
-# 3. 构建项目
-npm run build
-
-# 4. 部署到GitHub Pages
-npm run deploy
+# 强制重新部署（清除缓存）
+npm run deploy:force
 ```
 
-### 方法二：使用GitHub Actions（自动化）
+### 3. 缓存问题处理
+- GitHub Pages CDN缓存非常顽固
+- 必要时需要强制重建gh-pages分支
+- 等待时间：2-30分钟
 
-创建 `.github/workflows/deploy.yml`:
-```yaml
-name: Deploy to GitHub Pages
+## 🚨 常见陷阱及解决方案
 
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build
-      run: npm run build
-      
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        force_orphan: true
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
-```
-
-## 🔧 常见问题及解决方案
-
-### 问题1: 资源路径404错误
-**症状**: 浏览器控制台显示资源加载失败
-**原因**: `vite.config.js` 中 `base` 路径配置错误
-**解决**: 确保 `base` 路径与GitHub仓库名完全一致
-
-### 问题2: SPA路由404错误
-**症状**: 直接访问子路由返回404
-**解决**: 创建 `public/404.html` 文件，内容与 `index.html` 相同
-
-### 问题3: GitHub Pages CDN缓存问题
-**症状**: 即使推送了正确内容，网站仍显示旧内容
+### 问题1: 资源路径错误
+**症状**: 请求URL包含错误的路径（如 `guohua_knowledge`）
 **解决方案**:
-```bash
-# 1. 完全删除gh-pages分支
-git push origin --delete gh-pages
+1. 检查 `vite.config.js` 中的 `base` 配置
+2. 确保与仓库名完全一致
+3. 重新构建和部署
 
-# 2. 重新部署
-npm run deploy
+### 问题2: SPA路由404
+**症状**: 直接访问子路由返回404
+**解决方案**:
+1. 确保 `public/404.html` 文件存在
+2. 检查404.html中的重定向逻辑
+3. 验证路径配置正确
 
-# 3. 如果仍有问题，强制推送
-git checkout gh-pages
-git push origin gh-pages --force
-```
+### 问题3: CDN缓存问题
+**症状**: 部署后页面没有更新
+**解决方案**:
+1. 使用 `npm run deploy:force` 强制重新部署
+2. 等待更长时间（最多30分钟）
+3. 使用无痕模式测试
 
 ### 问题4: 代理服务器干扰
-**症状**: DevTools显示 `Remote Address: 127.0.0.1:7890`
-**解决**: 
-- 关闭本地代理软件
-- 清除代理缓存
-- 使用无痕模式或不同网络环境测试
+**症状**: Remote Address 显示 `127.0.0.1:7890`
+**解决方案**:
+1. 关闭本地代理设置
+2. 关闭浏览器代理扩展
+3. 关闭VPN或科学上网工具
+4. 使用无痕模式测试
 
-## 📝 部署后验证
+## 🎯 下次部署的最佳实践
 
-### 1. 检查部署状态
-- 访问: https://github.com/kehan857/chanyeshujuzhongxin4.0/actions
-- 确保部署工作流成功运行
+### 部署前检查清单
+- [ ] 确保 `vite.config.js` 配置正确
+- [ ] 验证 `public/404.html` 文件存在
+- [ ] 本地预览测试通过
+- [ ] 检查依赖完整性
+- [ ] 关闭本地代理
 
-### 2. 验证网站内容
+### 标准部署流程
 ```bash
-# 使用curl检查返回内容
+# 1. 切换到主分支
+git checkout main
+
+# 2. 拉取最新代码
+git pull origin main
+
+# 3. 标准部署
+npm run deploy
+
+# 4. 验证部署结果
 curl -s https://kehan857.github.io/chanyeshujuzhongxin4.0/ | head -15
 ```
 
-### 3. 检查关键元素
-- [ ] 页面标题正确
-- [ ] 资源路径正确
-- [ ] 样式和脚本加载正常
-- [ ] 路由功能正常
+### 问题排查顺序
+1. **检查GitHub Actions状态**
+   - 访问: https://github.com/kehan857/chanyeshujuzhongxin4.0/actions
+   - 确保部署状态为绿色 ✅
 
-## 🎯 最佳实践
+2. **验证gh-pages分支内容**
+   - 检查构建文件是否正确
+   - 验证资源路径
 
-### 1. 部署前准备
-- 确保本地开发环境正常
-- 运行 `npm run preview` 测试构建结果
-- 检查所有依赖是否最新
+3. **测试不同网络环境**
+   - 无痕模式
+   - 不同浏览器
+   - 手机热点网络
 
-### 2. 部署流程
-- 始终从 `main` 分支部署
-- 使用 `npm run deploy` 而不是手动操作
-- 部署后等待2-5分钟再检查结果
+## 📋 快速参考
 
-### 3. 问题排查
-- 优先检查 `vite.config.js` 配置
-- 查看GitHub Actions日志
-- 使用不同浏览器和网络环境测试
-
-### 4. 缓存处理
-- 遇到缓存问题时，等待10-30分钟
-- 使用无痕模式测试
-- 必要时强制刷新gh-pages分支
-
-## 🔄 快速部署命令
-
+### 一键部署命令
 ```bash
-# 一键部署（推荐）
+# 标准部署
 npm run deploy
 
-# 强制重新部署（解决缓存问题）
+# 强制重新部署
 npm run deploy:force
 
-# 手动部署流程
-git checkout main
-npm install
-npm run build
-npx gh-pages -d dist
+# 本地预览
+npm run preview
 ```
 
-## 📞 紧急情况处理
+### 验证部署结果
+```bash
+# 检查主页
+curl -s https://kehan857.github.io/chanyeshujuzhongxin4.0/ | head -15
 
-如果遇到严重问题，按以下顺序尝试：
+# 检查AI搜索页面
+curl -s https://kehan857.github.io/chanyeshujuzhongxin4.0/ai-search | head -15
+```
 
-1. **重新配置GitHub Pages**
-   - 访问仓库设置页面
-   - 重新选择gh-pages分支
-   - 保存设置
+### 正确的访问地址
+- **主页**: https://kehan857.github.io/chanyeshujuzhongxin4.0/
+- **AI搜索**: https://kehan857.github.io/chanyeshujuzhongxin4.0/ai-search
+- **企业库**: https://kehan857.github.io/chanyeshujuzhongxin4.0/enterprise
+- **方案库**: https://kehan857.github.io/chanyeshujuzhongxin4.0/solution
+- **知识库**: https://kehan857.github.io/chanyeshujuzhongxin4.0/knowledge
 
-2. **完全重建gh-pages分支**
-   ```bash
-   git push origin --delete gh-pages
-   npm run deploy
-   ```
+## 🔧 故障排除
 
-3. **使用替代部署方案**
-   - Vercel: https://vercel.com
-   - Netlify: https://netlify.com
-   - 创建新的GitHub仓库
+### 如果部署失败
+1. 检查GitHub Actions日志
+2. 验证仓库权限设置
+3. 确保仓库是公开的
+4. 检查GitHub Pages设置
 
-## ✅ 成功部署标志
+### 如果页面无法访问
+1. 等待2-30分钟（CDN缓存）
+2. 清除浏览器缓存
+3. 使用无痕模式
+4. 检查网络连接
 
-- GitHub Actions显示绿色✅
-- 网站URL可以正常访问
-- 页面标题和内容正确显示
-- 所有资源（CSS、JS、图片）正常加载
-- 路由功能正常工作
+### 如果资源加载失败
+1. 检查资源路径是否正确
+2. 验证构建输出
+3. 强制重新部署
+4. 检查代理设置
+
+## 📞 联系支持
+
+如果按照本指南操作后仍有问题，请提供：
+1. GitHub Actions日志截图
+2. 浏览器控制台错误信息
+3. 网络请求详情
+4. 具体的错误页面截图
 
 ---
 
-**记住**: 大多数部署问题都是由于配置错误或缓存问题导致的。按照本指南操作，99%的情况下都能一次部署成功！🎉
+**最后更新**: 2025年1月
+**版本**: 1.0
+**适用仓库**: https://github.com/kehan857/chanyeshujuzhongxin4.0
