@@ -1,78 +1,59 @@
-# GitHub Pages 部署指南
+# GitHub Pages 部署设置指南
 
-## 📋 部署状态
+## 项目已成功推送到GitHub
 
-**仓库地址**: https://github.com/kehan857/chanyeshujuzhongxin3.0
-**GitHub Pages URL**: https://kehan857.github.io/chanyeshujuzhongxin3.0/
+✅ **仓库地址**: https://github.com/kehan857/chanyeshujuzhongxin4.0.git
 
-## 🚀 配置步骤
+## 启用GitHub Pages的步骤
 
-### 步骤1: 检查Actions部署状态
+### 1. 访问仓库设置
+1. 打开 https://github.com/kehan857/chanyeshujuzhongxin4.0
+2. 点击仓库页面顶部的 **Settings** 标签
 
-1. 访问Actions页面: https://github.com/kehan857/chanyeshujuzhongxin3.0/actions
-2. 查看 "Deploy to GitHub Pages" 工作流
-3. 确认状态为绿色 ✅
+### 2. 配置Pages设置
+1. 在左侧菜单中找到 **Pages** 选项
+2. 在 **Source** 部分选择 **GitHub Actions**
+3. 保存设置
 
-### 步骤2: 配置GitHub Pages
+### 3. 等待自动部署
+- GitHub Actions工作流会自动触发
+- 构建和部署过程大约需要2-5分钟
+- 可以在 **Actions** 标签页查看部署进度
 
-1. 访问仓库设置: https://github.com/kehan857/chanyeshujuzhongxin3.0/settings/pages
+### 4. 访问网站
+部署完成后，您的网站将在以下地址可用：
+**https://kehan857.github.io/chanyeshujuzhongxin4.0/**
 
-2. 在 "Build and deployment" 部分配置：
-   - **Source**: Deploy from a branch
-   - **Branch**: gh-pages
-   - **Folder**: / (root)
+## 自动部署功能
 
-3. 点击 "Save" 保存设置
+项目已配置了GitHub Actions工作流，具有以下特性：
 
-### 步骤3: 等待部署完成
+- ✅ 自动构建Vue.js项目
+- ✅ 自动部署到GitHub Pages
+- ✅ 每次推送到main分支时自动更新
+- ✅ 使用最新的Node.js和npm缓存
 
-- 等待2-3分钟让GitHub Pages部署完成
-- 访问: https://kehan857.github.io/chanyeshujuzhongxin3.0/
+## 手动部署（可选）
 
-### 步骤4: 验证部署
-
-- 强制刷新浏览器: Ctrl+Shift+R (Windows) 或 Cmd+Shift+R (Mac)
-- 应该看到天云产业数据中心首页
-
-## ⚙️ 技术配置
-
-- **Framework**: Vue 3 + Vite
-- **UI Library**: Ant Design Vue
-- **Build Output**: dist/
-- **Base Path**: /chanyeshujuzhongxin3.0/
-- **Deploy Tool**: peaceiris/actions-gh-pages@v3
-
-## 🔧 如果遇到问题
-
-### 问题1: Actions失败
-- 检查Actions日志查看具体错误
-- 确认package.json中的依赖正确安装
-
-### 问题2: 404错误
-- 确认GitHub Pages设置为从gh-pages分支部署
-- 确认分支已经创建（Actions成功后会自动创建）
-
-### 问题3: 页面空白
-- 检查浏览器控制台是否有JavaScript错误
-- 确认base path配置正确
-
-## 📝 本地开发
+如果需要手动部署，可以使用以下命令：
 
 ```bash
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建生产版本
-npm run build
+npm run deploy
 ```
 
-## 🎯 项目功能
+## 故障排除
 
-- ✅ 9大库导航系统
-- ✅ 企业库360度全景画像
-- ✅ 响应式设计
-- ✅ 天云聚合UI色调
-- ✅ 完整的路由系统
+如果遇到问题：
+
+1. 检查GitHub Actions日志
+2. 确保仓库设置中已启用GitHub Actions
+3. 确保Pages源设置为"GitHub Actions"
+4. 检查构建日志中的错误信息
+
+## 项目信息
+
+- **项目名称**: 天云产业数据中心2.0
+- **技术栈**: Vue.js 3 + Vite + Ant Design Vue
+- **部署方式**: GitHub Pages + GitHub Actions
+- **构建命令**: `npm run build`
+- **输出目录**: `dist/`
