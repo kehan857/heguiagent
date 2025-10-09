@@ -25,11 +25,20 @@ jobs:
     - name: Build
       run: npm run build
       
+    - name: Verify build output
+      run: |
+        echo "Build output contents:"
+        ls -la dist/
+        echo "Checking index.html:"
+        head -20 dist/index.html
+      
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
         force_orphan: true
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
+        cname: ''
