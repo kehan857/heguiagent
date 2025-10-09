@@ -87,6 +87,25 @@
 
       <!-- 右侧操作区 -->
       <div class="action-section">
+        <!-- AskNow AI搜索按钮 -->
+        <a-button 
+          type="text" 
+          class="asknow-btn"
+          @click="handleAIClick"
+          title="AskNow - AI智能搜索"
+        >
+          <div class="asknow-icon">
+            <div class="asknow-robot">
+              <div class="robot-head"></div>
+              <div class="robot-body"></div>
+              <div class="robot-eye left"></div>
+              <div class="robot-eye right"></div>
+            </div>
+            <div class="asknow-text">AskNow</div>
+          </div>
+        </a-button>
+        
+        
         <a-button type="primary" class="member-btn">
           <CrownOutlined />
           开通会员
@@ -137,7 +156,9 @@ import {
   UserOutlined,
   SettingOutlined,
   LogoutOutlined,
-  MenuOutlined
+  MenuOutlined,
+  RobotOutlined,
+  DatabaseOutlined
 } from '@ant-design/icons-vue'
 
 const router = useRouter()
@@ -164,6 +185,11 @@ const handleMenuClick = ({ key }) => {
   } else {
     router.push(`/${key}`)
   }
+}
+
+// AI按钮点击处理
+const handleAIClick = () => {
+  router.push('/ai-search')
 }
 </script>
 
@@ -283,6 +309,96 @@ const handleMenuClick = ({ key }) => {
   align-items: center;
   gap: $spacing-md;
   flex-shrink: 0;
+}
+
+.asknow-btn {
+  color: $text-secondary;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: $primary-color;
+    background: rgba($primary-color, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+.asknow-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.asknow-robot {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  animation: asknow-pulse 2s infinite;
+}
+
+.robot-head {
+  width: 16px;
+  height: 12px;
+  background: $primary-color;
+  border-radius: 8px 8px 4px 4px;
+  position: absolute;
+  top: 2px;
+  left: 4px;
+}
+
+.robot-body {
+  width: 20px;
+  height: 8px;
+  background: $primary-color;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+}
+
+.robot-eye {
+  width: 3px;
+  height: 3px;
+  background: $text-white;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  animation: asknow-blink 3s infinite;
+  
+  &.left {
+    left: 6px;
+  }
+  
+  &.right {
+    right: 6px;
+  }
+}
+
+.asknow-text {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: $primary-color;
+  line-height: 1;
+}
+
+@keyframes asknow-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes asknow-blink {
+  0%, 90%, 100% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0;
+  }
 }
 
 .member-btn {

@@ -10,6 +10,7 @@ import IndustryChainLibrary from '@/views/libraries/IndustryChainLibrary.vue'
 import DemandLibrary from '@/views/libraries/DemandLibrary.vue'
 import PolicyLibrary from '@/views/libraries/PolicyLibrary.vue'
 import IndustryProblemLibrary from '@/views/libraries/IndustryProblemLibrary.vue'
+import AISearch from '@/views/AISearch.vue'
 
 const routes = [
   {
@@ -23,6 +24,10 @@ const routes = [
     name: 'EnterpriseLibrary',
     component: EnterpriseLibrary,
     meta: { title: '企业库' }
+  },
+  {
+    path: '/enterprises',
+    redirect: '/enterprise'
   },
   {
     path: '/enterprise/:id',
@@ -77,6 +82,12 @@ const routes = [
     name: 'IndustryProblemLibrary',
     component: IndustryProblemLibrary,
     meta: { title: '行业问题库' }
+  },
+  {
+    path: '/ai-search',
+    name: 'AISearch',
+    component: AISearch,
+    meta: { title: 'AI智能搜索' }
   }
 ]
 

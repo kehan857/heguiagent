@@ -706,6 +706,14 @@
         </div>
       </div>
     </div>
+
+    <!-- AI交互弹窗 -->
+    <AIDialog 
+      :dialog-type="'enterprise'"
+      :default-expanded="true"
+      @toggle="handleAIDialogToggle"
+      @send-message="handleAIMessage"
+    />
   </div>
 </template>
 
@@ -713,6 +721,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Header from '@/components/Header.vue'
+import AIDialog from '@/components/AIDialog.vue'
 import {
   BankOutlined,
   AppstoreOutlined,
@@ -1302,6 +1311,16 @@ const getChangeColor = (type) => {
 
 const getProductTypeColor = (type) => {
   return type === '核心产品' ? 'red' : 'blue'
+}
+
+// AI对话框处理函数
+const handleAIDialogToggle = (isExpanded) => {
+  console.log('AI对话框状态:', isExpanded ? '展开' : '收起')
+}
+
+const handleAIMessage = (message) => {
+  console.log('AI消息:', message)
+  // 这里可以添加AI消息处理逻辑
 }
 
 onMounted(() => {
