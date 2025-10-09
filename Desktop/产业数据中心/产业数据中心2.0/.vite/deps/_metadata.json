@@ -1,31 +1,31 @@
 {
-  "hash": "4a7f9167",
+  "hash": "994514e8",
   "configHash": "56376477",
-  "lockfileHash": "7983c3e3",
-  "browserHash": "916d0189",
+  "lockfileHash": "8d2535e9",
+  "browserHash": "928f1df5",
   "optimized": {
     "vue": {
       "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "17008ed5",
+      "fileHash": "af351d04",
       "needsInterop": false
     },
     "pinia": {
       "src": "../../node_modules/pinia/dist/pinia.mjs",
       "file": "pinia.js",
-      "fileHash": "5af246fc",
+      "fileHash": "99febe0e",
       "needsInterop": false
     },
     "ant-design-vue": {
       "src": "../../node_modules/ant-design-vue/es/index.js",
       "file": "ant-design-vue.js",
-      "fileHash": "594c91a7",
+      "fileHash": "8a82292c",
       "needsInterop": false
     },
     "vue-router": {
       "src": "../../node_modules/vue-router/dist/vue-router.mjs",
       "file": "vue-router.js",
-      "fileHash": "4ee17da0",
+      "fileHash": "d75a6070",
       "needsInterop": false
     }
   },
