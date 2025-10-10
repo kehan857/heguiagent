@@ -10,8 +10,10 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "deploy": "npm run build && gh-pages -d dist",
     "deploy:force": "npm run build && gh-pages -d dist --remove",
+    "deploy:optimized": "node optimized-deploy.js",
     "deploy:verify": "curl -s https://kehan857.github.io/chanyeshujuzhongxin4.0/ | head -15",
     "deploy:check": "echo '检查部署状态...' && curl -s -o /dev/null -w '%{http_code}' https://kehan857.github.io/chanyeshujuzhongxin4.0/",
+    "deploy:check-resources": "echo '检查资源文件...' && curl -s -o /dev/null -w 'JS: %{http_code} ' https://kehan857.github.io/chanyeshujuzhongxin4.0/assets/index-DODysjzv.js && curl -s -o /dev/null -w 'CSS: %{http_code}' https://kehan857.github.io/chanyeshujuzhongxin4.0/assets/index-ibEt2i2v.css",
     "clean": "rm -rf node_modules package-lock.json dist && npm install"
   },
   "dependencies": {
