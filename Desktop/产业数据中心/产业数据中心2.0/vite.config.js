@@ -9,7 +9,7 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
-  base: process.env.NODE_ENV === 'production' ? '/chanyeshujuzhongxin4.0/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/chanyeshujuzhongxin4.0-clean/' : '/',
   server: {
     port: 3333,
     open: true,
