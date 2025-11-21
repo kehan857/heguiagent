@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合规智能体需求方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background-attachment: fixed;
+            color: #fff;
+            overflow-x: hidden;
+            padding-bottom: 55px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 首页样式 */
+        .hero-section {
+            text-align: center;
+            padding: 50px 20px;
+            min-height: calc(100vh - 55px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+            fill: #4fc3f7;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 50px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 0;
+            margin-bottom: 0;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(79, 195, 247, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 40px;
+        }
+
+        .card h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 流程页面样式 */
+        .process-section {
+            padding: 50px 20px;
+            min-height: calc(100vh - 55px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .step-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(79, 195, 247, 0.2);
+            border: 4px solid #4fc3f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 50px;
+        }
+
+        .step-label {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .arrow {
+            font-size: 40px;
+            color: #4fc3f7;
+            margin: 0 20px;
+        }
+
+        .processing-core {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 1000px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .core-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .knowledge-card {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .knowledge-card.legal {
+            background: rgba(33, 150, 243, 0.3);
+            border: 2px solid #2196f3;
+        }
+
+        .knowledge-card.platform {
+            background: rgba(156, 39, 176, 0.3);
+            border: 2px solid #9c27b0;
+        }
+
+        .knowledge-card.company {
+            background: rgba(255, 152, 0, 0.3);
+            border: 2px solid #ff9800;
+        }
+
+        .knowledge-card.business {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4caf50;
+        }
+
+        /* 后台功能页面样式 */
+        .admin-section {
+            padding: 30px 20px;
+            min-height: calc(100vh - 55px);
+            background: #f5f5f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-container {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .admin-header {
+            background: #1976d2;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 12px 12px 0 0;
+            margin: -25px -25px 15px -25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-sidebar {
+            background: #263238;
+            color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 220px;
+            flex-shrink: 0;
+            margin-right: 20px;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .admin-content {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .admin-main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            min-height: 0;
+            min-width: 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #1976d2;
+            border-bottom-color: #1976d2;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .input-area {
+            width: 100%;
+            min-height: 250px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            resize: vertical;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .upload-area {
+            width: 100%;
+            min-height: 250px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            margin-bottom: 20px;
+            background: #fafafa;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .upload-area:hover {
+            border-color: #1976d2;
+            background: #f0f7ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #1976d2;
+            background: #e3f2fd;
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            color: #666;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .platform-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submit-btn {
+            background: #1976d2;
+            color: #fff;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            float: right;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1565c0;
+        }
+
+        /* 任务明细表格样式 */
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        table th:nth-child(1),
+        table td:nth-child(1) {
+            width: 60px;
+        }
+
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: 150px;
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 300px;
+        }
+
+        table th:nth-child(4),
+        table td:nth-child(4) {
+            width: 150px;
+        }
+
+        table th:nth-child(5),
+        table td:nth-child(5) {
+            width: 120px;
+        }
+
+        table th:nth-child(6),
+        table td:nth-child(6) {
+            width: 120px;
+        }
+
+        table th:nth-child(7),
+        table td:nth-child(7) {
+            width: 100px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .status-reviewing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .platform-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .platform-xiaohongshu {
+            background: #ff2442;
+            color: #fff;
+        }
+
+        .platform-douyin {
+            background: #000;
+            color: #fff;
+        }
+
+        .platform-kuaishou {
+            background: #ff6600;
+            color: #fff;
+        }
+
+        .btn-view {
+            background: #1976d2;
+            color: #fff;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-view:hover {
+            background: #1565c0;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: #fff;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .download-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 12px 30px;
+            border: 1px solid #1976d2;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #1976d2;
+            color: #fff;
+        }
+
+        /* 审核结果弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 1200px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: #333;
+        }
+
+        .modal-header {
+            background: #1976d2;
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .original-content {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: #ffebee;
+            color: #c62828;
+            padding: 2px 4px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .highlight::before {
+            content: attr(data-num);
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #c62828;
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .suggestions {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .suggestion-item {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1976d2;
+        }
+
+        .suggestion-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #c62828;
+        }
+
+        .rule-interpretation {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .modification-suggestion {
+            background: #f1f8e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .rule-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .tag-legal {
+            background: #2196f3;
+            color: #fff;
+        }
+
+        .tag-platform {
+            background: #9c27b0;
+            color: #fff;
+        }
+
+        .tag-business {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        .tag-company {
+            background: #ff9800;
+            color: #fff;
+        }
+
+        /* 分页控制 */
+        .pagination {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-section .pagination {
+            background: #f5f5f5;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-section .pagination button {
+            background: rgba(25, 118, 210, 0.1);
+            color: #1976d2;
+            border: 1px solid rgba(25, 118, 210, 0.3);
+        }
+
+        .admin-section .pagination button:hover {
+            background: rgba(25, 118, 210, 0.2);
+        }
+
+        .admin-section .pagination .page-info {
+            color: #333;
+        }
+
+        .pagination button {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 8px 16px;
+            margin: 0 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            min-width: 40px;
+        }
+
+        .pagination button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .pagination button:active {
+            transform: scale(0.95);
+        }
+
+        .pagination .page-info {
+            display: inline-block;
+            margin: 0 15px;
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-flow {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                margin: 20px 0;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-content {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* 页面切换动画 */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面1: 首页 -->
+    <div class="page active" id="page1">
+        <div class="hero-section">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.2C16,16.8 15.4,17.3 14.8,17.3H9.2C8.6,17.3 8,16.8 8,16.2V12.7C8,12.1 8.6,11.5 9.2,11.5V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z"/>
+                </svg>
+            </div>
+            <h1>合规智能体需求方案</h1>
+            <p class="subtitle">V1.0 | 智能审核 ・ 多平台适配 ・ 高效闭环</p>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>知识库体系</h3>
+                    <p>覆盖国家法律、平台规则(抖音/小红书等)、公司及业务规则的四层知识架构。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>智能审核引擎</h3>
+                    <p>输入解析→ 流程编排→ 并行Agent处理→ 结果聚合,500字/5s极速响应。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✅</div>
+                    <h3>全流程闭环</h3>
+                    <p>从单条/批量发起到任务明细追踪,再到颗粒度极细的违规解读。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面2: 系统交互流程 -->
+    <div class="page" id="page2">
+        <div class="process-section">
+            <div class="container">
+                <h2 class="section-title">一、系统交互流程</h2>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="step-circle">→</div>
+                        <div class="step-label">输入内容解析</div>
+                        <div class="step-desc">文案/业务节点</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="process-step" style="flex: 2;">
+                        <div class="processing-core">
+                            <div class="core-title">流程编排 (串行)</div>
+                            <div class="knowledge-grid">
+                                <div class="knowledge-card legal">
+                                    <div style="font-size: 30px; margin-bottom: 10px;">🛡️</div>
+                                    <div style="font-weight: 600;">法律合规库</div>
+                                </div>
+                                <div class="knowledge-card platform">
+                                    <div style="font-size: 30px; margin-bottom: 10px;">📱</div>
+                                    <div style="font-weight: 600;">平台规则库</div>
+                                    <div style="font-size: 12px; margin-top: 5px;">(抖音/小红书...)</div>
+                                </div>
+                                <div class="knowledge-card company">
+                                    <div style="font-size: 30px; margin-bottom: 10px;">🏢</div>
+                                    <div style="font-weight: 600;">公司规则库</div>
+                                </div>
+                                <div class="knowledge-card business">
+                                    <div style="font-size: 30px; margin-bottom: 10px;">📋</div>
+                                    <div style="font-weight: 600;">业务规则库</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="process-step">
+                        <div class="step-circle" style="border-color: #4caf50;">✓</div>
+                        <div class="step-label">结果聚合输出</div>
+                        <div class="step-desc">JSON格式化/标记建议</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面3: 后台功能 - 发起审核 -->
+    <div class="page" id="page3">
+        <div class="admin-section">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <div>
+                        <h2 style="margin: 0;">合规智能体管理系统</h2>
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <span>操作手册</span>
+                        <span>锁屏</span>
+                        <span>全屏</span>
+                        <span>安** (15072817)</span>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px; color: #666;">
+                    <strong>二、后台功能:发起审核</strong><br>
+                    <span style="font-size: 14px;">支持单条文本录入与Excel批量导入,多平台并行校验。</span>
+                </div>
+                <div class="admin-content">
+                    <div class="admin-sidebar">
+                        <div style="margin-bottom: 20px; font-size: 12px; color: rgba(255,255,255,0.7);">MAIN NAVIGATION</div>
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <span>🏠</span>
+                                <span>合规智能体</span>
+                                <span>▼</span>
+                            </div>
+                            <div style="padding-left: 30px;">
+                                <div class="menu-item active" onclick="navigateToPage(3)">发起审核</div>
+                                <div class="menu-item" onclick="navigateToPage(4)">审核任务明细</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-main">
+                        <h3 style="margin-bottom: 30px;">发起审核</h3>
+                        <div class="tabs">
+                            <button class="tab active" onclick="switchTab('single', this)">单条录入</button>
+                            <button class="tab" onclick="switchTab('batch', this)">批量导入</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="single-tab">
+                            <textarea class="input-area" id="single-input" placeholder="请输入需要审核的内容...">复星保德信大黄蜂16号少儿重疾险(旗舰版)
+【暖心守护,理赔见证】
+为孩子选择一份保障，就是为他们的未来投资。这份保险不仅提供实实在在的钱，还能确保孩子获得最好的医疗资源。孩子的成长之路充满未知，但我们可以提前做好准备。</textarea>
+                        </div>
+                        
+                        <div class="tab-content" id="batch-tab">
+                            <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                                <div class="upload-icon">☁️</div>
+                                <div class="upload-text">如需同时审核多条内容,请按照模板填写后,拖拽文件到这里</div>
+                                <div class="upload-text" style="margin-top: 10px; font-size: 14px; color: #999;">或点击选择文件</div>
+                                <input type="file" id="file-input" class="file-input" accept=".xlsx,.xls,.csv">
+                            </div>
+                            <div id="file-info" style="display: none; padding: 15px; background: #e3f2fd; border-radius: 8px; margin-bottom: 20px;">
+                                <span id="file-name"></span>
+                                <button onclick="removeFile()" style="float: right; background: #dc3545; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">删除</button>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600;">请选择计划发布平台:</label>
+                            <div class="platform-checkboxes">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="select-all">
+                                    <label for="select-all">全选</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="xiaohongshu" checked>
+                                    <label for="xiaohongshu">小红书</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="douyin" checked>
+                                    <label for="douyin">抖音</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="kuaishou" checked>
+                                    <label for="kuaishou">快手</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="video" checked>
+                                    <label for="video">视频号</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right; margin-top: 30px;">
+                            <button class="download-btn" onclick="downloadTemplate()">下载模板</button>
+                            <button class="submit-btn" onclick="submitReview()">提交审核</button>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面4: 后台功能 - 审核任务明细 -->
+    <div class="page" id="page4">
+        <div class="admin-section">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <div>
+                        <h2 style="margin: 0;">合规智能体管理系统</h2>
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <span>操作手册</span>
+                        <span>安** (15072817)</span>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px; color: #666;">
+                    <strong>三、后台功能:审核任务明细</strong><br>
+                    <span style="font-size: 14px;">任务状态追踪,支持按文本、状态、平台等多维度筛选查询。</span>
+                </div>
+                <div class="admin-content">
+                    <div class="admin-sidebar">
+                        <div style="margin-bottom: 20px; font-size: 12px; color: rgba(255,255,255,0.7);">MAIN NAVIGATION</div>
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <span>🏠</span>
+                                <span>合规智能体</span>
+                                <span>▼</span>
+                            </div>
+                            <div style="padding-left: 30px;">
+                                <div class="menu-item" onclick="navigateToPage(3)">发起审核</div>
+                                <div class="menu-item active" onclick="navigateToPage(4)">审核任务明细</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-main">
+                        <h3 style="margin-bottom: 30px;">审核任务明细</h3>
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <input type="text" id="search-text" placeholder="文本内容" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; flex: 1; min-width: 200px;">
+                            <select id="status-filter" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px;">
+                                <option>所有</option>
+                                <option>审核中</option>
+                                <option>审核完成</option>
+                            </select>
+                            <select id="platform-filter" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px;">
+                                <option>所有</option>
+                                <option>小红书</option>
+                                <option>抖音</option>
+                                <option>快手</option>
+                            </select>
+                            <button class="submit-btn" style="float: none; background: #4caf50;" onclick="searchTasks()">查询</button>
+                            <button class="submit-btn" style="float: none; background: #ff9800;" onclick="addNewTask()">新增任务</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>任务ID</th>
+                                        <th>文本内容</th>
+                                        <th>提交时间</th>
+                                        <th>发布平台</th>
+                                        <th>审核状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>T2024011701</td>
+                                        <td>复星保德信大黄蜂16号少儿重疾险...</td>
+                                        <td>2024/1/17 10:00</td>
+                                        <td><span class="platform-badge platform-xiaohongshu">小红书</span></td>
+                                        <td><span class="status-badge status-reviewing">审核中</span></td>
+                                        <td><button class="btn-delete" onclick="deleteTask('T2024011701')">删除</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>T2023122205</td>
+                                        <td>...们需要的...</td>
+                                        <td>2023/12/22 14:30</td>
+                                        <td><span class="platform-badge platform-douyin">抖音</span></td>
+                                        <td><span class="status-badge status-completed">审核完成</span></td>
+                                        <td><button class="btn-view" onclick="viewDetail(2)">查看</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>T2023121002</td>
+                                        <td>全网最低价,错过等一年!</td>
+                                        <td>2023/12/10 09:15</td>
+                                        <td><span class="platform-badge platform-kuaishou">快手</span></td>
+                                        <td><span class="status-badge status-completed">审核完成</span></td>
+                                        <td><button class="btn-view" onclick="viewDetail(3)">查看</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面5: 审核结果详情 -->
+    <div class="page" id="page5">
+        <div class="admin-section">
+            <div class="admin-container">
+                <div style="margin-bottom: 20px; color: #666;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>四、审核结果详情 (弹窗视图)</strong><br>
+                            <span style="font-size: 14px;">高亮标注违规点,并提供规则解读与修改建议。</span>
+                        </div>
+                        <button class="submit-btn" style="float: none;" onclick="backToList()">返回列表</button>
+                    </div>
+                </div>
+                <div style="background: #fff; border-radius: 12px; padding: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e0e0e0;">
+                        <div>
+                            <h3 style="margin: 0 0 10px 0;">查看文本审核详情</h3>
+                            <div style="font-size: 14px; color: #666;">
+                                <span>提交人: 用户名</span> | 
+                                <span>提交时间: 2024/1/1 00:00:00</span> | 
+                                <span>计划发布平台: 小红书</span>
+                            </div>
+                        </div>
+                        <button style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;" onclick="backToList()">×</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="margin-bottom: 15px;">原文内容</h4>
+                            <div class="original-content">
+                                复星保德信大黄蜂16号<span class="highlight" data-num="1">少儿重疾险</span>(旗舰版)<br><br>
+                                【暖心守护,理赔见证】<br><br>
+                                为孩子选择一份保障，就是为他们的未来投资。这份保险不仅提供<span class="highlight" data-num="2">实实在在的钱</span>，还能确保孩子获得<span class="highlight" data-num="3">最好的医疗资源</span>。<span class="highlight" data-num="4">孩子的成长之路充满未知</span>，但我们可以提前做好准备。
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 15px;">审核建议</h4>
+                            <div class="suggestions">
+                                <div class="suggestion-item">
+                                    <div class="suggestion-title">① 错误引导未成年人</div>
+                                    <div class="rule-interpretation">
+                                        <strong>规则解读:</strong> 不得利用不满十周岁的未成年人作为广告代言人。
+                                    </div>
+                                    <div class="modification-suggestion">
+                                        <strong>修改建议:</strong> 建议修改为"少儿保障计划"
+                                    </div>
+                                    <span class="rule-tag tag-legal">国家法律</span>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-title">② 不符合社区规范</div>
+                                    <div class="rule-interpretation">
+                                        <strong>规则解读:</strong> 严禁使用炫富、过于直接的金钱诱导类词汇。
+                                    </div>
+                                    <div class="modification-suggestion">
+                                        <strong>修改建议:</strong> 建议修改为"真切的保障"
+                                    </div>
+                                    <span class="rule-tag tag-platform">小红书</span>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-title">③ 不符合业务要求</div>
+                                    <div class="rule-interpretation">
+                                        <strong>规则解读:</strong> 广告中严禁使用"最高级"、"最佳"、"最好"等绝对化用语。
+                                    </div>
+                                    <div class="modification-suggestion">
+                                        <strong>修改建议:</strong> 建议修改为"优质的医疗资源"
+                                    </div>
+                                    <span class="rule-tag tag-business">业务规则</span>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-title">④ 不符合公司规范</div>
+                                    <div class="rule-interpretation">
+                                        <strong>规则解读:</strong> 避免使用可能引起焦虑的表述。
+                                    </div>
+                                    <div class="modification-suggestion">
+                                        <strong>修改建议:</strong> 建议修改为更积极的表述
+                                    </div>
+                                    <span class="rule-tag tag-company">公司规则</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分页控制 -->
+    <div class="pagination">
+        <button onclick="previousPage()">‹</button>
+        <span class="page-info"><span id="current-page">1</span> / 5</span>
+        <button onclick="nextPage()">›</button>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 5;
+
+        function showPage(pageNum) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示当前页面
+            document.getElementById(`page${pageNum}`).classList.add('active');
+            
+            // 更新分页信息
+            document.getElementById('current-page').textContent = pageNum;
+            
+            // 更新菜单激活状态
+            updateMenuActiveState(pageNum);
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+
+        // 标签页切换
+        function switchTab(tabType, element) {
+            // 更新标签按钮状态
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            // 切换内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            if (tabType === 'single') {
+                document.getElementById('single-tab').classList.add('active');
+            } else {
+                document.getElementById('batch-tab').classList.add('active');
+            }
+        }
+
+        // 文件上传功能
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const fileInfo = document.getElementById('file-info');
+        const fileName = document.getElementById('file-name');
+
+        // 拖拽上传
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            fileName.textContent = `已选择: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+            fileInfo.style.display = 'block';
+        }
+
+        function removeFile() {
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+        }
+
+        // 下载模板
+        function downloadTemplate() {
+            // 创建一个示例Excel模板的CSV格式
+            const csvContent = "文本内容,发布平台\n示例文本1,小红书\n示例文本2,抖音";
+            const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = '审核模板.csv';
+            link.click();
+            alert('模板下载成功！');
+        }
+
+        // 提交审核
+        function submitReview() {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            
+            if (activeTab === 'single-tab') {
+                const content = document.getElementById('single-input').value.trim();
+                if (!content) {
+                    alert('请输入需要审核的内容！');
+                    return;
+                }
+            } else {
+                if (!fileInput.files.length) {
+                    alert('请选择要上传的文件！');
+                    return;
+                }
+            }
+
+            // 检查平台选择
+            const platforms = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (platforms.length === 0) {
+                alert('请至少选择一个发布平台！');
+                return;
+            }
+
+            // 模拟提交
+            alert('提交成功！任务已创建，请前往"审核任务明细"查看。');
+            
+            // 可以跳转到任务明细页面
+            setTimeout(() => {
+                navigateToPage(4);
+            }, 1000);
+        }
+
+        // 全选功能
+        document.getElementById('select-all')?.addEventListener('change', function(e) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:not(#select-all)');
+            checkboxes.forEach(cb => {
+                cb.checked = e.target.checked;
+            });
+        });
+
+        // 查看详情
+        function viewDetail(taskId) {
+            // 跳转到审核结果详情页面
+            navigateToPage(5);
+        }
+
+        // 删除任务
+        function deleteTask(taskId) {
+            if (confirm(`确定要删除任务 ${taskId} 吗？`)) {
+                alert(`任务 ${taskId} 已删除`);
+                // 这里可以添加实际的删除逻辑
+                const row = event.target.closest('tr');
+                if (row) {
+                    row.style.opacity = '0';
+                    setTimeout(() => {
+                        row.remove();
+                    }, 300);
+                }
+            }
+        }
+
+        // 查询任务
+        function searchTasks() {
+            const text = document.getElementById('search-text').value;
+            const status = document.getElementById('status-filter').value;
+            const platform = document.getElementById('platform-filter').value;
+            
+            alert(`查询条件：\n文本内容: ${text || '全部'}\n审核状态: ${status}\n发布平台: ${platform}\n\n正在查询...`);
+            // 这里可以添加实际的查询逻辑
+        }
+
+        // 新增任务
+        function addNewTask() {
+            // 跳转到发起审核页面
+            navigateToPage(3);
+            // 切换到单条录入标签
+            setTimeout(() => {
+                switchTab('single', document.querySelector('.tab'));
+            }, 100);
+        }
+
+        // 返回列表
+        function backToList() {
+            navigateToPage(4);
+        }
+
+        // 导航到指定页面
+        function navigateToPage(pageNum) {
+            currentPage = pageNum;
+            showPage(pageNum);
+            updateMenuActiveState(pageNum);
+        }
+
+        // 更新菜单激活状态
+        function updateMenuActiveState(pageNum) {
+            // 只在页面3和页面4中更新菜单状态
+            if (pageNum === 3 || pageNum === 4) {
+                // 获取当前页面的所有菜单项
+                const currentPage = document.getElementById(`page${pageNum}`);
+                if (currentPage) {
+                    const menuItems = currentPage.querySelectorAll('.menu-item');
+                    menuItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // 根据页面设置对应的菜单项为激活状态
+                    if (pageNum === 3 && menuItems.length >= 2) {
+                        // 发起审核页面 - 第一个菜单项激活
+                        menuItems[0].classList.add('active');
+                    } else if (pageNum === 4 && menuItems.length >= 2) {
+                        // 审核任务明细页面 - 第二个菜单项激活
+                        menuItems[1].classList.add('active');
+                    }
+                }
+            }
+        }
+
+        // 键盘导航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                previousPage();
+            } else if (e.key === 'ArrowRight') {
+                nextPage();
+            }
+        });
+
+        // 初始化
+        showPage(1);
+    </script>
+</body>
+</html>
+
