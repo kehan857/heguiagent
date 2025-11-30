@@ -29,7 +29,7 @@
         }
 
         /* 导航模拟 */
-        .navbar {
+       .navbar {
             position: fixed;
             top: 0;
             width: 100%;
@@ -41,7 +41,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
         }
-        .logo {
+       .logo {
             font-weight: 800;
             font-size: 20px;
             color: var(--primary);
@@ -49,21 +49,21 @@
             align-items: center;
             gap: 10px;
         }
-        .logo span {
+       .logo span {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             color: transparent;
         }
 
         /* 幻灯片容器 */
-        .slide-container {
+       .slide-container {
             max-width: 1200px;
             margin: 80px auto 0;
             padding: 20px;
         }
 
         /* 通用板块样式 */
-        .section {
+       .section {
             min-height: auto;
             display: flex;
             flex-direction: column;
@@ -79,13 +79,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .section-title {
+       .section-title {
             font-size: 36px;
             text-align: center;
             margin-bottom: 20px;
             position: relative;
         }
-        .section-title::after {
+       .section-title::after {
             content: '';
             display: block;
             width: 60px;
@@ -93,7 +93,7 @@
             background: var(--secondary);
             margin: 10px auto;
         }
-        .section-subtitle {
+       .section-subtitle {
             text-align: center;
             color: #666;
             margin-bottom: 30px;
@@ -101,7 +101,7 @@
         }
 
         /* 封面 */
-        .hero {
+       .hero {
             text-align: center;
             background: linear-gradient(135deg, #001f3f, #0047AB);
             color: white;
@@ -111,9 +111,9 @@
             position: relative;
             overflow: hidden;
         }
-        .hero h1 { font-size: 56px; margin-bottom: 20px; }
-        .hero p { font-size: 24px; opacity: 0.9; }
-        .hero.tagline {
+       .hero h1 { font-size: 56px; margin-bottom: 20px; }
+       .hero p { font-size: 24px; opacity: 0.9; }
+       .hero.tagline {
             margin-top: 40px;
             display: inline-block;
             background: rgba(255,255,255,0.1);
@@ -123,12 +123,12 @@
         }
 
         /* 卡片网格 */
-        .grid-3 {
+       .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
         }
-        .card {
+       .card {
             background: var(--card-bg);
             padding: 30px;
             border-radius: 15px;
@@ -136,20 +136,20 @@
             transition: transform 0.3s;
             border-top: 5px solid var(--secondary);
         }
-        .card:hover { transform: translateY(-10px); }
-        .card h3 { font-size: 22px; margin-bottom: 15px; color: var(--primary); }
-        .card p { color: #666; font-size: 15px; }
-        .card.icon { font-size: 40px; margin-bottom: 20px; }
+       .card:hover { transform: translateY(-10px); }
+       .card h3 { font-size: 22px; margin-bottom: 15px; color: var(--primary); }
+       .card p { color: #666; font-size: 15px; }
+       .card.icon { font-size: 40px; margin-bottom: 20px; }
 
         /* 对比图表 */
-        .comparison {
+       .comparison {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 50px;
             margin: 40px 0;
         }
-        .vs-circle {
+       .vs-circle {
             background: #eee;
             width: 60px;
             height: 60px;
@@ -160,23 +160,23 @@
             font-weight: bold;
             color: #999;
         }
-        .state-box {
+       .state-box {
             flex: 1;
             padding: 30px;
             border-radius: 15px;
             text-align: center;
         }
-        .state-bad { background: #FFF0F0; border: 1px solid #FFCDCD; }
-        .state-good { background: #F0F9FF; border: 1px solid #BEE3F8; }
+       .state-bad { background: #FFF0F0; border: 1px solid #FFCDCD; }
+       .state-good { background: #F0F9FF; border: 1px solid #BEE3F8; }
 
         /* 标签体系可视化 */
-        .tag-system {
+       .tag-system {
             display: flex;
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
         }
-        .tag-dimension {
+       .tag-dimension {
             background: white;
             width: 220px;
             padding: 20px;
@@ -185,7 +185,7 @@
             text-align: center;
             position: relative;
         }
-        .tag-dimension.badge {
+       .tag-dimension.badge {
             background: var(--primary);
             color: white;
             padding: 5px 10px;
@@ -196,23 +196,23 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        .tag-list {
+       .tag-list {
             list-style: none;
             margin-top: 15px;
             text-align: left;
             font-size: 14px;
             color: #555;
         }
-        .tag-list li { margin-bottom: 8px; padding-left: 15px; position: relative; }
-        .tag-list li::before { content: '•'; color: var(--secondary); position: absolute; left: 0; }
+       .tag-list li { margin-bottom: 8px; padding-left: 15px; position: relative; }
+       .tag-list li::before { content: '•'; color: var(--secondary); position: absolute; left: 0; }
 
         /* 场景演示：CKO的一天 */
-        .timeline {
+       .timeline {
             position: relative;
             max-width: 800px;
             margin: 0 auto;
         }
-        .timeline-item {
+       .timeline-item {
             padding: 20px 30px;
             background: white;
             margin-bottom: 20px;
@@ -223,11 +223,11 @@
             align-items: center;
             border-left: 5px solid var(--accent);
         }
-        .timeline-time { font-weight: bold; color: var(--primary); min-width: 80px; }
-        .timeline-content h4 { margin-bottom: 5px; }
+       .timeline-time { font-weight: bold; color: var(--primary); min-width: 80px; }
+       .timeline-content h4 { margin-bottom: 5px; }
 
         /* 安全矩阵 */
-        .security-table {
+       .security-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
@@ -235,25 +235,25 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .security-table th { background: var(--primary); color: white; padding: 15px; text-align: left; }
-        .security-table td { padding: 15px; border-bottom: 1px solid #eee; color: #555; }
-        .security-table tr:last-child td { border-bottom: none; }
-        .level-badge {
+       .security-table th { background: var(--primary); color: white; padding: 15px; text-align: left; }
+       .security-table td { padding: 15px; border-bottom: 1px solid #eee; color: #555; }
+       .security-table tr:last-child td { border-bottom: none; }
+       .level-badge {
             padding: 3px 8px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: bold;
         }
-        .l1 { background: #E6FFFA; color: #008f72; }
-        .l5 { background: #FFF5F5; color: #C53030; }
+       .l1 { background: #E6FFFA; color: #008f72; }
+       .l5 { background: #FFF5F5; color: #C53030; }
 
         /* 路线图 */
-        .roadmap {
+       .roadmap {
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
         }
-        .phase {
+       .phase {
             flex: 1;
             background: white;
             margin: 0 10px;
@@ -262,7 +262,7 @@
             text-align: center;
             position: relative;
         }
-        .phase::before {
+       .phase::before {
             content: '';
             position: absolute;
             top: -15px;
@@ -285,7 +285,7 @@
             margin-top: 50px;
         }
 
-        .btn {
+       .btn {
             display: inline-block;
             background: var(--accent);
             color: white;
@@ -296,7 +296,7 @@
             margin-top: 20px;
             transition: 0.3s;
         }
-        .btn:hover { background: #e67e00; }
+       .btn:hover { background: #e67e00; }
 
         /* 打印和PDF样式 */
         @page {
