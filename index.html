@@ -1103,10 +1103,315 @@
             cursor: pointer;
             font-size: 12px;
             margin-left: 10px;
+            transition: all 0.3s;
         }
 
         .add-rule-btn:hover {
             background: #1565c0;
+            transform: scale(1.05);
+        }
+
+        /* 知识库搜索框 */
+        .knowledge-search {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .search-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .search-btn {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #1565c0;
+        }
+
+        .search-results {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .search-result-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-result-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .search-result-item.highlight {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+        }
+
+        /* 添加规则弹窗 */
+        .rule-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rule-modal.active {
+            display: flex;
+        }
+
+        .rule-modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .rule-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .rule-modal-header h3 {
+            margin: 0;
+            color: #1976d2;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-save {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: #45a049;
+        }
+
+        /* 规则详情展示 */
+        .rule-detail-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .rule-detail-card:hover {
+            border-color: #1976d2;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
+        }
+
+        .rule-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rule-detail-title {
+            font-weight: 600;
+            color: #1976d2;
+            font-size: 15px;
+        }
+
+        .rule-detail-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .rule-detail-content {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .rule-tags {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rule-tag-small {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        /* 新增规则动画效果 */
+        .rule-item-new {
+            animation: slideIn 0.5s ease-out;
+            background: #e8f5e9 !important;
+            border-left: 4px solid #4caf50 !important;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 规则统计信息 */
+        .knowledge-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
         }
 
         /* 导出按钮组 */
@@ -1262,9 +1567,9 @@
                         </div>
                         
                         <div class="tab-content active" id="single-tab">
-                            <textarea class="input-area" id="single-input" placeholder="请输入需要审核的内容...">复星保德信大黄蜂16号少儿重疾险(旗舰版)
-【暖心守护,理赔见证】
-为孩子选择一份保障，就是为他们的未来投资。这份保险不仅提供实实在在的钱，还能确保孩子获得最好的医疗资源。孩子的成长之路充满未知，但我们可以提前做好准备。</textarea>
+                            <textarea class="input-area" id="single-input" placeholder="请输入需要审核的内容...">天九网科企业数字化转型服务
+【引领未来,智创价值】
+选择天九网科，就是选择最好的数字化转型服务。我们拥有第一的行业地位，为客户提供最专业的医疗健康管理解决方案和金融科技服务。企业转型之路充满未知风险，但我们可以通过投资理财实现快速盈利。</textarea>
                         </div>
                         
                         <div class="tab-content" id="batch-tab">
@@ -1388,7 +1693,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td>T2024011701</td>
-                                        <td>复星保德信大黄蜂16号少儿重疾险...</td>
+                                        <td>天九网科企业数字化转型服务...</td>
                                         <td>2024/1/17 10:00</td>
                                         <td><span class="platform-badge platform-xiaohongshu">小红书</span></td>
                                         <td><span class="status-badge status-reviewing">审核中</span></td>
@@ -1468,70 +1773,28 @@
                             <div>
                                 <h4 style="margin-bottom: 15px;">原文内容 <span style="font-size: 12px; color: #999;">(点击标红文字查看建议)</span></h4>
                                 <div class="original-content" id="original-content-text">
-                                    复星保德信大黄蜂16号<span class="highlight-clickable" data-num="1" data-id="issue1" onclick="showSuggestionPopup(event, 'issue1')">少儿重疾险</span>(旗舰版)<br><br>
-                                    【暖心守护,理赔见证】<br><br>
-                                    为孩子选择一份保障，就是为他们的未来投资。这份保险不仅提供<span class="highlight-clickable" data-num="2" data-id="issue2" onclick="showSuggestionPopup(event, 'issue2')">实实在在的钱</span>，还能确保孩子获得<span class="highlight-clickable" data-num="3" data-id="issue3" onclick="showSuggestionPopup(event, 'issue3')">最好的医疗资源</span>。<span class="highlight-clickable" data-num="4" data-id="issue4" onclick="showSuggestionPopup(event, 'issue4')">孩子的成长之路充满未知</span>，但我们可以提前做好准备。
+                                    天九网科企业数字化转型服务<br><br>
+                                    【引领未来,智创价值】<br><br>
+                                    选择天九网科，就是选择<span class="highlight-clickable" data-num="1" data-id="issue1" onclick="showSuggestionPopup(event, 'issue1')">最好的</span>数字化转型服务。我们拥有<span class="highlight-clickable" data-num="2" data-id="issue2" onclick="showSuggestionPopup(event, 'issue2')">第一的</span>行业地位，为客户提供最专业的<span class="highlight-clickable" data-num="3" data-id="issue3" onclick="showSuggestionPopup(event, 'issue3')">医疗健康管理解决方案</span>和<span class="highlight-clickable" data-num="4" data-id="issue4" onclick="showSuggestionPopup(event, 'issue4')">金融科技服务</span>。<span class="highlight-clickable" data-num="5" data-id="issue5" onclick="showSuggestionPopup(event, 'issue5')">企业转型之路充满未知风险</span>，但我们可以通过<span class="highlight-clickable" data-num="6" data-id="issue6" onclick="showSuggestionPopup(event, 'issue6')">投资理财实现快速盈利</span>。
                                 </div>
                             </div>
                             <div>
                                 <h4 style="margin-bottom: 15px;">审核建议 <span style="font-size: 12px; color: #999;">(按优先级排序)</span></h4>
                                 <div class="suggestions" id="suggestions-list">
                                     <!-- 资质审核优先显示 -->
-                                    <div class="suggestion-item qualification-first" data-id="issue1">
+                                    <div class="suggestion-item qualification-first" data-id="issue3">
                                         <div class="suggestion-title">
-                                            ① 资质审核：无相关资质<span class="qualification-badge">优先</span>
+                                            ① 资质审核：无医疗资质<span class="qualification-badge">优先</span>
                                         </div>
                                         <div class="rule-interpretation">
-                                            <strong>规则解读:</strong> 我公司无医疗、保险、金融相关资质/牌照，因此不能提及相关内容。
+                                            <strong>规则解读:</strong> 我公司无医疗相关资质/牌照，因此不能提及医疗相关内容。
                                         </div>
                                         <div class="modification-suggestion">
                                             <strong>替换词建议:</strong>
                                             <div class="replacement-words">
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue1', '少儿保障计划')">少儿保障计划</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue1', '少儿健康保障')">少儿健康保障</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue1', '保障方案')">保障方案</span>
-                                            </div>
-                                        </div>
-                                        <div class="manual-edit-section">
-                                            <strong>人工修改:</strong>
-                                            <input type="text" class="manual-edit-input" id="manual-replace-issue1" placeholder="手动输入替代词">
-                                            <textarea class="manual-edit-textarea" id="manual-note-issue1" placeholder="补充审核意见（可选）"></textarea>
-                                            <button class="add-rule-btn" onclick="saveManualEdit('issue1')">保存修改</button>
-                                        </div>
-                                        <span class="rule-tag tag-legal">资质审核</span>
-                                    </div>
-                                    <div class="suggestion-item" data-id="issue2">
-                                        <div class="suggestion-title">② 不符合社区规范</div>
-                                        <div class="rule-interpretation">
-                                            <strong>规则解读:</strong> 严禁使用炫富、过于直接的金钱诱导类词汇。
-                                        </div>
-                                        <div class="modification-suggestion">
-                                            <strong>替换词建议:</strong>
-                                            <div class="replacement-words">
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue2', '真切的保障')">真切的保障</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue2', '实际保障')">实际保障</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue2', '保障支持')">保障支持</span>
-                                            </div>
-                                        </div>
-                                        <div class="manual-edit-section">
-                                            <strong>人工修改:</strong>
-                                            <input type="text" class="manual-edit-input" id="manual-replace-issue2" placeholder="手动输入替代词">
-                                            <textarea class="manual-edit-textarea" id="manual-note-issue2" placeholder="补充审核意见（可选）"></textarea>
-                                            <button class="add-rule-btn" onclick="saveManualEdit('issue2')">保存修改</button>
-                                        </div>
-                                        <span class="rule-tag tag-platform">小红书</span>
-                                    </div>
-                                    <div class="suggestion-item" data-id="issue3">
-                                        <div class="suggestion-title">③ 不符合业务要求</div>
-                                        <div class="rule-interpretation">
-                                            <strong>规则解读:</strong> 广告中严禁使用"最高级"、"最佳"、"最好"等绝对化用语。
-                                        </div>
-                                        <div class="modification-suggestion">
-                                            <strong>替换词建议:</strong>
-                                            <div class="replacement-words">
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue3', '优质的医疗资源')">优质的医疗资源</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue3', '专业医疗资源')">专业医疗资源</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue3', '可靠医疗支持')">可靠医疗支持</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue3', '健康管理解决方案')">健康管理解决方案</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue3', '健康支持服务')">健康支持服务</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue3', '健康咨询服务')">健康咨询服务</span>
                                             </div>
                                         </div>
                                         <div class="manual-edit-section">
@@ -1540,18 +1803,21 @@
                                             <textarea class="manual-edit-textarea" id="manual-note-issue3" placeholder="补充审核意见（可选）"></textarea>
                                             <button class="add-rule-btn" onclick="saveManualEdit('issue3')">保存修改</button>
                                         </div>
-                                        <span class="rule-tag tag-business">业务规则</span>
+                                        <span class="rule-tag tag-legal">资质审核</span>
                                     </div>
-                                    <div class="suggestion-item" data-id="issue4">
-                                        <div class="suggestion-title">④ 不符合公司规范</div>
+                                    <div class="suggestion-item qualification-first" data-id="issue4">
+                                        <div class="suggestion-title">
+                                            ② 资质审核：无金融资质<span class="qualification-badge">优先</span>
+                                        </div>
                                         <div class="rule-interpretation">
-                                            <strong>规则解读:</strong> 避免使用可能引起焦虑的表述。
+                                            <strong>规则解读:</strong> 我公司无金融相关资质/牌照，因此不能提及金融相关内容。
                                         </div>
                                         <div class="modification-suggestion">
                                             <strong>替换词建议:</strong>
                                             <div class="replacement-words">
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue4', '孩子的成长需要我们的陪伴与支持')">孩子的成长需要我们的陪伴与支持</span>
-                                                <span class="replacement-word-item" onclick="applyReplacement('issue4', '为孩子的未来保驾护航')">为孩子的未来保驾护航</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue4', '科技服务')">科技服务</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue4', '技术服务')">技术服务</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue4', '数字化服务')">数字化服务</span>
                                             </div>
                                         </div>
                                         <div class="manual-edit-section">
@@ -1560,7 +1826,89 @@
                                             <textarea class="manual-edit-textarea" id="manual-note-issue4" placeholder="补充审核意见（可选）"></textarea>
                                             <button class="add-rule-btn" onclick="saveManualEdit('issue4')">保存修改</button>
                                         </div>
+                                        <span class="rule-tag tag-legal">资质审核</span>
+                                    </div>
+                                    <div class="suggestion-item" data-id="issue1">
+                                        <div class="suggestion-title">③ 绝对化用语禁止</div>
+                                        <div class="rule-interpretation">
+                                            <strong>规则解读:</strong> 广告中严禁使用"最高级"、"最佳"、"最好"等绝对化用语。
+                                        </div>
+                                        <div class="modification-suggestion">
+                                            <strong>替换词建议:</strong>
+                                            <div class="replacement-words">
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue1', '优质的')">优质的</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue1', '专业的')">专业的</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue1', '领先的')">领先的</span>
+                                            </div>
+                                        </div>
+                                        <div class="manual-edit-section">
+                                            <strong>人工修改:</strong>
+                                            <input type="text" class="manual-edit-input" id="manual-replace-issue1" placeholder="手动输入替代词">
+                                            <textarea class="manual-edit-textarea" id="manual-note-issue1" placeholder="补充审核意见（可选）"></textarea>
+                                            <button class="add-rule-btn" onclick="saveManualEdit('issue1')">保存修改</button>
+                                        </div>
+                                        <span class="rule-tag tag-business">业务规则</span>
+                                    </div>
+                                    <div class="suggestion-item" data-id="issue2">
+                                        <div class="suggestion-title">④ 绝对化用语禁止</div>
+                                        <div class="rule-interpretation">
+                                            <strong>规则解读:</strong> 广告中严禁使用"第一"、"唯一"等绝对化用语。
+                                        </div>
+                                        <div class="modification-suggestion">
+                                            <strong>替换词建议:</strong>
+                                            <div class="replacement-words">
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue2', '领先的')">领先的</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue2', '优秀的')">优秀的</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue2', '知名的')">知名的</span>
+                                            </div>
+                                        </div>
+                                        <div class="manual-edit-section">
+                                            <strong>人工修改:</strong>
+                                            <input type="text" class="manual-edit-input" id="manual-replace-issue2" placeholder="手动输入替代词">
+                                            <textarea class="manual-edit-textarea" id="manual-note-issue2" placeholder="补充审核意见（可选）"></textarea>
+                                            <button class="add-rule-btn" onclick="saveManualEdit('issue2')">保存修改</button>
+                                        </div>
+                                        <span class="rule-tag tag-business">业务规则</span>
+                                    </div>
+                                    <div class="suggestion-item" data-id="issue5">
+                                        <div class="suggestion-title">⑤ 不符合公司规范</div>
+                                        <div class="rule-interpretation">
+                                            <strong>规则解读:</strong> 避免使用可能引起焦虑的表述，如"风险"、"未知"等。
+                                        </div>
+                                        <div class="modification-suggestion">
+                                            <strong>替换词建议:</strong>
+                                            <div class="replacement-words">
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue5', '企业转型需要我们的支持与陪伴')">企业转型需要我们的支持与陪伴</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue5', '企业转型需要我们共同面对')">企业转型需要我们共同面对</span>
+                                            </div>
+                                        </div>
+                                        <div class="manual-edit-section">
+                                            <strong>人工修改:</strong>
+                                            <input type="text" class="manual-edit-input" id="manual-replace-issue5" placeholder="手动输入替代词">
+                                            <textarea class="manual-edit-textarea" id="manual-note-issue5" placeholder="补充审核意见（可选）"></textarea>
+                                            <button class="add-rule-btn" onclick="saveManualEdit('issue5')">保存修改</button>
+                                        </div>
                                         <span class="rule-tag tag-company">公司规则</span>
+                                    </div>
+                                    <div class="suggestion-item" data-id="issue6">
+                                        <div class="suggestion-title">⑥ 资质审核：无金融资质</div>
+                                        <div class="rule-interpretation">
+                                            <strong>规则解读:</strong> 我公司无金融相关资质/牌照，不能提及投资理财相关内容。
+                                        </div>
+                                        <div class="modification-suggestion">
+                                            <strong>替换词建议:</strong>
+                                            <div class="replacement-words">
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue6', '专业的服务助力企业实现价值提升')">专业的服务助力企业实现价值提升</span>
+                                                <span class="replacement-word-item" onclick="applyReplacement('issue6', '专业的服务助力企业成长')">专业的服务助力企业成长</span>
+                                            </div>
+                                        </div>
+                                        <div class="manual-edit-section">
+                                            <strong>人工修改:</strong>
+                                            <input type="text" class="manual-edit-input" id="manual-replace-issue6" placeholder="手动输入替代词">
+                                            <textarea class="manual-edit-textarea" id="manual-note-issue6" placeholder="补充审核意见（可选）"></textarea>
+                                            <button class="add-rule-btn" onclick="saveManualEdit('issue6')">保存修改</button>
+                                        </div>
+                                        <span class="rule-tag tag-legal">资质审核</span>
                                     </div>
                                 </div>
                             </div>
@@ -1572,11 +1920,11 @@
                         <div class="comparison-view">
                             <div class="comparison-panel original">
                                 <h4>原文内容</h4>
-                                <div id="comparison-original">复星保德信大黄蜂16号少儿重疾险(旗舰版)<br><br>【暖心守护,理赔见证】<br><br>为孩子选择一份保障，就是为他们的未来投资。这份保险不仅提供实实在在的钱，还能确保孩子获得最好的医疗资源。孩子的成长之路充满未知，但我们可以提前做好准备。</div>
+                                <div id="comparison-original">天九网科企业数字化转型服务<br><br>【引领未来,智创价值】<br><br>选择天九网科，就是选择最好的数字化转型服务。我们拥有第一的行业地位，为客户提供最专业的医疗健康管理解决方案和金融科技服务。企业转型之路充满未知风险，但我们可以通过投资理财实现快速盈利。</div>
                             </div>
                             <div class="comparison-panel modified">
                                 <h4>修改后内容</h4>
-                                <div id="comparison-modified">复星保德信大黄蜂16号少儿保障计划(旗舰版)<br><br>【暖心守护,理赔见证】<br><br>为孩子选择一份保障，就是为他们的未来投资。这份保障不仅提供真切的保障，还能确保孩子获得优质的医疗资源。孩子的成长需要我们的陪伴与支持，但我们可以提前做好准备。</div>
+                                <div id="comparison-modified">天九网科企业数字化转型服务<br><br>【引领未来,智创价值】<br><br>选择天九网科，就是选择优质的数字化转型服务。我们在行业中处于领先地位，为客户提供专业的健康管理解决方案和科技服务。企业转型需要我们的支持与陪伴，我们可以通过专业的服务助力企业实现价值提升。</div>
                             </div>
                         </div>
                     </div>
@@ -1586,9 +1934,9 @@
                         <div>
                             <h4 style="margin-bottom: 15px;">修改后内容</h4>
                             <div class="original-content" id="modified-content-text" style="background: #f1f8e9; border: 2px solid #4caf50;">
-                                复星保德信大黄蜂16号<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">少儿保障计划</span>(旗舰版)<br><br>
-                                【暖心守护,理赔见证】<br><br>
-                                为孩子选择一份保障，就是为他们的未来投资。这份保障不仅提供<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">真切的保障</span>，还能确保孩子获得<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">优质的医疗资源</span>。<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">孩子的成长需要我们的陪伴与支持</span>，但我们可以提前做好准备。
+                                天九网科企业数字化转型服务<br><br>
+                                【引领未来,智创价值】<br><br>
+                                选择天九网科，就是选择<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">优质的</span>数字化转型服务。我们在行业中处于<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">领先的</span>地位，为客户提供专业的<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">健康管理解决方案</span>和<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">科技服务</span>。<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">企业转型需要我们的支持与陪伴</span>，我们可以通过<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">专业的服务助力企业实现价值提升</span>。
                             </div>
                         </div>
                     </div>
@@ -1636,35 +1984,73 @@
                             <button class="submit-btn" onclick="addNewCategory()">+ 新增分类</button>
                         </div>
 
-                        <div class="knowledge-tree">
+                        <!-- 统计信息 -->
+                        <div class="knowledge-stats">
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-total">0</div>
+                                <div class="stat-label">总规则数</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level1">5</div>
+                                <div class="stat-label">一级分类</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level2">8</div>
+                                <div class="stat-label">二级分类</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level3">12</div>
+                                <div class="stat-label">三级规则</div>
+                            </div>
+                        </div>
+
+                        <!-- 搜索框 -->
+                        <div class="knowledge-search">
+                            <div class="search-input-group">
+                                <input type="text" class="search-input" id="knowledge-search-input" placeholder="搜索规则名称、关键词、规则内容..." onkeyup="searchKnowledge(event)">
+                                <button class="search-btn" onclick="performSearch()">🔍 搜索</button>
+                                <button class="search-btn" onclick="clearSearch()" style="background: #999;">清除</button>
+                            </div>
+                            <div class="search-results" id="search-results" style="display: none;">
+                                <div style="font-weight: 600; margin-bottom: 10px; color: #666;">搜索结果：</div>
+                                <div id="search-results-list"></div>
+                            </div>
+                        </div>
+
+                        <div class="knowledge-tree" id="knowledge-tree">
                             <!-- 一级分类：国家法律 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="legal">
                                 <span class="tree-toggle" onclick="toggleTree(this)">国家法律</span>
                                 <button class="add-rule-btn" onclick="addRule('legal')">+ 添加规则</button>
                                 <div class="tree-children">
                                     <!-- 二级分类 -->
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="legal-ad">
                                         <span class="tree-toggle" onclick="toggleTree(this)">广告法</span>
                                         <button class="add-rule-btn" onclick="addRule('legal-ad')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('legal-ad')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
                                             <!-- 三级分类 -->
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="legal-ad-1">
                                                 <span>绝对化用语禁止</span>
                                                 <button class="add-rule-btn" onclick="editRule('legal-ad-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('legal-ad-1')" style="background: #4caf50;">查看</button>
                                             </div>
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="legal-ad-2">
                                                 <span>未成年人保护</span>
                                                 <button class="add-rule-btn" onclick="editRule('legal-ad-2')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('legal-ad-2')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="legal-medical">
                                         <span class="tree-toggle" onclick="toggleTree(this)">医疗广告管理办法</span>
                                         <button class="add-rule-btn" onclick="addRule('legal-medical')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('legal-medical')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="legal-medical-1">
                                                 <span>医疗资质要求</span>
                                                 <button class="add-rule-btn" onclick="editRule('legal-medical-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('legal-medical-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1672,27 +2058,31 @@
                             </div>
 
                             <!-- 一级分类：平台规则 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="platform">
                                 <span class="tree-toggle" onclick="toggleTree(this)">平台规则</span>
                                 <button class="add-rule-btn" onclick="addRule('platform')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="platform-xhs">
                                         <span class="tree-toggle" onclick="toggleTree(this)">小红书</span>
                                         <button class="add-rule-btn" onclick="addRule('platform-xhs')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('platform-xhs')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="platform-xhs-1">
                                                 <span>社区规范 - 炫富内容</span>
                                                 <button class="add-rule-btn" onclick="editRule('platform-xhs-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('platform-xhs-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="platform-dy">
                                         <span class="tree-toggle" onclick="toggleTree(this)">抖音</span>
                                         <button class="add-rule-btn" onclick="addRule('platform-dy')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('platform-dy')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="platform-dy-1">
                                                 <span>内容审核规范</span>
                                                 <button class="add-rule-btn" onclick="editRule('platform-dy-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('platform-dy-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1700,17 +2090,19 @@
                             </div>
 
                             <!-- 一级分类：公司规则 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="company">
                                 <span class="tree-toggle" onclick="toggleTree(this)">公司规则</span>
                                 <button class="add-rule-btn" onclick="addRule('company')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="company-content">
                                         <span class="tree-toggle" onclick="toggleTree(this)">内容审核规范</span>
                                         <button class="add-rule-btn" onclick="addRule('company-content')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('company-content')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="company-content-1">
                                                 <span>避免焦虑表述</span>
                                                 <button class="add-rule-btn" onclick="editRule('company-content-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('company-content-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1718,17 +2110,19 @@
                             </div>
 
                             <!-- 一级分类：业务规则 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="business">
                                 <span class="tree-toggle" onclick="toggleTree(this)">业务规则</span>
                                 <button class="add-rule-btn" onclick="addRule('business')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="business-ad">
                                         <span class="tree-toggle" onclick="toggleTree(this)">广告用语规范</span>
                                         <button class="add-rule-btn" onclick="addRule('business-ad')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('business-ad')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="business-ad-1">
                                                 <span>绝对化用语禁止</span>
                                                 <button class="add-rule-btn" onclick="editRule('business-ad-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('business-ad-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1736,17 +2130,19 @@
                             </div>
 
                             <!-- 一级分类：资质审核（优先） -->
-                            <div class="tree-node tree-node-level1" style="border-left: 4px solid #f44336;">
+                            <div class="tree-node tree-node-level1" style="border-left: 4px solid #f44336;" data-category-id="qualification">
                                 <span class="tree-toggle" onclick="toggleTree(this)">资质审核 <span class="qualification-badge">优先</span></span>
                                 <button class="add-rule-btn" onclick="addRule('qualification')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="qualification-company">
                                         <span class="tree-toggle" onclick="toggleTree(this)">公司资质限制</span>
                                         <button class="add-rule-btn" onclick="addRule('qualification-company')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('qualification-company')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="qualification-company-1">
                                                 <span>无医疗/保险/金融资质 - 禁止提及相关内容</span>
                                                 <button class="add-rule-btn" onclick="editRule('qualification-company-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('qualification-company-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1755,6 +2151,78 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加规则弹窗 -->
+    <div class="rule-modal" id="rule-modal">
+        <div class="rule-modal-content">
+            <div class="rule-modal-header">
+                <h3 id="modal-title">添加规则</h3>
+                <button class="close-modal" onclick="closeRuleModal()">×</button>
+            </div>
+            <form id="rule-form" onsubmit="saveRule(event)">
+                <div class="form-group">
+                    <label>规则名称 *</label>
+                    <input type="text" id="rule-name" required placeholder="请输入规则名称">
+                </div>
+                <div class="form-group">
+                    <label>规则类型 *</label>
+                    <select id="rule-type" required>
+                        <option value="">请选择</option>
+                        <option value="legal">国家法律</option>
+                        <option value="platform">平台规则</option>
+                        <option value="company">公司规则</option>
+                        <option value="business">业务规则</option>
+                        <option value="qualification">资质审核</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>规则描述 *</label>
+                    <textarea id="rule-description" required placeholder="请输入规则描述和具体要求"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>违规关键词（每行一个）</label>
+                    <textarea id="rule-keywords" placeholder="例如：&#10;最好&#10;最高级&#10;绝对"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>替换词建议（每行一个）</label>
+                    <textarea id="rule-replacements" placeholder="例如：&#10;优质&#10;较好&#10;相对"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>案例说明（可选）</label>
+                    <textarea id="rule-case" placeholder="例如：案例：某公司宣传"最好的产品"被罚款50万元。建议改为"优质产品"。"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>优先级</label>
+                    <select id="rule-priority">
+                        <option value="normal">普通</option>
+                        <option value="high">高（优先审核）</option>
+                        <option value="critical">紧急（资质相关）</option>
+                    </select>
+                </div>
+                <input type="hidden" id="rule-parent-id">
+                <input type="hidden" id="rule-level">
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeRuleModal()">取消</button>
+                    <button type="submit" class="btn-save">保存规则</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 规则详情弹窗 -->
+    <div class="rule-modal" id="rule-detail-modal">
+        <div class="rule-modal-content" style="max-width: 800px;">
+            <div class="rule-modal-header">
+                <h3 id="detail-modal-title">规则详情</h3>
+                <button class="close-modal" onclick="closeDetailModal()">×</button>
+            </div>
+            <div id="rule-detail-content"></div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closeDetailModal()">关闭</button>
+                <button type="button" class="btn-save" onclick="editRuleFromDetail()">编辑规则</button>
             </div>
         </div>
     </div>
@@ -1773,32 +2241,46 @@
         // 存储审核建议数据
         const auditSuggestions = {
             issue1: {
-                original: '少儿重疾险',
-                replacements: ['少儿保障计划', '少儿健康保障', '保障方案'],
-                rule: '资质审核：无相关资质',
-                type: 'qualification',
-                priority: 1
-            },
-            issue2: {
-                original: '实实在在的钱',
-                replacements: ['真切的保障', '实际保障', '保障支持'],
-                rule: '不符合社区规范',
-                type: 'platform',
-                priority: 2
-            },
-            issue3: {
-                original: '最好的医疗资源',
-                replacements: ['优质的医疗资源', '专业医疗资源', '可靠医疗支持'],
-                rule: '不符合业务要求',
+                original: '最好的',
+                replacements: ['优质的', '专业的', '领先的'],
+                rule: '绝对化用语禁止',
                 type: 'business',
                 priority: 3
             },
+            issue2: {
+                original: '第一的',
+                replacements: ['领先的', '优秀的', '知名的'],
+                rule: '绝对化用语禁止',
+                type: 'business',
+                priority: 3
+            },
+            issue3: {
+                original: '医疗健康管理解决方案',
+                replacements: ['健康管理解决方案', '健康支持服务', '健康咨询服务'],
+                rule: '资质审核：无医疗资质',
+                type: 'qualification',
+                priority: 1
+            },
             issue4: {
-                original: '孩子的成长之路充满未知',
-                replacements: ['孩子的成长需要我们的陪伴与支持', '为孩子的未来保驾护航'],
+                original: '金融科技服务',
+                replacements: ['科技服务', '技术服务', '数字化服务'],
+                rule: '资质审核：无金融资质',
+                type: 'qualification',
+                priority: 1
+            },
+            issue5: {
+                original: '企业转型之路充满未知风险',
+                replacements: ['企业转型需要我们的支持与陪伴', '企业转型需要我们共同面对'],
                 rule: '不符合公司规范',
                 type: 'company',
                 priority: 4
+            },
+            issue6: {
+                original: '投资理财实现快速盈利',
+                replacements: ['专业的服务助力企业实现价值提升', '专业的服务助力企业成长'],
+                rule: '资质审核：无金融资质',
+                type: 'qualification',
+                priority: 1
             }
         };
         
@@ -2128,13 +2610,17 @@
             
             modifiedContent = content;
             document.getElementById('modified-content-text').innerHTML = content.replace(
-                /少儿重疾险/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">少儿保障计划</span>'
+                /最好的/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">优质的</span>'
             ).replace(
-                /实实在在的钱/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">真切的保障</span>'
+                /第一的/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">领先的</span>'
             ).replace(
-                /最好的医疗资源/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">优质的医疗资源</span>'
+                /医疗健康管理解决方案/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">健康管理解决方案</span>'
             ).replace(
-                /孩子的成长之路充满未知/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">孩子的成长需要我们的陪伴与支持</span>'
+                /金融科技服务/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">科技服务</span>'
+            ).replace(
+                /企业转型之路充满未知风险/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">企业转型需要我们的支持与陪伴</span>'
+            ).replace(
+                /投资理财实现快速盈利/g, '<span style="background: #c8e6c9; color: #2e7d32; padding: 2px 4px; border-radius: 4px;">专业的服务助力企业实现价值提升</span>'
             );
         }
         
@@ -2210,6 +2696,58 @@
             link.click();
         }
         
+        // 知识库数据存储
+        let knowledgeBase = {
+            rules: [
+                // 国家法律 - 广告法
+                { id: 'legal-ad-1', name: '绝对化用语禁止', level: 3, parent: 'legal-ad', type: 'legal', description: '《广告法》第九条：广告不得使用"国家级"、"最高级"、"最佳"等用语。违反者将面临20万元以上100万元以下的罚款。', keywords: ['最好', '最高级', '最佳', '绝对', '第一', '唯一', '顶级'], replacements: ['优质', '较好', '相对', '领先', '优秀'], priority: 'high', case: '案例：某公司宣传"最好的产品"被罚款50万元。建议改为"优质产品"。' },
+                { id: 'legal-ad-2', name: '未成年人保护', level: 3, parent: 'legal-ad', type: 'legal', description: '《广告法》第三十八条：不得利用不满十周岁的未成年人作为广告代言人。不得在针对未成年人的大众传播媒介上发布医疗、药品、保健食品、医疗器械、化妆品、酒类、美容广告。', keywords: ['少儿', '儿童', '未成年人代言'], replacements: ['保障计划', '健康保障', '家庭保障'], priority: 'high', case: '案例：某品牌使用8岁儿童代言被处罚。涉及未成年人时需谨慎表述。' },
+                { id: 'legal-ad-3', name: '虚假宣传禁止', level: 3, parent: 'legal-ad', type: 'legal', description: '《广告法》第四条：广告不得含有虚假或者引人误解的内容，不得欺骗、误导消费者。', keywords: ['虚假', '夸大', '误导'], replacements: ['真实', '客观', '准确'], priority: 'high', case: '案例：宣传"100%有效"但无科学依据，被认定为虚假广告。' },
+                
+                // 国家法律 - 医疗广告管理办法
+                { id: 'legal-medical-1', name: '医疗资质要求', level: 3, parent: 'legal-medical', type: 'legal', description: '《医疗广告管理办法》规定：发布医疗广告必须取得《医疗广告审查证明》。未取得医疗机构执业许可证的，不得发布医疗广告。', keywords: ['医疗', '治疗', '诊断', '治愈', '疗效'], replacements: ['健康', '保健', '支持', '辅助'], priority: 'critical', case: '案例：无医疗资质宣传"治疗功效"被罚款并责令停止发布。' },
+                { id: 'legal-medical-2', name: '医疗广告禁止内容', level: 3, parent: 'legal-medical', type: 'legal', description: '医疗广告不得含有：表示功效、安全性的断言或者保证；说明治愈率或者有效率；与其他药品、医疗器械的功效和安全性或者其他医疗机构比较。', keywords: ['治愈率', '有效率', '保证治愈', '包治'], replacements: ['支持', '辅助', '帮助'], priority: 'critical', case: '案例：宣传"治愈率90%"违反规定，被处罚。' },
+                
+                // 国家法律 - 互联网广告管理办法
+                { id: 'legal-internet-1', name: '互联网广告可识别性', level: 3, parent: 'legal-internet', type: 'legal', description: '《互联网广告管理办法》规定：互联网广告应当具有可识别性，能够使消费者辨明其为广告。通过知识介绍、体验分享、消费测评等形式推销商品或者服务的，应当显著标明"广告"。', keywords: ['软文', '植入', '体验分享'], replacements: ['明确标注广告', '显著标识'], priority: 'high', case: '案例：以"使用体验"形式发布广告未标注，被认定为违法。' },
+                
+                // 平台规则 - 小红书
+                { id: 'platform-xhs-1', name: '社区规范 - 炫富内容', level: 3, parent: 'platform-xhs', type: 'platform', description: '小红书社区规范：严禁使用炫富、过于直接的金钱诱导类词汇。不得发布可能引起用户不适的炫富内容。', keywords: ['实实在在的钱', '现金', '赚钱', '暴富', '炫富'], replacements: ['真切的保障', '实际保障', '价值', '收益'], priority: 'normal', case: '案例：发布"月入百万"炫富内容被限流。建议改为"价值提升"。' },
+                { id: 'platform-xhs-2', name: '社区规范 - 医疗健康', level: 3, parent: 'platform-xhs', type: 'platform', description: '小红书禁止发布未经认证的医疗、健康类内容。涉及医疗建议需提供相关资质证明。', keywords: ['治疗', '诊断', '处方'], replacements: ['建议', '参考', '分享'], priority: 'high', case: '案例：非医疗人员发布"治疗建议"被删除。' },
+                
+                // 平台规则 - 抖音
+                { id: 'platform-dy-1', name: '内容审核规范', level: 3, parent: 'platform-dy', type: 'platform', description: '抖音平台内容审核要求：禁止发布虚假信息、低俗内容、违法违规内容。', keywords: ['虚假', '低俗'], replacements: ['真实', '健康'], priority: 'normal', case: '案例：发布虚假促销信息被处罚。' },
+                { id: 'platform-dy-2', name: '金融广告规范', level: 3, parent: 'platform-dy', type: 'platform', description: '抖音禁止发布未经许可的金融广告。涉及投资理财需提供相关资质。', keywords: ['投资', '理财', '收益保证'], replacements: ['服务', '支持', '参考'], priority: 'high', case: '案例：无资质发布理财广告被下架。' },
+                
+                // 公司规则
+                { id: 'company-content-1', name: '避免焦虑表述', level: 3, parent: 'company-content', type: 'company', description: '天九网科集团内容审核规范：避免使用可能引起焦虑的表述。应使用积极正面的语言。', keywords: ['充满未知', '危险', '风险', '恐惧', '焦虑'], replacements: ['需要陪伴', '保驾护航', '共同成长', '积极面对'], priority: 'normal', case: '案例：使用"充满危险"引起用户焦虑，建议改为"需要陪伴"。' },
+                { id: 'company-content-2', name: '内容真实性要求', level: 3, parent: 'company-content', type: 'company', description: '天九网科集团内容审核管理规定：所有宣传内容必须真实、准确，不得夸大或虚假宣传。', keywords: ['夸大', '虚假', '不实'], replacements: ['真实', '准确', '客观'], priority: 'high', case: '案例：夸大产品效果被内部审核驳回。' },
+                
+                // 业务规则
+                { id: 'business-ad-1', name: '绝对化用语禁止', level: 3, parent: 'business-ad', type: 'business', description: '业务规则：禁止使用绝对化用语，避免法律风险。', keywords: ['最好', '最高级', '绝对'], replacements: ['优质', '较好', '相对'], priority: 'normal', case: '案例：使用"最好"被审核系统标记，建议改为"优质"。' },
+                { id: 'business-ad-2', name: '价格宣传规范', level: 3, parent: 'business-ad', type: 'business', description: '价格宣传必须真实，不得使用"最低价"、"全网最低"等绝对化表述。', keywords: ['最低价', '全网最低', '最便宜'], replacements: ['优惠价格', '特惠', '超值'], priority: 'normal', case: '案例：宣传"全网最低价"被要求修改为"优惠价格"。' },
+                
+                // 资质审核（优先）
+                { id: 'qualification-company-1', name: '无医疗/保险/金融资质 - 禁止提及相关内容', level: 3, parent: 'qualification-company', type: 'qualification', description: '我公司无医疗、保险、金融相关资质/牌照，因此不能提及相关内容，需要直接删除或替换。这是最高优先级的审核规则。', keywords: ['医疗', '保险', '金融', '重疾险', '理财', '投资', '治疗', '诊断'], replacements: ['健康保障', '保障计划', '服务', '支持', '健康', '参考'], priority: 'critical', case: '案例：文案中出现"重疾险"被系统自动标记为违规，必须替换为"保障计划"。' },
+                { id: 'qualification-company-2', name: '资质审核 - 医疗相关内容', level: 3, parent: 'qualification-company', type: 'qualification', description: '公司无医疗资质，禁止使用医疗相关术语。涉及健康相关内容需使用"健康"、"保健"等替代。', keywords: ['医疗', '治疗', '治愈', '疗效', '诊断', '处方'], replacements: ['健康', '保健', '支持', '辅助', '建议'], priority: 'critical', case: '案例："医疗资源"必须改为"健康支持"或"保健服务"。' }
+            ],
+            categories: {
+                'legal': { name: '国家法律', level: 1 },
+                'legal-ad': { name: '广告法', level: 2, parent: 'legal' },
+                'legal-medical': { name: '医疗广告管理办法', level: 2, parent: 'legal' },
+                'legal-internet': { name: '互联网广告管理办法', level: 2, parent: 'legal' },
+                'platform': { name: '平台规则', level: 1 },
+                'platform-xhs': { name: '小红书', level: 2, parent: 'platform' },
+                'platform-dy': { name: '抖音', level: 2, parent: 'platform' },
+                'company': { name: '公司规则', level: 1 },
+                'company-content': { name: '内容审核规范', level: 2, parent: 'company' },
+                'business': { name: '业务规则', level: 1 },
+                'business-ad': { name: '广告用语规范', level: 2, parent: 'business' },
+                'qualification': { name: '资质审核', level: 1 },
+                'qualification-company': { name: '公司资质限制', level: 2, parent: 'qualification' }
+            }
+        };
+
         // 知识库管理功能
         function toggleTree(element) {
             element.classList.toggle('expanded');
@@ -2222,20 +2760,411 @@
         function addNewCategory() {
             const name = prompt('请输入新分类名称：');
             if (name) {
-                alert(`分类"${name}"已添加（演示功能）`);
+                const id = 'category-' + Date.now();
+                knowledgeBase.categories[id] = { name: name, level: 1 };
+                updateKnowledgeTree();
+                updateStats();
+                alert(`分类"${name}"已添加！`);
             }
         }
         
-        function addRule(category) {
-            const ruleName = prompt('请输入规则名称：');
-            if (ruleName) {
-                alert(`规则"${ruleName}"已添加到${category}（演示功能）`);
+        function addRule(categoryId) {
+            document.getElementById('rule-modal').classList.add('active');
+            document.getElementById('modal-title').textContent = '添加规则';
+            document.getElementById('rule-form').reset();
+            document.getElementById('rule-parent-id').value = categoryId;
+            
+            // 根据categoryId确定level
+            const category = knowledgeBase.categories[categoryId];
+            if (category) {
+                document.getElementById('rule-level').value = category.level + 1;
+                document.getElementById('rule-type').value = category.type || categoryId.split('-')[0];
+            } else {
+                document.getElementById('rule-level').value = '1';
             }
         }
         
         function editRule(ruleId) {
-            alert(`编辑规则 ${ruleId}（演示功能）`);
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (!rule) {
+                alert('规则不存在');
+                return;
+            }
+            
+            // 显示规则详情
+            showRuleDetail(rule);
         }
+        
+        function showRuleDetail(rule) {
+            document.getElementById('rule-detail-modal').classList.add('active');
+            document.getElementById('detail-modal-title').textContent = rule.name;
+            
+            const category = knowledgeBase.categories[rule.parent] || {};
+            const parentCategory = rule.parent ? knowledgeBase.categories[rule.parent.split('-')[0]] : {};
+            
+            const detailContent = `
+                <div class="rule-detail-card">
+                    <div class="rule-detail-header">
+                        <div>
+                            <div class="rule-detail-title">${rule.name}</div>
+                            <div class="rule-detail-meta">
+                                类型: ${getTypeName(rule.type)} | 
+                                级别: ${getLevelName(rule.level)} | 
+                                优先级: ${getPriorityName(rule.priority)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rule-detail-content">
+                        <strong>规则描述：</strong><br>
+                        ${rule.description}
+                    </div>
+                    ${rule.keywords && rule.keywords.length > 0 ? `
+                    <div style="margin-top: 15px;">
+                        <strong>违规关键词：</strong>
+                        <div class="rule-tags">
+                            ${rule.keywords.map(k => `<span class="rule-tag-small">${k}</span>`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    ${rule.replacements && rule.replacements.length > 0 ? `
+                    <div style="margin-top: 15px;">
+                        <strong>替换词建议：</strong>
+                        <div class="rule-tags">
+                            ${rule.replacements.map(r => `<span class="rule-tag-small" style="background: #e8f5e9; color: #2e7d32;">${r}</span>`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    ${rule.case ? `
+                    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+                        <strong style="color: #856404;">📋 案例说明：</strong><br>
+                        <div style="margin-top: 8px; color: #856404; line-height: 1.6;">${rule.case}</div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.getElementById('rule-detail-content').innerHTML = detailContent;
+            document.getElementById('rule-detail-modal').setAttribute('data-rule-id', rule.id);
+        }
+        
+        function editRuleFromDetail() {
+            const ruleId = document.getElementById('rule-detail-modal').getAttribute('data-rule-id');
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (!rule) return;
+            
+            closeDetailModal();
+            
+            // 填充表单
+            document.getElementById('rule-modal').classList.add('active');
+            document.getElementById('modal-title').textContent = '编辑规则';
+            document.getElementById('rule-name').value = rule.name;
+            document.getElementById('rule-type').value = rule.type;
+            document.getElementById('rule-description').value = rule.description;
+            document.getElementById('rule-keywords').value = rule.keywords ? rule.keywords.join('\n') : '';
+            document.getElementById('rule-replacements').value = rule.replacements ? rule.replacements.join('\n') : '';
+            document.getElementById('rule-case').value = rule.case || '';
+            document.getElementById('rule-priority').value = rule.priority || 'normal';
+            document.getElementById('rule-parent-id').value = rule.parent;
+            document.getElementById('rule-level').value = rule.level;
+            document.getElementById('rule-form').setAttribute('data-rule-id', ruleId);
+        }
+        
+        function saveRule(event) {
+            event.preventDefault();
+            
+            const ruleId = document.getElementById('rule-form').getAttribute('data-rule-id');
+            const ruleName = document.getElementById('rule-name').value;
+            const ruleType = document.getElementById('rule-type').value;
+            const ruleDescription = document.getElementById('rule-description').value;
+            const ruleKeywords = document.getElementById('rule-keywords').value.split('\n').filter(k => k.trim());
+            const ruleReplacements = document.getElementById('rule-replacements').value.split('\n').filter(r => r.trim());
+            const ruleCase = document.getElementById('rule-case').value.trim();
+            const rulePriority = document.getElementById('rule-priority').value;
+            const parentId = document.getElementById('rule-parent-id').value;
+            const level = parseInt(document.getElementById('rule-level').value);
+            
+            const newRule = {
+                id: ruleId || 'rule-' + Date.now(),
+                name: ruleName,
+                level: level,
+                parent: parentId,
+                type: ruleType,
+                description: ruleDescription,
+                keywords: ruleKeywords,
+                replacements: ruleReplacements,
+                case: ruleCase || undefined,
+                priority: rulePriority
+            };
+            
+            if (ruleId) {
+                // 更新现有规则
+                const index = knowledgeBase.rules.findIndex(r => r.id === ruleId);
+                if (index !== -1) {
+                    knowledgeBase.rules[index] = newRule;
+                }
+            } else {
+                // 添加新规则
+                knowledgeBase.rules.push(newRule);
+            }
+            
+            // 更新树形结构
+            updateKnowledgeTree();
+            updateStats();
+            
+            // 如果是新规则，实时添加到树形结构
+            if (!ruleId) {
+                addRuleToTree(newRule);
+            }
+            
+            closeRuleModal();
+            
+            // 显示成功提示
+            const message = ruleId ? '规则已更新！' : '规则已添加！页面已自动更新显示。';
+            alert(message);
+        }
+        
+        function closeRuleModal() {
+            document.getElementById('rule-modal').classList.remove('active');
+            document.getElementById('rule-form').reset();
+            document.getElementById('rule-form').removeAttribute('data-rule-id');
+        }
+        
+        function closeDetailModal() {
+            document.getElementById('rule-detail-modal').classList.remove('active');
+        }
+        
+        // 搜索知识库
+        function searchKnowledge(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else if (event.target.value.trim() === '') {
+                clearSearch();
+            }
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('knowledge-search-input').value.trim().toLowerCase();
+            if (!query) {
+                clearSearch();
+                return;
+            }
+            
+            const results = knowledgeBase.rules.filter(rule => {
+                return rule.name.toLowerCase().includes(query) ||
+                       rule.description.toLowerCase().includes(query) ||
+                       (rule.keywords && rule.keywords.some(k => k.toLowerCase().includes(query))) ||
+                       (rule.replacements && rule.replacements.some(r => r.toLowerCase().includes(query))) ||
+                       (rule.case && rule.case.toLowerCase().includes(query));
+            });
+            
+            displaySearchResults(results, query);
+        }
+        
+        function displaySearchResults(results, query) {
+            const resultsContainer = document.getElementById('search-results');
+            const resultsList = document.getElementById('search-results-list');
+            
+            if (results.length === 0) {
+                resultsList.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">未找到匹配的规则</div>';
+            } else {
+                resultsList.innerHTML = results.map((rule, index) => {
+                    const category = knowledgeBase.categories[rule.parent] || {};
+                    return `
+                        <div class="search-result-item" onclick="showRuleDetailFromSearch('${rule.id}'); highlightSearchResult(this);">
+                            <div style="font-weight: 600; color: #1976d2;">${highlightText(rule.name, query)}</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 5px;">
+                                ${getTypeName(rule.type)} → ${category.name || ''}
+                            </div>
+                            <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                                ${highlightText(rule.description.substring(0, 100), query)}${rule.description.length > 100 ? '...' : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            resultsContainer.style.display = 'block';
+        }
+        
+        function highlightText(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark style="background: #ffeb3b; padding: 2px 4px;">$1</mark>');
+        }
+        
+        function highlightSearchResult(element) {
+            document.querySelectorAll('.search-result-item').forEach(item => {
+                item.classList.remove('highlight');
+            });
+            element.classList.add('highlight');
+        }
+        
+        function clearSearch() {
+            document.getElementById('knowledge-search-input').value = '';
+            document.getElementById('search-results').style.display = 'none';
+            document.getElementById('search-results-list').innerHTML = '';
+        }
+        
+        // 更新知识库树形结构
+        function updateKnowledgeTree() {
+            // 这里可以重新渲染整个树形结构
+            // 简化处理：更新统计信息
+            updateStats();
+        }
+        
+        // 更新统计信息
+        function updateStats() {
+            const level1Count = Object.values(knowledgeBase.categories).filter(c => c.level === 1).length;
+            const level2Count = Object.values(knowledgeBase.categories).filter(c => c.level === 2).length;
+            const level3Count = knowledgeBase.rules.length;
+            const totalCount = level3Count;
+            
+            document.getElementById('stat-total').textContent = totalCount;
+            document.getElementById('stat-level1').textContent = level1Count;
+            document.getElementById('stat-level2').textContent = level2Count;
+            document.getElementById('stat-level3').textContent = level3Count;
+        }
+        
+        // 辅助函数
+        function getTypeName(type) {
+            const types = {
+                'legal': '国家法律',
+                'platform': '平台规则',
+                'company': '公司规则',
+                'business': '业务规则',
+                'qualification': '资质审核'
+            };
+            return types[type] || type;
+        }
+        
+        function getLevelName(level) {
+            const levels = { 1: '一级分类', 2: '二级分类', 3: '三级规则' };
+            return levels[level] || `级别${level}`;
+        }
+        
+        function getPriorityName(priority) {
+            const priorities = {
+                'normal': '普通',
+                'high': '高',
+                'critical': '紧急'
+            };
+            return priorities[priority] || priority;
+        }
+        
+        // 点击搜索结果时显示详情
+        function showRuleDetailFromSearch(ruleId) {
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (rule) {
+                showRuleDetail(rule);
+            }
+        }
+        
+        // 添加规则后实时更新树形结构显示
+        function addRuleToTree(rule) {
+            const parentNode = document.querySelector(`[data-category-id="${rule.parent}"]`);
+            if (!parentNode) return;
+            
+            // 确保父节点展开
+            const toggle = parentNode.querySelector('.tree-toggle');
+            if (toggle && !toggle.classList.contains('expanded')) {
+                toggle.click();
+            }
+            
+            const childrenContainer = parentNode.querySelector('.tree-children');
+            if (!childrenContainer) return;
+            
+            // 创建新的规则节点
+            const ruleNode = document.createElement('div');
+            ruleNode.className = 'tree-node tree-node-level3 rule-item-new';
+            ruleNode.setAttribute('data-rule-id', rule.id);
+            ruleNode.innerHTML = `
+                <span>${rule.name}</span>
+                <button class="add-rule-btn" onclick="editRule('${rule.id}')">编辑</button>
+                <button class="add-rule-btn" onclick="viewRuleDetail('${rule.id}')" style="background: #4caf50;">查看</button>
+            `;
+            
+            childrenContainer.appendChild(ruleNode);
+            
+            // 3秒后移除新规则动画效果
+            setTimeout(() => {
+                ruleNode.classList.remove('rule-item-new');
+            }, 3000);
+        }
+        
+        function viewRuleDetail(ruleId) {
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (rule) {
+                showRuleDetail(rule);
+            }
+        }
+        
+        // 查看分类下的所有规则
+        function viewRulesByCategory(categoryId) {
+            const rules = knowledgeBase.rules.filter(r => r.parent === categoryId);
+            if (rules.length === 0) {
+                alert('该分类下暂无规则');
+                return;
+            }
+            
+            // 显示规则列表
+            const content = rules.map(rule => `
+                <div class="rule-detail-card" style="margin-bottom: 15px;">
+                    <div class="rule-detail-header">
+                        <div>
+                            <div class="rule-detail-title">${rule.name}</div>
+                            <div class="rule-detail-meta">优先级: ${getPriorityName(rule.priority)}</div>
+                        </div>
+                        <div>
+                            <button class="add-rule-btn" onclick="viewRuleDetail('${rule.id}'); closeDetailModal();">查看详情</button>
+                        </div>
+                    </div>
+                    <div class="rule-detail-content">${rule.description}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('rule-detail-modal').classList.add('active');
+            document.getElementById('detail-modal-title').textContent = `${knowledgeBase.categories[categoryId]?.name || categoryId} - 规则列表`;
+            document.getElementById('rule-detail-content').innerHTML = `
+                <div style="margin-bottom: 15px; color: #666;">共找到 ${rules.length} 条规则</div>
+                ${content}
+            `;
+            document.getElementById('rule-detail-modal').setAttribute('data-rule-id', '');
+        }
+        
+        // 初始化时更新统计信息
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            // 默认展开所有一级分类
+            document.querySelectorAll('.tree-node-level1 .tree-toggle').forEach(toggle => {
+                if (!toggle.classList.contains('expanded')) {
+                    toggle.click();
+                }
+            });
+        });
+        
+        // 页面切换时更新统计信息
+        const originalShowPage = showPage;
+        showPage = function(pageNum) {
+            originalShowPage(pageNum);
+            if (pageNum === 6) {
+                updateStats();
+                // 确保搜索框清空
+                clearSearch();
+            }
+        };
+        
+        // 点击弹窗外部关闭
+        document.addEventListener('click', function(event) {
+            const ruleModal = document.getElementById('rule-modal');
+            const detailModal = document.getElementById('rule-detail-modal');
+            
+            if (event.target === ruleModal) {
+                closeRuleModal();
+            }
+            if (event.target === detailModal) {
+                closeDetailModal();
+            }
+        });
         
         // 初始化
         showPage(1);
