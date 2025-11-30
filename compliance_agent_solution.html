@@ -1103,10 +1103,315 @@
             cursor: pointer;
             font-size: 12px;
             margin-left: 10px;
+            transition: all 0.3s;
         }
 
         .add-rule-btn:hover {
             background: #1565c0;
+            transform: scale(1.05);
+        }
+
+        /* 知识库搜索框 */
+        .knowledge-search {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .search-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .search-btn {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #1565c0;
+        }
+
+        .search-results {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .search-result-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-result-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .search-result-item.highlight {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+        }
+
+        /* 添加规则弹窗 */
+        .rule-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rule-modal.active {
+            display: flex;
+        }
+
+        .rule-modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .rule-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .rule-modal-header h3 {
+            margin: 0;
+            color: #1976d2;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-save {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: #45a049;
+        }
+
+        /* 规则详情展示 */
+        .rule-detail-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .rule-detail-card:hover {
+            border-color: #1976d2;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
+        }
+
+        .rule-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rule-detail-title {
+            font-weight: 600;
+            color: #1976d2;
+            font-size: 15px;
+        }
+
+        .rule-detail-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .rule-detail-content {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .rule-tags {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rule-tag-small {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        /* 新增规则动画效果 */
+        .rule-item-new {
+            animation: slideIn 0.5s ease-out;
+            background: #e8f5e9 !important;
+            border-left: 4px solid #4caf50 !important;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 规则统计信息 */
+        .knowledge-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
         }
 
         /* 导出按钮组 */
@@ -1636,35 +1941,73 @@
                             <button class="submit-btn" onclick="addNewCategory()">+ 新增分类</button>
                         </div>
 
-                        <div class="knowledge-tree">
+                        <!-- 统计信息 -->
+                        <div class="knowledge-stats">
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-total">0</div>
+                                <div class="stat-label">总规则数</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level1">5</div>
+                                <div class="stat-label">一级分类</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level2">8</div>
+                                <div class="stat-label">二级分类</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level3">12</div>
+                                <div class="stat-label">三级规则</div>
+                            </div>
+                        </div>
+
+                        <!-- 搜索框 -->
+                        <div class="knowledge-search">
+                            <div class="search-input-group">
+                                <input type="text" class="search-input" id="knowledge-search-input" placeholder="搜索规则名称、关键词、规则内容..." onkeyup="searchKnowledge(event)">
+                                <button class="search-btn" onclick="performSearch()">🔍 搜索</button>
+                                <button class="search-btn" onclick="clearSearch()" style="background: #999;">清除</button>
+                            </div>
+                            <div class="search-results" id="search-results" style="display: none;">
+                                <div style="font-weight: 600; margin-bottom: 10px; color: #666;">搜索结果：</div>
+                                <div id="search-results-list"></div>
+                            </div>
+                        </div>
+
+                        <div class="knowledge-tree" id="knowledge-tree">
                             <!-- 一级分类：国家法律 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="legal">
                                 <span class="tree-toggle" onclick="toggleTree(this)">国家法律</span>
                                 <button class="add-rule-btn" onclick="addRule('legal')">+ 添加规则</button>
                                 <div class="tree-children">
                                     <!-- 二级分类 -->
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="legal-ad">
                                         <span class="tree-toggle" onclick="toggleTree(this)">广告法</span>
                                         <button class="add-rule-btn" onclick="addRule('legal-ad')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('legal-ad')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
                                             <!-- 三级分类 -->
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="legal-ad-1">
                                                 <span>绝对化用语禁止</span>
                                                 <button class="add-rule-btn" onclick="editRule('legal-ad-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('legal-ad-1')" style="background: #4caf50;">查看</button>
                                             </div>
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="legal-ad-2">
                                                 <span>未成年人保护</span>
                                                 <button class="add-rule-btn" onclick="editRule('legal-ad-2')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('legal-ad-2')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="legal-medical">
                                         <span class="tree-toggle" onclick="toggleTree(this)">医疗广告管理办法</span>
                                         <button class="add-rule-btn" onclick="addRule('legal-medical')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('legal-medical')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="legal-medical-1">
                                                 <span>医疗资质要求</span>
                                                 <button class="add-rule-btn" onclick="editRule('legal-medical-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('legal-medical-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1672,27 +2015,31 @@
                             </div>
 
                             <!-- 一级分类：平台规则 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="platform">
                                 <span class="tree-toggle" onclick="toggleTree(this)">平台规则</span>
                                 <button class="add-rule-btn" onclick="addRule('platform')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="platform-xhs">
                                         <span class="tree-toggle" onclick="toggleTree(this)">小红书</span>
                                         <button class="add-rule-btn" onclick="addRule('platform-xhs')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('platform-xhs')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="platform-xhs-1">
                                                 <span>社区规范 - 炫富内容</span>
                                                 <button class="add-rule-btn" onclick="editRule('platform-xhs-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('platform-xhs-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="platform-dy">
                                         <span class="tree-toggle" onclick="toggleTree(this)">抖音</span>
                                         <button class="add-rule-btn" onclick="addRule('platform-dy')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('platform-dy')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="platform-dy-1">
                                                 <span>内容审核规范</span>
                                                 <button class="add-rule-btn" onclick="editRule('platform-dy-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('platform-dy-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1700,17 +2047,19 @@
                             </div>
 
                             <!-- 一级分类：公司规则 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="company">
                                 <span class="tree-toggle" onclick="toggleTree(this)">公司规则</span>
                                 <button class="add-rule-btn" onclick="addRule('company')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="company-content">
                                         <span class="tree-toggle" onclick="toggleTree(this)">内容审核规范</span>
                                         <button class="add-rule-btn" onclick="addRule('company-content')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('company-content')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="company-content-1">
                                                 <span>避免焦虑表述</span>
                                                 <button class="add-rule-btn" onclick="editRule('company-content-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('company-content-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1718,17 +2067,19 @@
                             </div>
 
                             <!-- 一级分类：业务规则 -->
-                            <div class="tree-node tree-node-level1">
+                            <div class="tree-node tree-node-level1" data-category-id="business">
                                 <span class="tree-toggle" onclick="toggleTree(this)">业务规则</span>
                                 <button class="add-rule-btn" onclick="addRule('business')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="business-ad">
                                         <span class="tree-toggle" onclick="toggleTree(this)">广告用语规范</span>
                                         <button class="add-rule-btn" onclick="addRule('business-ad')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('business-ad')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="business-ad-1">
                                                 <span>绝对化用语禁止</span>
                                                 <button class="add-rule-btn" onclick="editRule('business-ad-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('business-ad-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1736,17 +2087,19 @@
                             </div>
 
                             <!-- 一级分类：资质审核（优先） -->
-                            <div class="tree-node tree-node-level1" style="border-left: 4px solid #f44336;">
+                            <div class="tree-node tree-node-level1" style="border-left: 4px solid #f44336;" data-category-id="qualification">
                                 <span class="tree-toggle" onclick="toggleTree(this)">资质审核 <span class="qualification-badge">优先</span></span>
                                 <button class="add-rule-btn" onclick="addRule('qualification')">+ 添加规则</button>
                                 <div class="tree-children">
-                                    <div class="tree-node tree-node-level2">
+                                    <div class="tree-node tree-node-level2" data-category-id="qualification-company">
                                         <span class="tree-toggle" onclick="toggleTree(this)">公司资质限制</span>
                                         <button class="add-rule-btn" onclick="addRule('qualification-company')">+ 添加规则</button>
+                                        <button class="add-rule-btn" onclick="viewRulesByCategory('qualification-company')" style="background: #4caf50;">查看规则</button>
                                         <div class="tree-children">
-                                            <div class="tree-node tree-node-level3">
+                                            <div class="tree-node tree-node-level3" data-rule-id="qualification-company-1">
                                                 <span>无医疗/保险/金融资质 - 禁止提及相关内容</span>
                                                 <button class="add-rule-btn" onclick="editRule('qualification-company-1')">编辑</button>
+                                                <button class="add-rule-btn" onclick="viewRuleDetail('qualification-company-1')" style="background: #4caf50;">查看</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1755,6 +2108,74 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加规则弹窗 -->
+    <div class="rule-modal" id="rule-modal">
+        <div class="rule-modal-content">
+            <div class="rule-modal-header">
+                <h3 id="modal-title">添加规则</h3>
+                <button class="close-modal" onclick="closeRuleModal()">×</button>
+            </div>
+            <form id="rule-form" onsubmit="saveRule(event)">
+                <div class="form-group">
+                    <label>规则名称 *</label>
+                    <input type="text" id="rule-name" required placeholder="请输入规则名称">
+                </div>
+                <div class="form-group">
+                    <label>规则类型 *</label>
+                    <select id="rule-type" required>
+                        <option value="">请选择</option>
+                        <option value="legal">国家法律</option>
+                        <option value="platform">平台规则</option>
+                        <option value="company">公司规则</option>
+                        <option value="business">业务规则</option>
+                        <option value="qualification">资质审核</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>规则描述 *</label>
+                    <textarea id="rule-description" required placeholder="请输入规则描述和具体要求"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>违规关键词（每行一个）</label>
+                    <textarea id="rule-keywords" placeholder="例如：&#10;最好&#10;最高级&#10;绝对"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>替换词建议（每行一个）</label>
+                    <textarea id="rule-replacements" placeholder="例如：&#10;优质&#10;较好&#10;相对"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>优先级</label>
+                    <select id="rule-priority">
+                        <option value="normal">普通</option>
+                        <option value="high">高（优先审核）</option>
+                        <option value="critical">紧急（资质相关）</option>
+                    </select>
+                </div>
+                <input type="hidden" id="rule-parent-id">
+                <input type="hidden" id="rule-level">
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeRuleModal()">取消</button>
+                    <button type="submit" class="btn-save">保存规则</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 规则详情弹窗 -->
+    <div class="rule-modal" id="rule-detail-modal">
+        <div class="rule-modal-content" style="max-width: 800px;">
+            <div class="rule-modal-header">
+                <h3 id="detail-modal-title">规则详情</h3>
+                <button class="close-modal" onclick="closeDetailModal()">×</button>
+            </div>
+            <div id="rule-detail-content"></div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closeDetailModal()">关闭</button>
+                <button type="button" class="btn-save" onclick="editRuleFromDetail()">编辑规则</button>
             </div>
         </div>
     </div>
@@ -2210,6 +2631,34 @@
             link.click();
         }
         
+        // 知识库数据存储
+        let knowledgeBase = {
+            rules: [
+                { id: 'legal-ad-1', name: '绝对化用语禁止', level: 3, parent: 'legal-ad', type: 'legal', description: '广告中严禁使用"最高级"、"最佳"、"最好"等绝对化用语。', keywords: ['最好', '最高级', '最佳', '绝对'], replacements: ['优质', '较好', '相对'], priority: 'high' },
+                { id: 'legal-ad-2', name: '未成年人保护', level: 3, parent: 'legal-ad', type: 'legal', description: '不得利用不满十周岁的未成年人作为广告代言人。', keywords: ['少儿', '儿童'], replacements: ['保障计划', '健康保障'], priority: 'high' },
+                { id: 'legal-medical-1', name: '医疗资质要求', level: 3, parent: 'legal-medical', type: 'legal', description: '发布医疗相关内容需要相关医疗资质。', keywords: ['医疗', '治疗', '诊断'], replacements: ['健康', '保健'], priority: 'critical' },
+                { id: 'platform-xhs-1', name: '社区规范 - 炫富内容', level: 3, parent: 'platform-xhs', type: 'platform', description: '严禁使用炫富、过于直接的金钱诱导类词汇。', keywords: ['实实在在的钱', '现金', '赚钱'], replacements: ['真切的保障', '实际保障'], priority: 'normal' },
+                { id: 'platform-dy-1', name: '内容审核规范', level: 3, parent: 'platform-dy', type: 'platform', description: '抖音平台内容审核要求。', keywords: [], replacements: [], priority: 'normal' },
+                { id: 'company-content-1', name: '避免焦虑表述', level: 3, parent: 'company-content', type: 'company', description: '避免使用可能引起焦虑的表述。', keywords: ['充满未知', '危险', '风险'], replacements: ['需要陪伴', '保驾护航'], priority: 'normal' },
+                { id: 'business-ad-1', name: '绝对化用语禁止', level: 3, parent: 'business-ad', type: 'business', description: '业务规则：禁止使用绝对化用语。', keywords: ['最好', '最高级'], replacements: ['优质', '较好'], priority: 'normal' },
+                { id: 'qualification-company-1', name: '无医疗/保险/金融资质 - 禁止提及相关内容', level: 3, parent: 'qualification-company', type: 'qualification', description: '我公司无医疗、保险、金融相关资质/牌照，因此不能提及相关内容，需要直接删除或替换。', keywords: ['医疗', '保险', '金融', '重疾险', '理财'], replacements: ['健康保障', '保障计划', '服务'], priority: 'critical' }
+            ],
+            categories: {
+                'legal': { name: '国家法律', level: 1 },
+                'legal-ad': { name: '广告法', level: 2, parent: 'legal' },
+                'legal-medical': { name: '医疗广告管理办法', level: 2, parent: 'legal' },
+                'platform': { name: '平台规则', level: 1 },
+                'platform-xhs': { name: '小红书', level: 2, parent: 'platform' },
+                'platform-dy': { name: '抖音', level: 2, parent: 'platform' },
+                'company': { name: '公司规则', level: 1 },
+                'company-content': { name: '内容审核规范', level: 2, parent: 'company' },
+                'business': { name: '业务规则', level: 1 },
+                'business-ad': { name: '广告用语规范', level: 2, parent: 'business' },
+                'qualification': { name: '资质审核', level: 1 },
+                'qualification-company': { name: '公司资质限制', level: 2, parent: 'qualification' }
+            }
+        };
+
         // 知识库管理功能
         function toggleTree(element) {
             element.classList.toggle('expanded');
@@ -2222,20 +2671,401 @@
         function addNewCategory() {
             const name = prompt('请输入新分类名称：');
             if (name) {
-                alert(`分类"${name}"已添加（演示功能）`);
+                const id = 'category-' + Date.now();
+                knowledgeBase.categories[id] = { name: name, level: 1 };
+                updateKnowledgeTree();
+                updateStats();
+                alert(`分类"${name}"已添加！`);
             }
         }
         
-        function addRule(category) {
-            const ruleName = prompt('请输入规则名称：');
-            if (ruleName) {
-                alert(`规则"${ruleName}"已添加到${category}（演示功能）`);
+        function addRule(categoryId) {
+            document.getElementById('rule-modal').classList.add('active');
+            document.getElementById('modal-title').textContent = '添加规则';
+            document.getElementById('rule-form').reset();
+            document.getElementById('rule-parent-id').value = categoryId;
+            
+            // 根据categoryId确定level
+            const category = knowledgeBase.categories[categoryId];
+            if (category) {
+                document.getElementById('rule-level').value = category.level + 1;
+                document.getElementById('rule-type').value = category.type || categoryId.split('-')[0];
+            } else {
+                document.getElementById('rule-level').value = '1';
             }
         }
         
         function editRule(ruleId) {
-            alert(`编辑规则 ${ruleId}（演示功能）`);
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (!rule) {
+                alert('规则不存在');
+                return;
+            }
+            
+            // 显示规则详情
+            showRuleDetail(rule);
         }
+        
+        function showRuleDetail(rule) {
+            document.getElementById('rule-detail-modal').classList.add('active');
+            document.getElementById('detail-modal-title').textContent = rule.name;
+            
+            const category = knowledgeBase.categories[rule.parent] || {};
+            const parentCategory = rule.parent ? knowledgeBase.categories[rule.parent.split('-')[0]] : {};
+            
+            const detailContent = `
+                <div class="rule-detail-card">
+                    <div class="rule-detail-header">
+                        <div>
+                            <div class="rule-detail-title">${rule.name}</div>
+                            <div class="rule-detail-meta">
+                                类型: ${getTypeName(rule.type)} | 
+                                级别: ${getLevelName(rule.level)} | 
+                                优先级: ${getPriorityName(rule.priority)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rule-detail-content">
+                        <strong>规则描述：</strong><br>
+                        ${rule.description}
+                    </div>
+                    ${rule.keywords && rule.keywords.length > 0 ? `
+                    <div style="margin-top: 15px;">
+                        <strong>违规关键词：</strong>
+                        <div class="rule-tags">
+                            ${rule.keywords.map(k => `<span class="rule-tag-small">${k}</span>`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    ${rule.replacements && rule.replacements.length > 0 ? `
+                    <div style="margin-top: 15px;">
+                        <strong>替换词建议：</strong>
+                        <div class="rule-tags">
+                            ${rule.replacements.map(r => `<span class="rule-tag-small" style="background: #e8f5e9; color: #2e7d32;">${r}</span>`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.getElementById('rule-detail-content').innerHTML = detailContent;
+            document.getElementById('rule-detail-modal').setAttribute('data-rule-id', rule.id);
+        }
+        
+        function editRuleFromDetail() {
+            const ruleId = document.getElementById('rule-detail-modal').getAttribute('data-rule-id');
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (!rule) return;
+            
+            closeDetailModal();
+            
+            // 填充表单
+            document.getElementById('rule-modal').classList.add('active');
+            document.getElementById('modal-title').textContent = '编辑规则';
+            document.getElementById('rule-name').value = rule.name;
+            document.getElementById('rule-type').value = rule.type;
+            document.getElementById('rule-description').value = rule.description;
+            document.getElementById('rule-keywords').value = rule.keywords ? rule.keywords.join('\n') : '';
+            document.getElementById('rule-replacements').value = rule.replacements ? rule.replacements.join('\n') : '';
+            document.getElementById('rule-priority').value = rule.priority || 'normal';
+            document.getElementById('rule-parent-id').value = rule.parent;
+            document.getElementById('rule-level').value = rule.level;
+            document.getElementById('rule-form').setAttribute('data-rule-id', ruleId);
+        }
+        
+        function saveRule(event) {
+            event.preventDefault();
+            
+            const ruleId = document.getElementById('rule-form').getAttribute('data-rule-id');
+            const ruleName = document.getElementById('rule-name').value;
+            const ruleType = document.getElementById('rule-type').value;
+            const ruleDescription = document.getElementById('rule-description').value;
+            const ruleKeywords = document.getElementById('rule-keywords').value.split('\n').filter(k => k.trim());
+            const ruleReplacements = document.getElementById('rule-replacements').value.split('\n').filter(r => r.trim());
+            const rulePriority = document.getElementById('rule-priority').value;
+            const parentId = document.getElementById('rule-parent-id').value;
+            const level = parseInt(document.getElementById('rule-level').value);
+            
+            const newRule = {
+                id: ruleId || 'rule-' + Date.now(),
+                name: ruleName,
+                level: level,
+                parent: parentId,
+                type: ruleType,
+                description: ruleDescription,
+                keywords: ruleKeywords,
+                replacements: ruleReplacements,
+                priority: rulePriority
+            };
+            
+            if (ruleId) {
+                // 更新现有规则
+                const index = knowledgeBase.rules.findIndex(r => r.id === ruleId);
+                if (index !== -1) {
+                    knowledgeBase.rules[index] = newRule;
+                }
+            } else {
+                // 添加新规则
+                knowledgeBase.rules.push(newRule);
+            }
+            
+            // 更新树形结构
+            updateKnowledgeTree();
+            updateStats();
+            
+            // 如果是新规则，实时添加到树形结构
+            if (!ruleId) {
+                addRuleToTree(newRule);
+            }
+            
+            closeRuleModal();
+            
+            // 显示成功提示
+            const message = ruleId ? '规则已更新！' : '规则已添加！页面已自动更新显示。';
+            alert(message);
+        }
+        
+        function closeRuleModal() {
+            document.getElementById('rule-modal').classList.remove('active');
+            document.getElementById('rule-form').reset();
+            document.getElementById('rule-form').removeAttribute('data-rule-id');
+        }
+        
+        function closeDetailModal() {
+            document.getElementById('rule-detail-modal').classList.remove('active');
+        }
+        
+        // 搜索知识库
+        function searchKnowledge(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else if (event.target.value.trim() === '') {
+                clearSearch();
+            }
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('knowledge-search-input').value.trim().toLowerCase();
+            if (!query) {
+                clearSearch();
+                return;
+            }
+            
+            const results = knowledgeBase.rules.filter(rule => {
+                return rule.name.toLowerCase().includes(query) ||
+                       rule.description.toLowerCase().includes(query) ||
+                       (rule.keywords && rule.keywords.some(k => k.toLowerCase().includes(query))) ||
+                       (rule.replacements && rule.replacements.some(r => r.toLowerCase().includes(query)));
+            });
+            
+            displaySearchResults(results, query);
+        }
+        
+        function displaySearchResults(results, query) {
+            const resultsContainer = document.getElementById('search-results');
+            const resultsList = document.getElementById('search-results-list');
+            
+            if (results.length === 0) {
+                resultsList.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">未找到匹配的规则</div>';
+            } else {
+                resultsList.innerHTML = results.map((rule, index) => {
+                    const category = knowledgeBase.categories[rule.parent] || {};
+                    return `
+                        <div class="search-result-item" onclick="showRuleDetailFromSearch('${rule.id}'); highlightSearchResult(this);">
+                            <div style="font-weight: 600; color: #1976d2;">${highlightText(rule.name, query)}</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 5px;">
+                                ${getTypeName(rule.type)} → ${category.name || ''}
+                            </div>
+                            <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                                ${highlightText(rule.description.substring(0, 100), query)}${rule.description.length > 100 ? '...' : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            resultsContainer.style.display = 'block';
+        }
+        
+        function highlightText(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark style="background: #ffeb3b; padding: 2px 4px;">$1</mark>');
+        }
+        
+        function highlightSearchResult(element) {
+            document.querySelectorAll('.search-result-item').forEach(item => {
+                item.classList.remove('highlight');
+            });
+            element.classList.add('highlight');
+        }
+        
+        function clearSearch() {
+            document.getElementById('knowledge-search-input').value = '';
+            document.getElementById('search-results').style.display = 'none';
+            document.getElementById('search-results-list').innerHTML = '';
+        }
+        
+        // 更新知识库树形结构
+        function updateKnowledgeTree() {
+            // 这里可以重新渲染整个树形结构
+            // 简化处理：更新统计信息
+            updateStats();
+        }
+        
+        // 更新统计信息
+        function updateStats() {
+            const level1Count = Object.values(knowledgeBase.categories).filter(c => c.level === 1).length;
+            const level2Count = Object.values(knowledgeBase.categories).filter(c => c.level === 2).length;
+            const level3Count = knowledgeBase.rules.length;
+            const totalCount = level3Count;
+            
+            document.getElementById('stat-total').textContent = totalCount;
+            document.getElementById('stat-level1').textContent = level1Count;
+            document.getElementById('stat-level2').textContent = level2Count;
+            document.getElementById('stat-level3').textContent = level3Count;
+        }
+        
+        // 辅助函数
+        function getTypeName(type) {
+            const types = {
+                'legal': '国家法律',
+                'platform': '平台规则',
+                'company': '公司规则',
+                'business': '业务规则',
+                'qualification': '资质审核'
+            };
+            return types[type] || type;
+        }
+        
+        function getLevelName(level) {
+            const levels = { 1: '一级分类', 2: '二级分类', 3: '三级规则' };
+            return levels[level] || `级别${level}`;
+        }
+        
+        function getPriorityName(priority) {
+            const priorities = {
+                'normal': '普通',
+                'high': '高',
+                'critical': '紧急'
+            };
+            return priorities[priority] || priority;
+        }
+        
+        // 点击搜索结果时显示详情
+        function showRuleDetailFromSearch(ruleId) {
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (rule) {
+                showRuleDetail(rule);
+            }
+        }
+        
+        // 添加规则后实时更新树形结构显示
+        function addRuleToTree(rule) {
+            const parentNode = document.querySelector(`[data-category-id="${rule.parent}"]`);
+            if (!parentNode) return;
+            
+            // 确保父节点展开
+            const toggle = parentNode.querySelector('.tree-toggle');
+            if (toggle && !toggle.classList.contains('expanded')) {
+                toggle.click();
+            }
+            
+            const childrenContainer = parentNode.querySelector('.tree-children');
+            if (!childrenContainer) return;
+            
+            // 创建新的规则节点
+            const ruleNode = document.createElement('div');
+            ruleNode.className = 'tree-node tree-node-level3 rule-item-new';
+            ruleNode.setAttribute('data-rule-id', rule.id);
+            ruleNode.innerHTML = `
+                <span>${rule.name}</span>
+                <button class="add-rule-btn" onclick="editRule('${rule.id}')">编辑</button>
+                <button class="add-rule-btn" onclick="viewRuleDetail('${rule.id}')" style="background: #4caf50;">查看</button>
+            `;
+            
+            childrenContainer.appendChild(ruleNode);
+            
+            // 3秒后移除新规则动画效果
+            setTimeout(() => {
+                ruleNode.classList.remove('rule-item-new');
+            }, 3000);
+        }
+        
+        function viewRuleDetail(ruleId) {
+            const rule = knowledgeBase.rules.find(r => r.id === ruleId);
+            if (rule) {
+                showRuleDetail(rule);
+            }
+        }
+        
+        // 查看分类下的所有规则
+        function viewRulesByCategory(categoryId) {
+            const rules = knowledgeBase.rules.filter(r => r.parent === categoryId);
+            if (rules.length === 0) {
+                alert('该分类下暂无规则');
+                return;
+            }
+            
+            // 显示规则列表
+            const content = rules.map(rule => `
+                <div class="rule-detail-card" style="margin-bottom: 15px;">
+                    <div class="rule-detail-header">
+                        <div>
+                            <div class="rule-detail-title">${rule.name}</div>
+                            <div class="rule-detail-meta">优先级: ${getPriorityName(rule.priority)}</div>
+                        </div>
+                        <div>
+                            <button class="add-rule-btn" onclick="viewRuleDetail('${rule.id}'); closeDetailModal();">查看详情</button>
+                        </div>
+                    </div>
+                    <div class="rule-detail-content">${rule.description}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('rule-detail-modal').classList.add('active');
+            document.getElementById('detail-modal-title').textContent = `${knowledgeBase.categories[categoryId]?.name || categoryId} - 规则列表`;
+            document.getElementById('rule-detail-content').innerHTML = `
+                <div style="margin-bottom: 15px; color: #666;">共找到 ${rules.length} 条规则</div>
+                ${content}
+            `;
+            document.getElementById('rule-detail-modal').setAttribute('data-rule-id', '');
+        }
+        
+        // 初始化时更新统计信息
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            // 默认展开所有一级分类
+            document.querySelectorAll('.tree-node-level1 .tree-toggle').forEach(toggle => {
+                if (!toggle.classList.contains('expanded')) {
+                    toggle.click();
+                }
+            });
+        });
+        
+        // 页面切换时更新统计信息
+        const originalShowPage = showPage;
+        showPage = function(pageNum) {
+            originalShowPage(pageNum);
+            if (pageNum === 6) {
+                updateStats();
+                // 确保搜索框清空
+                clearSearch();
+            }
+        };
+        
+        // 点击弹窗外部关闭
+        document.addEventListener('click', function(event) {
+            const ruleModal = document.getElementById('rule-modal');
+            const detailModal = document.getElementById('rule-detail-modal');
+            
+            if (event.target === ruleModal) {
+                closeRuleModal();
+            }
+            if (event.target === detailModal) {
+                closeDetailModal();
+            }
+        });
         
         // 初始化
         showPage(1);
