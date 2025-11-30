@@ -69,6 +69,21 @@ else
     # 添加所有更改
     echo -e "${YELLOW}添加所有更改的文件...${NC}"
     git add .
+    
+    # 确保关键文件被包含
+    if [ -f "compliance_agent_solution.html" ]; then
+        git add compliance_agent_solution.html
+    fi
+    if [ -f "index.html" ]; then
+        git add index.html
+    fi
+    if [ -f ".nojekyll" ]; then
+        git add .nojekyll
+    fi
+    if [ -d ".github" ]; then
+        git add .github/
+    fi
+    
     echo -e "${GREEN}✓ 文件已添加到暂存区${NC}"
     echo ""
     
@@ -130,4 +145,20 @@ fi
 
 echo ""
 echo -e "${GREEN}完成！${NC}"
+echo ""
+echo -e "${YELLOW}========================================${NC}"
+echo -e "${YELLOW}GitHub Pages 部署信息${NC}"
+echo -e "${YELLOW}========================================${NC}"
+echo ""
+echo -e "📦 仓库地址: ${GREEN}https://github.com/kehan857/heguiagent${NC}"
+echo -e "🌐 GitHub Pages: ${GREEN}https://kehan857.github.io/heguiagent/${NC}"
+echo -e "⚙️  Actions: ${GREEN}https://github.com/kehan857/heguiagent/actions${NC}"
+echo ""
+echo -e "${YELLOW}提示:${NC}"
+echo -e "1. 推送后，GitHub Actions 会自动触发部署"
+echo -e "2. 等待 1-2 分钟后访问 GitHub Pages 查看更新"
+echo -e "3. 如果页面未更新，请检查:"
+echo -e "   - GitHub 仓库 Settings → Pages → Source 设置为 'GitHub Actions'"
+echo -e "   - Actions 页面查看工作流运行状态"
+echo ""
 
