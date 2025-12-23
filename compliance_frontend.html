@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合规智能体 - 内容审核系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Ant Design 标签页样式 */
+        .tabs {
+            display: flex;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .tab {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.65);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            outline: none;
+            margin-right: 32px;
+        }
+
+        .tab:hover {
+            color: #1890ff;
+        }
+
+        .tab.active {
+            color: #1890ff;
+            font-weight: 500;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #1890ff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 对比视图 */
+        .comparison-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-panel {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .comparison-panel h4 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .comparison-panel.original {
+            border-color: #ff9800;
+        }
+
+        .comparison-panel.modified {
+            border-color: #4caf50;
+        }
+
+
+        /* 高亮可点击 */
+        .highlight-clickable {
+            background: #ffebee;
+            color: #c62828;
+            padding: 2px 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .highlight-clickable:hover {
+            background: #ffcdd2;
+            box-shadow: 0 2px 8px rgba(198, 40, 40, 0.3);
+        }
+
+        /* 分类标签样式 */
+        .category-tag {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-tag:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+
+        .category-tag input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .category-tag input[type="radio"]:checked + span {
+            color: #1890ff;
+            font-weight: 500;
+        }
+
+        .category-tag:has(input[type="radio"]:checked) {
+            border-color: #1890ff;
+            background: #e6f7ff;
+        }
+
+        /* 修改内容高亮 */
+        .modified-highlight {
+            background: #d4edda;
+            color: #155724;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: 500;
+        }
+
+        .deleted-highlight {
+            background: #f8d7da;
+            color: #721c24;
+            text-decoration: line-through;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            padding: 10px 24px;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* 页面内容区域 */
+        .page-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-height: calc(100vh - 200px);
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .page-desc {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* 知识库上传页面 */
+        .upload-section {
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+            background: rgba(102, 126, 234, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #764ba2;
+        }
+
+        .upload-area.dragover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #764ba2;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon {
+            font-size: 24px;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Ant Design 按钮规范 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 32px;
+            padding: 4px 15px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.5715;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            user-select: none;
+            touch-action: manipulation;
+            white-space: nowrap;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+        }
+
+        .btn:focus {
+            outline: 0;
+        }
+
+        .btn:not(:disabled):active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.015);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Primary 按钮 - 主要操作 */
+        .btn-primary {
+            background: #1890ff;
+            border-color: #1890ff;
+            color: #fff;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #40a9ff;
+            border-color: #40a9ff;
+        }
+
+        .btn-primary:active:not(:disabled) {
+            background: #096dd9;
+            border-color: #096dd9;
+        }
+
+        /* Success 按钮 - 成功操作 */
+        .btn-success {
+            background: #52c41a;
+            border-color: #52c41a;
+            color: #fff;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #73d13d;
+            border-color: #73d13d;
+        }
+
+        .btn-success:active:not(:disabled) {
+            background: #389e0d;
+            border-color: #389e0d;
+        }
+
+        /* Default 按钮 - 默认操作 */
+        .btn-default {
+            background: #fff;
+            border-color: #d9d9d9;
+            color: rgba(0, 0, 0, 0.85);
+        }
+
+        .btn-default:hover:not(:disabled) {
+            color: #1890ff;
+            border-color: #1890ff;
+        }
+
+        .btn-default:active:not(:disabled) {
+            color: #096dd9;
+            border-color: #096dd9;
+        }
+
+        /* Danger 按钮 - 危险操作 */
+        .btn-danger {
+            background: #ff4d4f;
+            border-color: #ff4d4f;
+            color: #fff;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #ff7875;
+            border-color: #ff7875;
+        }
+
+        .btn-danger:active:not(:disabled) {
+            background: #cf1322;
+            border-color: #cf1322;
+        }
+
+        /* Large 按钮 */
+        .btn-large {
+            height: 40px;
+            padding: 6.4px 15px;
+            font-size: 16px;
+        }
+
+        /* Small 按钮 */
+        .btn-small {
+            height: 24px;
+            padding: 0px 7px;
+            font-size: 14px;
+        }
+
+        /* 按钮组 */
+        .btn-group {
+            display: inline-flex;
+            gap: 8px;
+        }
+
+        /* 内容录入页面 */
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .textarea-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .textarea-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .platform-select {
+            margin-top: 20px;
+        }
+
+        .platform-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .platform-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .platform-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .platform-checkbox label {
+            cursor: pointer;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .submit-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-large {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* 内容分析页面 */
+        .analysis-result {
+            margin-top: 30px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .result-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.85);
+            line-height: 32px;
+        }
+
+        .result-actions {
+            display: inline-flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .original-content {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .suggestions-list {
+            margin-top: 30px;
+        }
+
+        .suggestion-item {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .suggestion-item.qualification-first {
+            border-left-color: #f56565;
+            background: #fff5f5;
+        }
+
+        .suggestion-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .suggestion-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .qualification-badge {
+            background: #f56565;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .rule-tag {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag-qualification {
+            background: #fee;
+            color: #c53030;
+        }
+
+        .tag-legal {
+            background: #e6f3ff;
+            color: #2c5282;
+        }
+
+        .tag-company {
+            background: #f0fff4;
+            color: #22543d;
+        }
+
+        .tag-business {
+            background: #fffaf0;
+            color: #744210;
+        }
+
+        .rule-interpretation {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .replacement-words {
+            margin-top: 15px;
+        }
+
+        .replacement-words strong {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .replacement-word-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            padding: 0 8px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            background: #fff;
+            border: 1px solid #1890ff;
+            color: #1890ff;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            white-space: nowrap;
+        }
+
+        .replacement-word-item:hover {
+            background: #1890ff;
+            color: #fff;
+            border-color: #1890ff;
+        }
+
+        .replacement-word-item:active {
+            transform: translateY(1px);
+        }
+
+        .modified-content {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .highlight {
+            background: #c8e6c9;
+            color: #2e7d32;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-content {
+                padding: 20px;
+            }
+
+            .result-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .result-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .result-actions .btn {
+                width: 100%;
+            }
+
+            .comparison-view {
+                grid-template-columns: 1fr;
+            }
+
+            #review-original-tab > div {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航 -->
+        <div class="header">
+            <div class="logo">🛡️ 合规智能体</div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchPage('input')">内容录入</button>
+                <button class="nav-tab" onclick="switchPage('analysis')">内容分析</button>
+                <button class="nav-tab" onclick="switchPage('knowledge')">知识库上传</button>
+            </div>
+        </div>
+
+        <!-- 内容录入页面 -->
+        <div class="page-content active" id="input-page">
+            <h2 class="page-title">内容录入</h2>
+            <p class="page-desc">输入需要审核的内容，系统将自动进行合规性分析和审核</p>
+            
+            <div class="input-section">
+                <label class="input-label">请输入需要审核的内容：</label>
+                <textarea class="textarea-input" id="content-input" placeholder="在此输入需要审核的文本内容...">天九网科企业数字化转型服务
+【引领未来,智创价值】
+选择天九网科，就是选择最好的数字化转型服务。我们拥有第一的行业地位，为客户提供最专业的医疗健康管理解决方案和金融科技服务。企业转型之路充满未知风险，但我们可以通过投资理财实现快速盈利。</textarea>
+            </div>
+
+            <div class="platform-select">
+                <label class="input-label">选择发布平台（可选）：</label>
+                <div class="platform-checkboxes">
+                    <div class="platform-checkbox">
+                        <input type="checkbox" id="platform-douyin" value="douyin">
+                        <label for="platform-douyin">抖音</label>
+                    </div>
+                    <div class="platform-checkbox">
+                        <input type="checkbox" id="platform-xiaohongshu" value="xiaohongshu">
+                        <label for="platform-xiaohongshu">小红书</label>
+                    </div>
+                    <div class="platform-checkbox">
+                        <input type="checkbox" id="platform-wechat" value="wechat">
+                        <label for="platform-wechat">微信</label>
+                    </div>
+                    <div class="platform-checkbox">
+                        <input type="checkbox" id="platform-weibo" value="weibo">
+                        <label for="platform-weibo">微博</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button class="btn btn-primary btn-large" onclick="submitContent()">开始审核</button>
+            </div>
+        </div>
+
+        <!-- 内容分析页面 -->
+        <div class="page-content" id="analysis-page">
+            <h2 class="page-title">内容分析</h2>
+            <p class="page-desc">查看审核结果和修改建议</p>
+            
+            <div id="analysis-content">
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <p>暂无审核结果，请先在"内容录入"页面提交内容进行审核</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 知识库上传页面 -->
+        <div class="page-content" id="knowledge-page">
+            <h2 class="page-title">知识库上传</h2>
+            <p class="page-desc">上传合规知识库文件，支持随时更新。支持格式：PDF、Word、TXT等文档格式</p>
+            
+            <div class="input-section">
+                <label class="input-label">选择分类标签：</label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 10px;">
+                    <label class="category-tag">
+                        <input type="radio" name="category" value="qualification" checked>
+                        <span>资质审核</span>
+                    </label>
+                    <label class="category-tag">
+                        <input type="radio" name="category" value="legal">
+                        <span>国家法律</span>
+                    </label>
+                    <label class="category-tag">
+                        <input type="radio" name="category" value="platform">
+                        <span>平台规则</span>
+                    </label>
+                    <label class="category-tag">
+                        <input type="radio" name="category" value="company">
+                        <span>公司规则</span>
+                    </label>
+                    <label class="category-tag">
+                        <input type="radio" name="category" value="business">
+                        <span>业务规则</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="upload-section">
+                <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">点击或拖拽文件到此处上传</div>
+                    <div class="upload-hint">支持 PDF、Word、TXT 等格式，文件大小不超过 50MB</div>
+                </div>
+                <input type="file" id="file-input" class="file-input" multiple accept=".pdf,.doc,.docx,.txt,.md">
+                
+                <div class="file-list" id="file-list"></div>
+            </div>
+
+            <div class="submit-section">
+                <button class="btn btn-primary btn-large" onclick="uploadFiles()">上传文件</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 存储上传的文件
+        let uploadedFiles = [];
+        // 存储审核结果
+        let auditResult = null;
+        // 存储修改后的内容
+        let modifiedContent = '';
+
+        // 页面切换
+        function switchPage(pageId) {
+            // 更新导航标签
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 更新页面内容
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId + '-page').classList.add('active');
+        }
+
+        // 文件上传相关
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+
+        // 拖拽上传
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            files.forEach(file => {
+                if (!uploadedFiles.find(f => f.name === file.name)) {
+                    uploadedFiles.push(file);
+                    renderFileItem(file);
+                }
+            });
+        }
+
+        function renderFileItem(file) {
+            const selectedCategory = document.querySelector('input[name="category"]:checked');
+            const categoryName = selectedCategory ? selectedCategory.value : '未分类';
+            const categoryNames = {
+                'qualification': '资质审核',
+                'legal': '国家法律',
+                'platform': '平台规则',
+                'company': '公司规则',
+                'business': '业务规则'
+            };
+            
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">📄</div>
+                    <div class="file-details">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)} | 分类：${categoryNames[categoryName] || '未分类'}</div>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-danger btn-small" onclick="removeFile('${file.name}')">删除</button>
+                </div>
+            `;
+            fileList.appendChild(fileItem);
+        }
+
+        function removeFile(fileName) {
+            uploadedFiles = uploadedFiles.filter(f => f.name !== fileName);
+            fileList.innerHTML = '';
+            uploadedFiles.forEach(file => renderFileItem(file));
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function uploadFiles() {
+            if (uploadedFiles.length === 0) {
+                alert('请先选择要上传的文件！');
+                return;
+            }
+
+            // 获取选中的分类
+            const selectedCategory = document.querySelector('input[name="category"]:checked');
+            if (!selectedCategory) {
+                alert('请选择分类标签！');
+                return;
+            }
+
+            const categoryName = selectedCategory.value;
+            const categoryNames = {
+                'qualification': '资质审核',
+                'legal': '国家法律',
+                'platform': '平台规则',
+                'company': '公司规则',
+                'business': '业务规则'
+            };
+
+            // 模拟上传过程
+            const loadingHtml = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>正在上传文件到"${categoryNames[categoryName]}"分类...</p>
+                </div>
+            `;
+            fileList.innerHTML = loadingHtml;
+
+            // 模拟上传成功
+            setTimeout(() => {
+                alert(`成功上传 ${uploadedFiles.length} 个文件到"${categoryNames[categoryName]}"分类！知识库已更新。`);
+                uploadedFiles = [];
+                fileList.innerHTML = '';
+                fileInput.value = '';
+            }, 2000);
+        }
+
+        // 提交内容审核
+        function submitContent() {
+            const content = document.getElementById('content-input').value.trim();
+            if (!content) {
+                alert('请输入需要审核的内容！');
+                return;
+            }
+
+            // 切换到分析页面
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab')[1].classList.add('active');
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('analysis-page').classList.add('active');
+
+            // 显示加载状态
+            document.getElementById('analysis-content').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>正在分析内容，请稍候...</p>
+                </div>
+            `;
+
+            // 模拟审核过程（实际应该调用API）
+            setTimeout(() => {
+                performAudit(content);
+            }, 1500);
+        }
+
+        // 执行审核分析
+        function performAudit(content) {
+            // 模拟审核结果（实际应该调用Coze API）
+            const suggestions = analyzeContent(content);
+            
+            auditResult = {
+                original: content,
+                suggestions: suggestions,
+                modified: applySuggestions(content, suggestions)
+            };
+
+            modifiedContent = auditResult.modified;
+            renderAnalysisResult();
+        }
+
+        // 分析内容（模拟，实际应调用Coze API）
+        function analyzeContent(content) {
+            const suggestions = [];
+            
+            // 资质审核（优先）
+            if (content.includes('医疗') || content.includes('治疗') || content.includes('诊断')) {
+                suggestions.push({
+                    id: 'qual-1',
+                    type: 'qualification',
+                    priority: 'critical',
+                    title: '资质审核：无医疗资质',
+                    rule: '我公司无医疗相关资质/牌照，因此不能提及医疗相关内容。',
+                    keywords: ['医疗', '治疗', '诊断'],
+                    replacements: ['健康', '保健', '支持']
+                });
+            }
+
+            if (content.includes('金融') || content.includes('理财') || content.includes('投资')) {
+                suggestions.push({
+                    id: 'qual-2',
+                    type: 'qualification',
+                    priority: 'critical',
+                    title: '资质审核：无金融资质',
+                    rule: '我公司无金融相关资质/牌照，因此不能提及金融相关内容。',
+                    keywords: ['金融', '理财', '投资'],
+                    replacements: ['科技服务', '技术服务', '数字化服务']
+                });
+            }
+
+            // 内容审核
+            if (content.includes('最好') || content.includes('最佳') || content.includes('第一')) {
+                suggestions.push({
+                    id: 'content-1',
+                    type: 'legal',
+                    priority: 'high',
+                    title: '绝对化用语禁止',
+                    rule: '广告中严禁使用"最高级"、"最佳"、"最好"、"第一"等绝对化用语。',
+                    keywords: ['最好', '最佳', '第一'],
+                    replacements: ['优质的', '专业的', '领先的']
+                });
+            }
+
+            if (content.includes('风险') || content.includes('未知')) {
+                suggestions.push({
+                    id: 'content-2',
+                    type: 'company',
+                    priority: 'normal',
+                    title: '避免焦虑表述',
+                    rule: '避免使用可能引起焦虑的表述，如"风险"、"未知"等。',
+                    keywords: ['风险', '未知'],
+                    replacements: ['需要陪伴', '共同成长', '积极面对']
+                });
+            }
+
+            return suggestions;
+        }
+
+        // 应用建议生成修改后内容
+        function applySuggestions(content, suggestions) {
+            let modified = content;
+            suggestions.forEach(suggestion => {
+                suggestion.keywords.forEach((keyword, index) => {
+                    if (suggestion.replacements[index]) {
+                        modified = modified.replace(new RegExp(keyword, 'g'), suggestion.replacements[index]);
+                    }
+                });
+            });
+            return modified;
+        }
+
+        // 渲染分析结果
+        function renderAnalysisResult() {
+            if (!auditResult) {
+                document.getElementById('analysis-content').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <p>暂无审核结果</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // 按优先级排序：资质审核优先
+            const sortedSuggestions = [...auditResult.suggestions].sort((a, b) => {
+                const priorityOrder = { 'critical': 1, 'high': 2, 'normal': 3 };
+                return (priorityOrder[a.priority] || 3) - (priorityOrder[b.priority] || 3);
+            });
+
+            const suggestionsHtml = sortedSuggestions.map((suggestion, index) => {
+                const isQualification = suggestion.type === 'qualification';
+                return `
+                    <div class="suggestion-item ${isQualification ? 'qualification-first' : ''}" data-id="${suggestion.id}">
+                        <div class="suggestion-header">
+                            <div>
+                                <span class="suggestion-title">
+                                    ${index + 1}. ${suggestion.title}
+                                    ${isQualification ? '<span class="qualification-badge">优先</span>' : ''}
+                                </span>
+                            </div>
+                            <span class="rule-tag tag-${suggestion.type}">
+                                ${suggestion.type === 'qualification' ? '资质审核' : 
+                                  suggestion.type === 'legal' ? '法律规则' : 
+                                  suggestion.type === 'company' ? '公司规则' : '业务规则'}
+                            </span>
+                        </div>
+                        <div class="rule-interpretation">
+                            <strong>规则解读：</strong>${suggestion.rule}
+                        </div>
+                        <div class="replacement-words">
+                            <strong>替换词建议：</strong>
+                            ${suggestion.replacements.map(replacement => 
+                                `<span class="replacement-word-item" onclick="applyReplacement('${suggestion.id}', '${replacement}')">${replacement}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const highlightedOriginal = highlightKeywords(auditResult.original, sortedSuggestions);
+            const highlightedModified = highlightKeywords(auditResult.modified, sortedSuggestions);
+
+            document.getElementById('analysis-content').innerHTML = `
+                <div class="analysis-result">
+                    <div class="result-header">
+                        <div class="result-title">审核结果</div>
+                        <div class="result-actions btn-group">
+                            <button class="btn btn-default" onclick="copyContent()">
+                                <span style="margin-right: 4px;">📋</span>复制修改后内容
+                            </button>
+                            <button class="btn btn-success" onclick="exportWord()">
+                                <span style="margin-right: 4px;">📄</span>导出Word
+                            </button>
+                            <button class="btn btn-primary" onclick="exportReport()">
+                                <span style="margin-right: 4px;">📥</span>导出报告
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 标签页：审核建议/对比视图 -->
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchReviewTab('original', this)">审核建议</button>
+                        <button class="tab" onclick="switchReviewTab('comparison', this)">对比查看</button>
+                        <button class="tab" onclick="switchReviewTab('modified', this)">修改后内容</button>
+                    </div>
+
+                    <!-- 审核建议标签页 -->
+                    <div class="tab-content active" id="review-original-tab">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <div>
+                                <h4 style="margin-bottom: 15px;">原文内容 <span style="font-size: 12px; color: #999;">(点击标红文字查看建议)</span></h4>
+                                <div class="original-content" id="original-content-text">
+                                    ${highlightedOriginal}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 15px;">审核建议 <span style="font-size: 12px; color: #999;">(按优先级排序)</span></h4>
+                                <div class="suggestions-list" id="suggestions-list">
+                                    ${suggestionsHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 对比查看标签页 -->
+                    <div class="tab-content" id="review-comparison-tab">
+                        <div class="comparison-view">
+                            <div class="comparison-panel original">
+                                <h4>原文内容</h4>
+                                <div id="comparison-original">${auditResult.original}</div>
+                            </div>
+                            <div class="comparison-panel modified">
+                                <h4>修改后内容</h4>
+                                <div id="comparison-modified">${generateComparisonView(auditResult.original, auditResult.modified, sortedSuggestions)}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 修改后内容标签页 -->
+                    <div class="tab-content" id="review-modified-tab">
+                        <div>
+                            <h4 style="margin-bottom: 15px;">修改后内容</h4>
+                            <div class="modified-content" id="modified-content-text">
+                                ${highlightedModified}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 高亮关键词
+        function highlightKeywords(text, suggestions) {
+            let highlighted = text;
+            suggestions.forEach(suggestion => {
+                suggestion.keywords.forEach(keyword => {
+                    const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                    const isQualification = suggestion.type === 'qualification';
+                    const highlightClass = isQualification ? 'highlight-clickable' : 'highlight';
+                    highlighted = highlighted.replace(regex, `<span class="${highlightClass}" data-id="${suggestion.id}">${keyword}</span>`);
+                });
+            });
+            return highlighted;
+        }
+
+        // 应用替换词
+        function applyReplacement(suggestionId, replacement) {
+            const suggestion = auditResult.suggestions.find(s => s.id === suggestionId);
+            if (!suggestion) return;
+
+            // 更新修改后内容
+            let modified = auditResult.original;
+            auditResult.suggestions.forEach(s => {
+                if (s.id === suggestionId) {
+                    s.keywords.forEach(keyword => {
+                        modified = modified.replace(new RegExp(keyword, 'g'), replacement);
+                    });
+                } else {
+                    // 检查是否已经应用过替换
+                    const appliedReplacement = s.appliedReplacement || s.replacements[0];
+                    if (appliedReplacement) {
+                        s.keywords.forEach(keyword => {
+                            modified = modified.replace(new RegExp(keyword, 'g'), appliedReplacement);
+                        });
+                    }
+                }
+            });
+
+            // 标记已应用的替换
+            suggestion.appliedReplacement = replacement;
+            auditResult.modified = modified;
+            modifiedContent = modified;
+            renderAnalysisResult();
+        }
+
+        // 复制修改后内容
+        function copyContent() {
+            const text = auditResult.modified || modifiedContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('内容已复制到剪贴板！');
+            }).catch(() => {
+                alert('复制失败，请手动选择文本复制');
+            });
+        }
+
+        // 导出Word文档
+        function exportWord() {
+            if (!auditResult || !auditResult.modified) {
+                alert('没有可导出的内容！');
+                return;
+            }
+
+            // 动态加载docx库
+            if (typeof window.docx === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js';
+                script.onload = function() {
+                    generateWordDocument();
+                };
+                script.onerror = function() {
+                    // 如果docx库加载失败，使用备用方案
+                    exportWordFallback();
+                };
+                document.head.appendChild(script);
+            } else {
+                generateWordDocument();
+            }
+        }
+
+        function generateWordDocument() {
+            try {
+                const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = window.docx;
+                
+                // 创建Word文档
+                const doc = new Document({
+                    sections: [{
+                        properties: {},
+                        children: [
+                            // 标题
+                            new Paragraph({
+                                text: "合规审核 - 修改后内容",
+                                heading: HeadingLevel.HEADING_1,
+                                alignment: AlignmentType.CENTER,
+                                spacing: { after: 400 }
+                            }),
+                            // 审核时间
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: `审核时间：${new Date().toLocaleString('zh-CN')}`,
+                                        size: 20
+                                    })
+                                ],
+                                spacing: { after: 300 }
+                            }),
+                            // 修改后内容标题
+                            new Paragraph({
+                                text: "修改后内容：",
+                                heading: HeadingLevel.HEADING_2,
+                                spacing: { before: 200, after: 200 }
+                            }),
+                            // 修改后内容正文
+                            new Paragraph({
+                                text: auditResult.modified,
+                                spacing: { after: 400 },
+                                alignment: AlignmentType.JUSTIFIED
+                            }),
+                            // 审核建议标题
+                            new Paragraph({
+                                text: "审核建议：",
+                                heading: HeadingLevel.HEADING_2,
+                                spacing: { before: 200, after: 200 }
+                            })
+                        ]
+                    }]
+                });
+
+                // 添加审核建议
+                auditResult.suggestions.forEach((suggestion, index) => {
+                    doc.sections[0].children.push(
+                        new Paragraph({
+                            children: [
+                                new TextRun({
+                                    text: `${index + 1}. ${suggestion.title}`,
+                                    bold: true,
+                                    size: 22
+                                })
+                            ],
+                            spacing: { before: 200, after: 100 }
+                        }),
+                        new Paragraph({
+                            children: [
+                                new TextRun({
+                                    text: `规则解读：${suggestion.rule}`,
+                                    size: 20
+                                })
+                            ],
+                            spacing: { after: 100 }
+                        }),
+                        new Paragraph({
+                            children: [
+                                new TextRun({
+                                    text: `替换建议：${suggestion.replacements.join('、')}`,
+                                    size: 20
+                                })
+                            ],
+                            spacing: { after: 200 }
+                        })
+                    );
+                });
+
+                // 生成并下载Word文档
+                Packer.toBlob(doc).then(blob => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `合规审核_修改后内容_${new Date().getTime()}.docx`;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }).catch(error => {
+                    console.error('生成Word文档失败：', error);
+                    exportWordFallback();
+                });
+            } catch (error) {
+                console.error('生成Word文档失败：', error);
+                exportWordFallback();
+            }
+        }
+
+        // 备用方案：使用HTML转Word
+        function exportWordFallback() {
+            if (!auditResult || !auditResult.modified) {
+                alert('没有可导出的内容！');
+                return;
+            }
+
+            // 创建HTML内容
+            const htmlContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>合规审核 - 修改后内容</title>
+                    <style>
+                        @page {
+                            size: A4;
+                            margin: 2.54cm;
+                        }
+                        body {
+                            font-family: 'Microsoft YaHei', SimSun, sans-serif;
+                            font-size: 12pt;
+                            line-height: 1.6;
+                        }
+                        h1 {
+                            text-align: center;
+                            font-size: 18pt;
+                            margin-bottom: 20pt;
+                        }
+                        h2 {
+                            font-size: 14pt;
+                            margin-top: 20pt;
+                            margin-bottom: 10pt;
+                        }
+                        .content {
+                            text-align: justify;
+                            margin-bottom: 20pt;
+                        }
+                        .suggestion {
+                            margin-bottom: 15pt;
+                        }
+                        .suggestion-title {
+                            font-weight: bold;
+                            margin-bottom: 5pt;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>合规审核 - 修改后内容</h1>
+                    <p><strong>审核时间：</strong>${new Date().toLocaleString('zh-CN')}</p>
+                    
+                    <h2>修改后内容：</h2>
+                    <div class="content">${auditResult.modified.replace(/\n/g, '<br>')}</div>
+                    
+                    <h2>审核建议：</h2>
+                    ${auditResult.suggestions.map((s, i) => `
+                        <div class="suggestion">
+                            <div class="suggestion-title">${i + 1}. ${s.title}</div>
+                            <div>规则解读：${s.rule}</div>
+                            <div>替换建议：${s.replacements.join('、')}</div>
+                        </div>
+                    `).join('')}
+                </body>
+                </html>
+            `;
+
+            // 创建Blob并下载
+            const blob = new Blob(['\ufeff' + htmlContent], {
+                type: 'application/msword'
+            });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `合规审核_修改后内容_${new Date().getTime()}.doc`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        // 审核结果标签页切换
+        function switchReviewTab(tabType, element) {
+            document.querySelectorAll('#analysis-page .tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('#analysis-page .tab-content').forEach(content => content.classList.remove('active'));
+            
+            element.classList.add('active');
+            
+            if (tabType === 'original') {
+                document.getElementById('review-original-tab').classList.add('active');
+            } else if (tabType === 'comparison') {
+                document.getElementById('review-comparison-tab').classList.add('active');
+                // 更新对比视图
+                if (auditResult) {
+                    const sortedSuggestions = [...auditResult.suggestions].sort((a, b) => {
+                        const priorityOrder = { 'critical': 1, 'high': 2, 'normal': 3 };
+                        return (priorityOrder[a.priority] || 3) - (priorityOrder[b.priority] || 3);
+                    });
+                    document.getElementById('comparison-modified').innerHTML = generateComparisonView(
+                        auditResult.original, 
+                        auditResult.modified, 
+                        sortedSuggestions
+                    );
+                }
+            } else if (tabType === 'modified') {
+                document.getElementById('review-modified-tab').classList.add('active');
+            }
+        }
+
+
+        // 生成对比视图（高亮修改部分）
+        function generateComparisonView(original, modified, suggestions) {
+            let result = modified;
+            const appliedReplacements = {};
+            
+            // 收集已应用的替换
+            suggestions.forEach(suggestion => {
+                if (suggestion.appliedReplacement) {
+                    suggestion.keywords.forEach(keyword => {
+                        appliedReplacements[keyword] = suggestion.appliedReplacement;
+                    });
+                } else if (suggestion.replacements && suggestion.replacements.length > 0) {
+                    suggestion.keywords.forEach((keyword, index) => {
+                        if (suggestion.replacements[index]) {
+                            appliedReplacements[keyword] = suggestion.replacements[index];
+                        }
+                    });
+                }
+            });
+
+            // 高亮显示修改的部分
+            Object.keys(appliedReplacements).forEach(keyword => {
+                const replacement = appliedReplacements[keyword];
+                if (replacement && result.includes(replacement)) {
+                    const regex = new RegExp(replacement.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                    result = result.replace(regex, `<span class="modified-highlight">${replacement}</span>`);
+                }
+            });
+
+            return result || modified;
+        }
+
+        // 导出PDF报告
+        function exportReport() {
+            // 动态加载jsPDF库
+            if (typeof window.jsPDF === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                script.onload = function() {
+                    generatePDF();
+                };
+                document.head.appendChild(script);
+            } else {
+                generatePDF();
+            }
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // 设置中文字体支持（使用默认字体）
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            let yPos = margin;
+
+            // 标题
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('合规审核报告', pageWidth / 2, yPos, { align: 'center' });
+            yPos += 15;
+
+            // 审核时间
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text(`审核时间：${new Date().toLocaleString('zh-CN')}`, margin, yPos);
+            yPos += 10;
+
+            // 原文内容
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('原文内容：', margin, yPos);
+            yPos += 8;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            const originalLines = doc.splitTextToSize(auditResult.original, pageWidth - 2 * margin);
+            originalLines.forEach(line => {
+                if (yPos > pageHeight - 20) {
+                    doc.addPage();
+                    yPos = margin;
+                }
+                doc.text(line, margin, yPos);
+                yPos += 6;
+            });
+            yPos += 5;
+
+            // 修改后内容
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('修改后内容：', margin, yPos);
+            yPos += 8;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            const modifiedLines = doc.splitTextToSize(auditResult.modified, pageWidth - 2 * margin);
+            modifiedLines.forEach(line => {
+                if (yPos > pageHeight - 20) {
+                    doc.addPage();
+                    yPos = margin;
+                }
+                doc.text(line, margin, yPos);
+                yPos += 6;
+            });
+            yPos += 5;
+
+            // 审核建议
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('审核建议：', margin, yPos);
+            yPos += 8;
+
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            auditResult.suggestions.forEach((s, i) => {
+                if (yPos > pageHeight - 30) {
+                    doc.addPage();
+                    yPos = margin;
+                }
+                
+                doc.setFont(undefined, 'bold');
+                doc.text(`${i + 1}. ${s.title}`, margin, yPos);
+                yPos += 6;
+                
+                doc.setFont(undefined, 'normal');
+                const ruleLines = doc.splitTextToSize(`规则解读：${s.rule}`, pageWidth - 2 * margin);
+                ruleLines.forEach(line => {
+                    if (yPos > pageHeight - 20) {
+                        doc.addPage();
+                        yPos = margin;
+                    }
+                    doc.text(line, margin + 5, yPos);
+                    yPos += 6;
+                });
+                
+                const replacementText = `替换建议：${s.replacements.join('、')}`;
+                const replacementLines = doc.splitTextToSize(replacementText, pageWidth - 2 * margin);
+                replacementLines.forEach(line => {
+                    if (yPos > pageHeight - 20) {
+                        doc.addPage();
+                        yPos = margin;
+                    }
+                    doc.text(line, margin + 5, yPos);
+                    yPos += 6;
+                });
+                
+                yPos += 3;
+            });
+
+            // 保存PDF
+            doc.save(`合规审核报告_${new Date().getTime()}.pdf`);
+        }
+    </script>
+</body>
+</html>
