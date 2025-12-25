@@ -107,11 +107,84 @@
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
 
         .highlight-clickable:hover {
             background: #ffcdd2;
             box-shadow: 0 2px 8px rgba(198, 40, 40, 0.3);
+        }
+
+        .highlight-success {
+            background: #d4edda;
+            color: #155724;
+            padding: 2px 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .highlight-success:hover {
+            background: #c3e6cb;
+            box-shadow: 0 2px 8px rgba(21, 87, 36, 0.3);
+        }
+
+        .highlight-clickable.active,
+        .highlight-success.active {
+            background: #1890ff;
+            color: #fff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        /* 手动编辑区域 */
+        .manual-edit-section {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            border-left: 3px solid #1890ff;
+        }
+
+        .manual-edit-section strong {
+            display: block;
+            margin-bottom: 10px;
+            color: #1890ff;
+        }
+
+        .manual-edit-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .manual-edit-input:focus {
+            outline: none;
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        .manual-edit-textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            resize: vertical;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .manual-edit-textarea:focus {
+            outline: none;
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
         }
 
         /* 分类标签样式 */
@@ -729,6 +802,11 @@
             100% { transform: rotate(360deg); }
         }
 
+        @keyframes highlightPulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: #e6f7ff; }
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .header {
@@ -788,10 +866,22 @@
             <p class="page-desc">输入需要审核的内容，系统将自动进行合规性分析和审核</p>
             
             <div class="input-section">
-                <label class="input-label">请输入需要审核的内容：</label>
-                <textarea class="textarea-input" id="content-input" placeholder="在此输入需要审核的文本内容...">天九网科企业数字化转型服务
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <label class="input-label" style="margin-bottom: 0;">请输入需要审核的内容：</label>
+                    <div style="display: flex; gap: 8px;">
+                        <label class="btn btn-default" style="margin: 0; cursor: pointer;">
+                            <span style="margin-right: 4px;">📄</span>导入文档
+                            <input type="file" id="doc-input" class="file-input" accept=".doc,.docx,.pdf,.txt" style="display: none;" onchange="handleDocImport(event)">
+                        </label>
+                    </div>
+                </div>
+                <textarea class="textarea-input" id="content-input" placeholder="在此输入需要审核的文本内容，或点击上方"导入文档"按钮导入Word、PDF、TXT格式文档...">天九网科企业数字化转型服务
 【引领未来,智创价值】
 选择天九网科，就是选择最好的数字化转型服务。我们拥有第一的行业地位，为客户提供最专业的医疗健康管理解决方案和金融科技服务。企业转型之路充满未知风险，但我们可以通过投资理财实现快速盈利。</textarea>
+                <div id="doc-import-status" style="display: none; margin-top: 10px; padding: 10px; background: #e6f7ff; border: 1px solid #91d5ff; border-radius: 4px; font-size: 14px; color: #1890ff;">
+                    <span id="doc-import-text"></span>
+                    <button class="btn btn-danger btn-small" onclick="clearDocImport()" style="margin-left: 10px;">清除</button>
+                </div>
             </div>
 
             <div class="platform-select">
@@ -890,6 +980,8 @@
         let auditResult = null;
         // 存储修改后的内容
         let modifiedContent = '';
+        // 存储导入的文档
+        let importedDoc = null;
 
         // 页面切换
         function switchPage(pageId) {
@@ -1022,6 +1114,138 @@
                 fileList.innerHTML = '';
                 fileInput.value = '';
             }, 2000);
+        }
+
+        // 处理文档导入
+        function handleDocImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // 限制单文档导入
+            if (event.target.files.length > 1) {
+                alert('仅支持单文档导入，请选择一个文件！');
+                event.target.value = '';
+                return;
+            }
+
+            const fileName = file.name;
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            
+            if (!['doc', 'docx', 'pdf', 'txt'].includes(fileExtension)) {
+                alert('仅支持 Word (.doc, .docx)、PDF (.pdf) 和 TXT (.txt) 格式！');
+                event.target.value = '';
+                return;
+            }
+
+            importedDoc = file;
+            
+            // 显示导入状态
+            document.getElementById('doc-import-status').style.display = 'block';
+            document.getElementById('doc-import-text').textContent = `已导入：${fileName} (${formatFileSize(file.size)})`;
+
+            // 读取文件内容
+            if (fileExtension === 'txt') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('content-input').value = e.target.result;
+                };
+                reader.readAsText(file, 'UTF-8');
+            } else if (fileExtension === 'pdf') {
+                // PDF处理需要pdf.js库
+                extractTextFromPDF(file);
+            } else if (fileExtension === 'doc' || fileExtension === 'docx') {
+                // Word文档处理需要mammoth.js库
+                extractTextFromWord(file);
+            }
+        }
+
+        // 清除文档导入
+        function clearDocImport() {
+            importedDoc = null;
+            document.getElementById('doc-input').value = '';
+            document.getElementById('doc-import-status').style.display = 'none';
+            document.getElementById('content-input').value = '';
+        }
+
+        // 从PDF提取文本
+        function extractTextFromPDF(file) {
+            // 动态加载pdf.js
+            if (typeof window.pdfjsLib === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                script.onload = function() {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                    readPDF(file);
+                };
+                document.head.appendChild(script);
+            } else {
+                readPDF(file);
+            }
+        }
+
+        function readPDF(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const typedArray = new Uint8Array(e.target.result);
+                window.pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
+                    let text = '';
+                    const numPages = pdf.numPages;
+                    let pagePromises = [];
+                    
+                    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                        pagePromises.push(
+                            pdf.getPage(pageNum).then(function(page) {
+                                return page.getTextContent().then(function(textContent) {
+                                    return textContent.items.map(item => item.str).join(' ');
+                                });
+                            })
+                        );
+                    }
+                    
+                    Promise.all(pagePromises).then(function(texts) {
+                        text = texts.join('\n\n');
+                        document.getElementById('content-input').value = text;
+                    });
+                }).catch(function(error) {
+                    console.error('PDF读取失败：', error);
+                    alert('PDF文件读取失败，请确保文件格式正确！');
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 从Word提取文本
+        function extractTextFromWord(file) {
+            // 动态加载mammoth.js
+            if (typeof window.mammoth === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+                script.onload = function() {
+                    readWord(file);
+                };
+                script.onerror = function() {
+                    alert('Word文档处理库加载失败，请使用TXT格式或手动输入内容！');
+                };
+                document.head.appendChild(script);
+            } else {
+                readWord(file);
+            }
+        }
+
+        function readWord(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                window.mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+                    .then(function(result) {
+                        document.getElementById('content-input').value = result.value;
+                    })
+                    .catch(function(error) {
+                        console.error('Word读取失败：', error);
+                        alert('Word文件读取失败，请确保文件格式正确！');
+                    });
+            };
+            reader.readAsArrayBuffer(file);
         }
 
         // 提交内容审核
@@ -1161,8 +1385,10 @@
 
             const suggestionsHtml = sortedSuggestions.map((suggestion, index) => {
                 const isQualification = suggestion.type === 'qualification';
+                const manualReplacement = suggestion.manualReplacement || '';
+                const manualNote = suggestion.manualNote || '';
                 return `
-                    <div class="suggestion-item ${isQualification ? 'qualification-first' : ''}" data-id="${suggestion.id}">
+                    <div class="suggestion-item ${isQualification ? 'qualification-first' : ''}" id="suggestion-${suggestion.id}" data-id="${suggestion.id}">
                         <div class="suggestion-header">
                             <div>
                                 <span class="suggestion-title">
@@ -1185,12 +1411,26 @@
                                 `<span class="replacement-word-item" onclick="applyReplacement('${suggestion.id}', '${replacement}')">${replacement}</span>`
                             ).join('')}
                         </div>
+                        <div class="manual-edit-section">
+                            <strong>手动输入替代词：</strong>
+                            <input type="text" class="manual-edit-input" id="manual-replace-${suggestion.id}" 
+                                placeholder="手动输入替代词" value="${manualReplacement}"
+                                onchange="updateManualReplacement('${suggestion.id}', this.value)">
+                            <button class="btn btn-primary btn-small" onclick="applyManualReplacement('${suggestion.id}')" style="margin-top: 5px;">应用替代词</button>
+                        </div>
+                        <div class="manual-edit-section" style="margin-top: 10px;">
+                            <strong>审核补充意见：</strong>
+                            <textarea class="manual-edit-textarea" id="manual-note-${suggestion.id}" 
+                                placeholder="补充审核意见（可选）">${manualNote}</textarea>
+                            <button class="btn btn-default btn-small" onclick="saveManualNote('${suggestion.id}')" style="margin-top: 5px;">保存意见</button>
+                        </div>
                     </div>
                 `;
             }).join('');
 
             const highlightedOriginal = highlightKeywords(auditResult.original, sortedSuggestions);
-            const highlightedModified = highlightKeywords(auditResult.modified, sortedSuggestions);
+            // 修改后内容高亮：显示已修改的部分（绿色）
+            const highlightedModified = highlightModifiedContent(auditResult.modified, sortedSuggestions);
 
             document.getElementById('analysis-content').innerHTML = `
                 <div class="analysis-result">
@@ -1220,7 +1460,7 @@
                     <div class="tab-content active" id="review-original-tab">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                             <div>
-                                <h4 style="margin-bottom: 15px;">原文内容 <span style="font-size: 12px; color: #999;">(点击标红文字查看建议)</span></h4>
+                                <h4 style="margin-bottom: 15px;">原文内容 <span style="font-size: 12px; color: #999;">(红色表示违规词，绿色表示已修改，点击可定位到审核建议)</span></h4>
                                 <div class="original-content" id="original-content-text">
                                     ${highlightedOriginal}
                                 </div>
@@ -1264,15 +1504,93 @@
         // 高亮关键词
         function highlightKeywords(text, suggestions) {
             let highlighted = text;
+            const keywordMap = new Map(); // 用于记录关键词对应的建议ID
+            
             suggestions.forEach(suggestion => {
                 suggestion.keywords.forEach(keyword => {
-                    const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                    const isQualification = suggestion.type === 'qualification';
-                    const highlightClass = isQualification ? 'highlight-clickable' : 'highlight';
-                    highlighted = highlighted.replace(regex, `<span class="${highlightClass}" data-id="${suggestion.id}">${keyword}</span>`);
+                    if (!keywordMap.has(keyword)) {
+                        keywordMap.set(keyword, suggestion.id);
+                    }
                 });
             });
+
+            // 先标记所有关键词位置，避免重复替换
+            const processedPositions = new Set();
+            
+            // 处理未应用的违规词（红色高亮）
+            suggestions.forEach(suggestion => {
+                if (!suggestion.appliedReplacement) {
+                    suggestion.keywords.forEach(keyword => {
+                        const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                        highlighted = highlighted.replace(regex, (match, offset) => {
+                            const position = offset + match.length;
+                            if (!processedPositions.has(position)) {
+                                processedPositions.add(position);
+                                const isQualification = suggestion.type === 'qualification';
+                                const highlightClass = 'highlight-clickable';
+                                return `<span class="${highlightClass}" data-id="${suggestion.id}" onclick="scrollToSuggestion('${suggestion.id}')">${match}</span>`;
+                            }
+                            return match;
+                        });
+                    });
+                }
+            });
+
+            // 处理已应用的替换（在修改后内容中显示绿色高亮）
+            // 注意：这里是在原文中标记，实际修改后的内容会在modified中显示
+
             return highlighted;
+        }
+
+        // 高亮修改后的内容（显示已修改的部分为绿色）
+        function highlightModifiedContent(text, suggestions) {
+            let highlighted = text;
+            const appliedReplacements = new Map();
+            
+            // 收集所有已应用的替换
+            suggestions.forEach(suggestion => {
+                const replacement = suggestion.appliedReplacement || (suggestion.replacements && suggestion.replacements[0]);
+                if (replacement) {
+                    suggestion.keywords.forEach(keyword => {
+                        appliedReplacements.set(replacement, suggestion.id);
+                    });
+                }
+            });
+
+            // 高亮显示已修改的部分（绿色）
+            appliedReplacements.forEach((suggestionId, replacement) => {
+                if (highlighted.includes(replacement)) {
+                    const regex = new RegExp(replacement.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                    highlighted = highlighted.replace(regex, `<span class="highlight-success" data-id="${suggestionId}" onclick="scrollToSuggestion('${suggestionId}')">${replacement}</span>`);
+                }
+            });
+
+            return highlighted;
+        }
+
+        // 滚动到对应的审核建议
+        function scrollToSuggestion(suggestionId) {
+            const suggestionElement = document.getElementById(`suggestion-${suggestionId}`);
+            if (suggestionElement) {
+                // 移除其他高亮的active状态
+                document.querySelectorAll('.highlight-clickable, .highlight-success').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // 添加当前高亮的active状态
+                document.querySelectorAll(`[data-id="${suggestionId}"]`).forEach(el => {
+                    el.classList.add('active');
+                });
+
+                // 滚动到建议位置
+                suggestionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // 高亮效果
+                suggestionElement.style.animation = 'none';
+                setTimeout(() => {
+                    suggestionElement.style.animation = 'highlightPulse 0.5s ease-in-out';
+                }, 10);
+            }
         }
 
         // 应用替换词
@@ -1313,6 +1631,44 @@
             }).catch(() => {
                 alert('复制失败，请手动选择文本复制');
             });
+        }
+
+        // 更新手动替代词
+        function updateManualReplacement(suggestionId, value) {
+            const suggestion = auditResult.suggestions.find(s => s.id === suggestionId);
+            if (suggestion) {
+                suggestion.manualReplacement = value;
+            }
+        }
+
+        // 应用手动替代词
+        function applyManualReplacement(suggestionId) {
+            const input = document.getElementById(`manual-replace-${suggestionId}`);
+            const replacement = input.value.trim();
+            
+            if (!replacement) {
+                alert('请输入替代词！');
+                return;
+            }
+
+            applyReplacement(suggestionId, replacement);
+            alert('替代词已应用！');
+        }
+
+        // 保存审核补充意见
+        function saveManualNote(suggestionId) {
+            const textarea = document.getElementById(`manual-note-${suggestionId}`);
+            const note = textarea.value.trim();
+            
+            const suggestion = auditResult.suggestions.find(s => s.id === suggestionId);
+            if (suggestion) {
+                suggestion.manualNote = note;
+                if (note) {
+                    alert('审核补充意见已保存！');
+                } else {
+                    alert('审核补充意见已清除！');
+                }
+            }
         }
 
         // 导出Word文档
