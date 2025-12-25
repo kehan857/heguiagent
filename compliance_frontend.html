@@ -1533,8 +1533,8 @@
             }).join('');
 
             // 原文内容高亮：显示违规词（红色）和已应用的替换（绿色）
-            // 使用修改后的内容作为基础，但高亮显示哪些是已修改的（绿色）和哪些是未修改的违规词（红色）
-            const highlightedOriginal = highlightKeywords(auditResult.modified || auditResult.original, sortedSuggestions);
+            // 从原文开始，已替换的词显示为绿色（替换后的词），未替换的违规词显示为红色
+            const highlightedOriginal = highlightKeywords(auditResult.original, sortedSuggestions);
             // 修改后内容高亮：显示已修改的部分（绿色）
             const highlightedModified = highlightModifiedContent(auditResult.modified, sortedSuggestions);
 
@@ -1608,31 +1608,32 @@
         }
 
         // 高亮关键词（原文内容中显示：红色=违规词，绿色=已应用的替换）
-        // text参数应该是修改后的内容（已应用替换后的文本）
+        // text参数是原文内容，需要根据替换状态显示不同的高亮
         function highlightKeywords(text, suggestions) {
             let highlighted = text;
             const processedPositions = new Set();
             
-            // 先处理已应用的替换（绿色高亮，显示替换后的词）
+            // 先处理已应用的替换（将违规词替换为替换后的词，并标记为绿色）
             suggestions.forEach(suggestion => {
                 if (suggestion.appliedReplacement) {
                     const replacement = suggestion.appliedReplacement;
-                    // 在修改后的文本中查找替换后的词，标记为绿色
-                    const regex = new RegExp(replacement.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                    highlighted = highlighted.replace(regex, (match, offset) => {
-                        const position = offset + match.length;
-                        if (!processedPositions.has(position)) {
-                            processedPositions.add(position);
-                            // 显示替换后的词（绿色高亮）
-                            return `<span class="highlight-success" data-id="${suggestion.id}" onclick="scrollToSuggestion('${suggestion.id}')">${match}</span>`;
-                        }
-                        return match;
+                    suggestion.keywords.forEach(keyword => {
+                        // 在原文中找到违规词，替换为替换后的词并标记为绿色
+                        const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                        highlighted = highlighted.replace(regex, (match, offset) => {
+                            const position = offset + match.length;
+                            if (!processedPositions.has(position)) {
+                                processedPositions.add(position);
+                                // 显示替换后的词（绿色高亮）
+                                return `<span class="highlight-success" data-id="${suggestion.id}" onclick="scrollToSuggestion('${suggestion.id}')">${replacement}</span>`;
+                            }
+                            return match;
+                        });
                     });
                 }
             });
 
             // 再处理未应用的违规词（红色高亮，显示原词）
-            // 需要在修改后的文本中查找原始违规词（如果还存在的话）
             suggestions.forEach(suggestion => {
                 if (!suggestion.appliedReplacement) {
                     suggestion.keywords.forEach(keyword => {
