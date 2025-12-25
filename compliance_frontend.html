@@ -140,16 +140,17 @@
         /* 手动编辑区域 */
         .manual-edit-section {
             background: #f0f7ff;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 15px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin-top: 10px;
             border-left: 3px solid #1890ff;
         }
 
         .manual-edit-section strong {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #1890ff;
+            font-size: 13px;
         }
 
         .manual-edit-input {
@@ -626,26 +627,79 @@
         }
 
         .original-content {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
+            background: #fff;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 20px;
-            margin-bottom: 30px;
             line-height: 1.8;
-            font-size: 16px;
+            font-size: 15px;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            height: calc(100vh - 400px);
+            min-height: 500px;
+            max-height: 800px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .original-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .original-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .original-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .original-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
 
         .suggestions-list {
             margin-top: 30px;
+            height: calc(100vh - 400px);
+            min-height: 500px;
+            max-height: 800px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .suggestions-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .suggestions-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .suggestions-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .suggestions-list::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
 
         .suggestion-item {
-            background: #f8f9fa;
+            background: #fff;
             border-left: 4px solid #667eea;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
             transition: all 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .suggestion-item.qualification-first {
@@ -654,20 +708,53 @@
         }
 
         .suggestion-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .suggestion-item.collapsed {
+            padding: 12px 16px;
+        }
+
+        .suggestion-item.collapsed .suggestion-details {
+            display: none;
+        }
+
+        .suggestion-item.collapsed .collapse-icon {
+            transform: rotate(-90deg);
         }
 
         .suggestion-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .suggestion-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .collapse-icon {
+            font-size: 12px;
+            color: #999;
+            transition: transform 0.3s;
+            user-select: none;
         }
 
         .suggestion-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 600;
             color: #333;
+            flex: 1;
+        }
+
+        .suggestion-details {
+            margin-top: 12px;
         }
 
         .qualification-badge {
@@ -707,22 +794,26 @@
         }
 
         .rule-interpretation {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
+            background: #f5f5f5;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
             color: #666;
             line-height: 1.6;
+            font-size: 13px;
+            border-left: 3px solid #1890ff;
         }
 
         .replacement-words {
-            margin-top: 15px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .replacement-words strong {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #333;
+            font-size: 13px;
         }
 
         .replacement-word-item {
@@ -844,6 +935,13 @@
 
             #review-original-tab > div {
                 grid-template-columns: 1fr !important;
+            }
+
+            .original-content,
+            .suggestions-list {
+                height: 400px !important;
+                min-height: 300px !important;
+                max-height: 500px !important;
             }
         }
     </style>
@@ -1387,10 +1485,13 @@
                 const isQualification = suggestion.type === 'qualification';
                 const manualReplacement = suggestion.manualReplacement || '';
                 const manualNote = suggestion.manualNote || '';
+                // 默认第一个展开，其他折叠
+                const isCollapsed = suggestion.collapsed === undefined ? (index !== 0) : suggestion.collapsed;
                 return `
-                    <div class="suggestion-item ${isQualification ? 'qualification-first' : ''}" id="suggestion-${suggestion.id}" data-id="${suggestion.id}">
-                        <div class="suggestion-header">
-                            <div>
+                    <div class="suggestion-item ${isQualification ? 'qualification-first' : ''} ${isCollapsed ? 'collapsed' : ''}" id="suggestion-${suggestion.id}" data-id="${suggestion.id}">
+                        <div class="suggestion-header" onclick="toggleSuggestion('${suggestion.id}')">
+                            <div class="suggestion-title-wrapper">
+                                <span class="collapse-icon">▶</span>
                                 <span class="suggestion-title">
                                     ${index + 1}. ${suggestion.title}
                                     ${isQualification ? '<span class="qualification-badge">优先</span>' : ''}
@@ -1402,27 +1503,30 @@
                                   suggestion.type === 'company' ? '公司规则' : '业务规则'}
                             </span>
                         </div>
-                        <div class="rule-interpretation">
-                            <strong>规则解读：</strong>${suggestion.rule}
-                        </div>
-                        <div class="replacement-words">
-                            <strong>替换词建议：</strong>
-                            ${suggestion.replacements.map(replacement => 
-                                `<span class="replacement-word-item" onclick="applyReplacement('${suggestion.id}', '${replacement}')">${replacement}</span>`
-                            ).join('')}
-                        </div>
-                        <div class="manual-edit-section">
-                            <strong>手动输入替代词：</strong>
-                            <input type="text" class="manual-edit-input" id="manual-replace-${suggestion.id}" 
-                                placeholder="手动输入替代词" value="${manualReplacement}"
-                                onchange="updateManualReplacement('${suggestion.id}', this.value)">
-                            <button class="btn btn-primary btn-small" onclick="applyManualReplacement('${suggestion.id}')" style="margin-top: 5px;">应用替代词</button>
-                        </div>
-                        <div class="manual-edit-section" style="margin-top: 10px;">
-                            <strong>审核补充意见：</strong>
-                            <textarea class="manual-edit-textarea" id="manual-note-${suggestion.id}" 
-                                placeholder="补充审核意见（可选）">${manualNote}</textarea>
-                            <button class="btn btn-default btn-small" onclick="saveManualNote('${suggestion.id}')" style="margin-top: 5px;">保存意见</button>
+                        <div class="suggestion-details">
+                            <div class="rule-interpretation">
+                                <strong>规则解读：</strong>${suggestion.rule}
+                            </div>
+                            <div class="replacement-words">
+                                <strong>替换词建议：</strong>
+                                ${suggestion.replacements.map(replacement => 
+                                    `<span class="replacement-word-item" onclick="event.stopPropagation(); applyReplacement('${suggestion.id}', '${replacement}')">${replacement}</span>`
+                                ).join('')}
+                            </div>
+                            <div class="manual-edit-section">
+                                <strong>手动输入替代词：</strong>
+                                <input type="text" class="manual-edit-input" id="manual-replace-${suggestion.id}" 
+                                    placeholder="手动输入替代词" value="${manualReplacement}"
+                                    onchange="updateManualReplacement('${suggestion.id}', this.value)"
+                                    onclick="event.stopPropagation();">
+                                <button class="btn btn-primary btn-small" onclick="event.stopPropagation(); applyManualReplacement('${suggestion.id}')" style="margin-top: 5px;">应用替代词</button>
+                            </div>
+                            <div class="manual-edit-section" style="margin-top: 10px;">
+                                <strong>审核补充意见：</strong>
+                                <textarea class="manual-edit-textarea" id="manual-note-${suggestion.id}" 
+                                    placeholder="补充审核意见（可选）" onclick="event.stopPropagation();">${manualNote}</textarea>
+                                <button class="btn btn-default btn-small" onclick="event.stopPropagation(); saveManualNote('${suggestion.id}')" style="margin-top: 5px;">保存意见</button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1568,10 +1672,12 @@
             return highlighted;
         }
 
-        // 滚动到对应的审核建议
+        // 滚动到对应的审核建议（在审核建议区域内滚动）
         function scrollToSuggestion(suggestionId) {
             const suggestionElement = document.getElementById(`suggestion-${suggestionId}`);
-            if (suggestionElement) {
+            const suggestionsList = document.getElementById('suggestions-list');
+            
+            if (suggestionElement && suggestionsList) {
                 // 移除其他高亮的active状态
                 document.querySelectorAll('.highlight-clickable, .highlight-success').forEach(el => {
                     el.classList.remove('active');
@@ -1582,14 +1688,51 @@
                     el.classList.add('active');
                 });
 
-                // 滚动到建议位置
-                suggestionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 如果建议被折叠，先展开
+                if (suggestionElement.classList.contains('collapsed')) {
+                    toggleSuggestion(suggestionId, false);
+                }
+
+                // 在审核建议区域内滚动
+                const listRect = suggestionsList.getBoundingClientRect();
+                const elementRect = suggestionElement.getBoundingClientRect();
+                const scrollTop = suggestionsList.scrollTop;
+                const elementOffsetTop = elementRect.top - listRect.top + scrollTop;
+                
+                // 计算目标滚动位置（居中显示）
+                const targetScrollTop = elementOffsetTop - (listRect.height / 2) + (elementRect.height / 2);
+                
+                suggestionsList.scrollTo({
+                    top: targetScrollTop,
+                    behavior: 'smooth'
+                });
                 
                 // 高亮效果
                 suggestionElement.style.animation = 'none';
                 setTimeout(() => {
                     suggestionElement.style.animation = 'highlightPulse 0.5s ease-in-out';
                 }, 10);
+            }
+        }
+
+        // 切换建议的折叠/展开状态
+        function toggleSuggestion(suggestionId, toggle = true) {
+            const suggestionElement = document.getElementById(`suggestion-${suggestionId}`);
+            if (!suggestionElement) return;
+
+            const suggestion = auditResult.suggestions.find(s => s.id === suggestionId);
+            if (!suggestion) return;
+
+            if (toggle) {
+                suggestion.collapsed = !suggestion.collapsed;
+            } else {
+                suggestion.collapsed = false;
+            }
+
+            if (suggestion.collapsed) {
+                suggestionElement.classList.add('collapsed');
+            } else {
+                suggestionElement.classList.remove('collapsed');
             }
         }
 
