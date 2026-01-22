@@ -643,6 +643,156 @@
             overflow-x: hidden;
         }
 
+        /* 分段显示样式 */
+        .content-segment {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .content-segment:hover {
+            background: #f5f5f5;
+            border-color: #d9d9d9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .content-segment.selected {
+            background: #e6f7ff;
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        .segment-number {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: #1890ff;
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .segment-content {
+            padding-right: 60px;
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        /* 文本选择添加建议的样式 */
+        .add-suggestion-btn {
+            position: absolute;
+            top: 8px;
+            right: 50px;
+            background: #52c41a;
+            color: #fff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+
+        .content-segment:hover .add-suggestion-btn {
+            opacity: 1;
+        }
+
+        .add-suggestion-btn:hover {
+            background: #73d13d;
+        }
+
+        /* 手动添加审核建议弹窗 */
+        .manual-suggestion-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .manual-suggestion-modal.active {
+            display: flex;
+        }
+
+        .manual-suggestion-dialog {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .manual-suggestion-dialog h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .manual-suggestion-dialog .form-group {
+            margin-bottom: 16px;
+        }
+
+        .manual-suggestion-dialog label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .manual-suggestion-dialog input,
+        .manual-suggestion-dialog textarea,
+        .manual-suggestion-dialog select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .manual-suggestion-dialog textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .manual-suggestion-dialog .selected-text {
+            background: #fff7e6;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #faad14;
+            margin-bottom: 16px;
+            word-break: break-all;
+        }
+
+        .manual-suggestion-dialog .selected-text strong {
+            color: #faad14;
+        }
+
+        .manual-suggestion-dialog .dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
         .original-content::-webkit-scrollbar {
             width: 8px;
         }
@@ -1483,6 +1633,7 @@
 
             const suggestionsHtml = sortedSuggestions.map((suggestion, index) => {
                 const isQualification = suggestion.type === 'qualification';
+                const isManual = suggestion.isManual || false;
                 const manualReplacement = suggestion.manualReplacement || '';
                 const manualNote = suggestion.manualNote || '';
                 // 默认第一个展开，其他折叠
@@ -1495,6 +1646,7 @@
                                 <span class="suggestion-title">
                                     ${index + 1}. ${suggestion.title}
                                     ${isQualification ? '<span class="qualification-badge">优先</span>' : ''}
+                                    ${isManual ? '<span style="background: #faad14; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px;">手动添加</span>' : ''}
                                 </span>
                             </div>
                             <span class="rule-tag tag-${suggestion.type}">
@@ -1504,15 +1656,22 @@
                             </span>
                         </div>
                         <div class="suggestion-details">
+                            ${isManual && suggestion.selectedText ? `
+                                <div style="background: #fff7e6; padding: 10px; border-radius: 4px; margin-bottom: 10px; border-left: 3px solid #faad14;">
+                                    <strong>选中文本：</strong><span>${suggestion.selectedText}</span>
+                                </div>
+                            ` : ''}
                             <div class="rule-interpretation">
                                 <strong>规则解读：</strong>${suggestion.rule}
                             </div>
-                            <div class="replacement-words">
-                                <strong>替换词建议：</strong>
-                                ${suggestion.replacements.map(replacement => 
-                                    `<span class="replacement-word-item" onclick="event.stopPropagation(); applyReplacement('${suggestion.id}', '${replacement}')">${replacement}</span>`
-                                ).join('')}
-                            </div>
+                            ${suggestion.replacements && suggestion.replacements.length > 0 ? `
+                                <div class="replacement-words">
+                                    <strong>替换词建议：</strong>
+                                    ${suggestion.replacements.map(replacement => 
+                                        `<span class="replacement-word-item" onclick="event.stopPropagation(); applyReplacement('${suggestion.id}', '${replacement}')">${replacement}</span>`
+                                    ).join('')}
+                                </div>
+                            ` : ''}
                             <div class="manual-edit-section">
                                 <strong>手动输入替代词：</strong>
                                 <input type="text" class="manual-edit-input" id="manual-replace-${suggestion.id}" 
@@ -1535,6 +1694,8 @@
             // 原文内容高亮：显示违规词（红色）和已应用的替换（绿色）
             // 从原文开始，已替换的词显示为绿色（替换后的词），未替换的违规词显示为红色
             const highlightedOriginal = highlightKeywords(auditResult.original, sortedSuggestions);
+            // 分段显示原文内容
+            const segmentedOriginal = segmentContent(highlightedOriginal);
             // 修改后内容高亮：显示已修改的部分（绿色）
             const highlightedModified = highlightModifiedContent(auditResult.modified, sortedSuggestions);
 
@@ -1566,9 +1727,14 @@
                     <div class="tab-content active" id="review-original-tab">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                             <div>
-                                <h4 style="margin-bottom: 15px;">原文内容 <span style="font-size: 12px; color: #999;">(红色表示违规词，绿色表示已修改，点击可定位到审核建议)</span></h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <h4 style="margin: 0;">原文内容 <span style="font-size: 12px; color: #999;">(红色表示违规词，绿色表示已修改，点击可定位到审核建议)</span></h4>
+                                    <button class="btn btn-default btn-small" onclick="toggleSegmentView()" id="segment-view-toggle">
+                                        <span id="segment-view-icon">📄</span> 分段显示
+                                    </button>
+                                </div>
                                 <div class="original-content" id="original-content-text">
-                                    ${highlightedOriginal}
+                                    ${segmentedOriginal}
                                 </div>
                             </div>
                             <div>
@@ -1636,23 +1802,30 @@
             // 再处理未应用的违规词（红色高亮，显示原词）
             suggestions.forEach(suggestion => {
                 if (!suggestion.appliedReplacement) {
-                    suggestion.keywords.forEach(keyword => {
-                        const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                        highlighted = highlighted.replace(regex, (match, offset) => {
-                            const position = offset + match.length;
-                            // 检查这个位置是否已经被处理过（已应用替换）
-                            if (!processedPositions.has(position)) {
-                                processedPositions.add(position);
-                                const highlightClass = 'highlight-clickable';
-                                return `<span class="${highlightClass}" data-id="${suggestion.id}" onclick="scrollToSuggestion('${suggestion.id}')">${match}</span>`;
-                            }
-                            return match;
-                        });
+                    // 处理手动添加的建议（使用selectedText）
+                    const keywordToHighlight = suggestion.selectedText || suggestion.keywords[0];
+                    const regex = new RegExp(keywordToHighlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                    highlighted = highlighted.replace(regex, (match, offset) => {
+                        const position = offset + match.length;
+                        // 检查这个位置是否已经被处理过（已应用替换）
+                        if (!processedPositions.has(position)) {
+                            processedPositions.add(position);
+                            const highlightClass = suggestion.isManual ? 'highlight-clickable' : 'highlight-clickable';
+                            const manualBadge = suggestion.isManual ? ' <span style="font-size: 10px; background: #faad14; color: #fff; padding: 1px 4px; border-radius: 2px;">手动</span>' : '';
+                            return `<span class="${highlightClass}" data-id="${suggestion.id}" onclick="scrollToSuggestion('${suggestion.id}')">${match}${manualBadge}</span>`;
+                        }
+                        return match;
                     });
                 }
             });
 
             return highlighted;
+        }
+
+        // 高亮显示手动添加的建议
+        function highlightManualSuggestion(suggestion) {
+            // 这个函数在renderAnalysisResult中会被调用，因为已经重新渲染了
+            // 这里可以添加额外的处理逻辑
         }
 
         // 高亮修改后的内容（显示已修改的部分为绿色）
@@ -1821,6 +1994,392 @@
                     alert('审核补充意见已清除！');
                 }
             }
+        }
+
+        // 分段显示内容
+        function segmentContent(content) {
+            // 创建一个临时div来解析HTML内容
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            
+            // 获取纯文本用于分段
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
+            
+            // 按段落分割（空行、换行符等）
+            let segments = plainText.split(/\n\s*\n|\r\n\s*\r\n/).filter(seg => seg.trim().length > 0);
+            
+            // 如果只有一段或段落太长，尝试按句号、问号、感叹号分割
+            if (segments.length <= 1 || segments.some(seg => seg.length > 300)) {
+                const allSegments = [];
+                segments.forEach(segment => {
+                    if (segment.length > 300) {
+                        // 长段落按句子分割
+                        const sentences = segment.split(/([。！？；\n])/);
+                        let currentSegment = '';
+                        
+                        sentences.forEach((sentence, index) => {
+                            currentSegment += sentence;
+                            // 每150-200字或遇到句号、问号、感叹号时分割
+                            if (currentSegment.length > 150 && (sentence.match(/[。！？]/) || index === sentences.length - 1)) {
+                                if (currentSegment.trim().length > 0) {
+                                    allSegments.push(currentSegment.trim());
+                                    currentSegment = '';
+                                }
+                            }
+                        });
+                        
+                        if (currentSegment.trim().length > 0) {
+                            allSegments.push(currentSegment.trim());
+                        }
+                    } else {
+                        allSegments.push(segment);
+                    }
+                });
+                
+                if (allSegments.length > 1) {
+                    segments = allSegments;
+                }
+            }
+            
+            // 如果仍然只有一段，尝试按逗号、分号等进一步分割
+            if (segments.length === 1 && segments[0].length > 200) {
+                const longSegment = segments[0];
+                const parts = longSegment.split(/([，,；;])/);
+                const newSegments = [];
+                let currentPart = '';
+                
+                parts.forEach((part, index) => {
+                    currentPart += part;
+                    if (currentPart.length > 100 && (part.match(/[，,；;]/) || index === parts.length - 1)) {
+                        if (currentPart.trim().length > 0) {
+                            newSegments.push(currentPart.trim());
+                            currentPart = '';
+                        }
+                    }
+                });
+                
+                if (currentPart.trim().length > 0) {
+                    newSegments.push(currentPart.trim());
+                }
+                
+                if (newSegments.length > 1) {
+                    segments = newSegments;
+                }
+            }
+            
+            // 为每个段落创建HTML，保留原有的高亮标记
+            const segmentHtmls = [];
+            let currentPos = 0;
+            
+            segments.forEach((segment, index) => {
+                // 在原始HTML内容中找到对应的位置
+                const segmentStart = plainText.indexOf(segment, currentPos);
+                if (segmentStart !== -1) {
+                    currentPos = segmentStart + segment.length;
+                    
+                    // 提取该段落对应的HTML（保留高亮）
+                    const segmentHtml = extractSegmentHtml(content, plainText, segment, segmentStart);
+                    
+                    const segmentDiv = `<div class="content-segment" data-segment-index="${index}">
+                        <span class="segment-number">段落 ${index + 1}</span>
+                        <button class="add-suggestion-btn" onclick="addManualSuggestion(${index})" title="为此段落添加审核建议">+ 添加建议</button>
+                        <div class="segment-content" id="segment-${index}">${segmentHtml}</div>
+                    </div>`;
+                    segmentHtmls.push(segmentDiv);
+                }
+            });
+            
+            return segmentHtmls.length > 0 ? segmentHtmls.join('') : `<div class="content-segment"><div class="segment-content">${content}</div></div>`;
+        }
+
+        // 从完整HTML中提取段落对应的HTML（保留高亮）
+        function extractSegmentHtml(fullHtml, fullText, segmentText, segmentStart) {
+            // 简单方法：直接使用原始HTML，因为高亮已经应用
+            // 为了更精确，我们可以尝试找到包含该段落的HTML片段
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = fullHtml;
+            
+            // 获取所有文本节点
+            const textNodes = [];
+            const walker = document.createTreeWalker(
+                tempDiv,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            
+            let node;
+            let pos = 0;
+            while (node = walker.nextNode()) {
+                const text = node.textContent;
+                const start = pos;
+                const end = pos + text.length;
+                
+                // 检查这个文本节点是否与目标段落重叠
+                if (end > segmentStart && start < segmentStart + segmentText.length) {
+                    textNodes.push({
+                        node: node,
+                        start: start,
+                        end: end,
+                        text: text
+                    });
+                }
+                
+                pos = end;
+            }
+            
+            // 如果找到了匹配的文本节点，提取包含它们的HTML
+            if (textNodes.length > 0) {
+                // 找到第一个和最后一个节点的父元素
+                const firstNode = textNodes[0].node;
+                const lastNode = textNodes[textNodes.length - 1].node;
+                
+                // 找到共同的父容器
+                let commonParent = firstNode.parentElement;
+                while (commonParent && !commonParent.contains(lastNode)) {
+                    commonParent = commonParent.parentElement;
+                }
+                
+                if (commonParent) {
+                    // 克隆父元素并提取HTML
+                    const clone = commonParent.cloneNode(true);
+                    return clone.innerHTML;
+                }
+            }
+            
+            // 如果无法精确提取，使用简单方法：在原始HTML中查找包含该段落的区域
+            const segmentEscaped = segmentText.substring(0, 50).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`([\\s\\S]{0,100}${segmentEscaped}[\\s\\S]{0,100})`, 'g');
+            const match = fullHtml.match(regex);
+            
+            if (match) {
+                return match[0];
+            }
+            
+            // 最后的后备方案：返回纯文本
+            return segmentText;
+        }
+
+        // 切换分段/连续显示
+        let isSegmentView = true;
+        function toggleSegmentView() {
+            isSegmentView = !isSegmentView;
+            const toggleBtn = document.getElementById('segment-view-toggle');
+            const icon = document.getElementById('segment-view-icon');
+            const contentDiv = document.getElementById('original-content-text');
+            
+            if (isSegmentView) {
+                icon.textContent = '📄';
+                toggleBtn.innerHTML = '<span id="segment-view-icon">📄</span> 分段显示';
+                // 重新渲染分段视图
+                if (auditResult) {
+                    const sortedSuggestions = [...auditResult.suggestions].sort((a, b) => {
+                        const priorityOrder = { 'critical': 1, 'high': 2, 'normal': 3 };
+                        return (priorityOrder[a.priority] || 3) - (priorityOrder[b.priority] || 3);
+                    });
+                    const highlightedOriginal = highlightKeywords(auditResult.original, sortedSuggestions);
+                    contentDiv.innerHTML = segmentContent(highlightedOriginal);
+                }
+            } else {
+                icon.textContent = '📑';
+                toggleBtn.innerHTML = '<span id="segment-view-icon">📑</span> 连续显示';
+                // 渲染连续视图
+                if (auditResult) {
+                    const sortedSuggestions = [...auditResult.suggestions].sort((a, b) => {
+                        const priorityOrder = { 'critical': 1, 'high': 2, 'normal': 3 };
+                        return (priorityOrder[a.priority] || 3) - (priorityOrder[b.priority] || 3);
+                    });
+                    const highlightedOriginal = highlightKeywords(auditResult.original, sortedSuggestions);
+                    contentDiv.innerHTML = highlightedOriginal;
+                }
+            }
+        }
+
+        // 手动添加审核建议
+        let selectedTextForSuggestion = '';
+        let selectedSegmentIndex = -1;
+
+        function addManualSuggestion(segmentIndex) {
+            selectedSegmentIndex = segmentIndex;
+            
+            // 显示弹窗让用户选择文本
+            const modal = document.getElementById('manual-suggestion-modal');
+            if (!modal) {
+                createManualSuggestionModal();
+            }
+            
+            document.getElementById('manual-suggestion-modal').classList.add('active');
+            document.getElementById('selected-text-preview').textContent = '请在下方段落中选择要添加建议的文本，然后填写建议信息';
+            
+            // 设置文本选择监听
+            setupTextSelection();
+        }
+
+        // 创建手动添加审核建议的弹窗
+        function createManualSuggestionModal() {
+            const modal = document.createElement('div');
+            modal.id = 'manual-suggestion-modal';
+            modal.className = 'manual-suggestion-modal';
+            modal.innerHTML = `
+                <div class="manual-suggestion-dialog" onclick="event.stopPropagation();">
+                    <h3>添加审核建议</h3>
+                    <div class="selected-text">
+                        <strong>选中文本：</strong>
+                        <span id="selected-text-preview">请在下方的段落中选择要添加建议的文本</span>
+                    </div>
+                    <div class="form-group">
+                        <label>问题描述：<span style="color: #ff4d4f;">*</span></label>
+                        <input type="text" id="manual-suggestion-title" placeholder="例如：避免使用绝对化用语" />
+                    </div>
+                    <div class="form-group">
+                        <label>规则解读：<span style="color: #ff4d4f;">*</span></label>
+                        <textarea id="manual-suggestion-rule" placeholder="说明为什么需要修改，例如：广告中严禁使用绝对化用语"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>替换建议（可选）：</label>
+                        <input type="text" id="manual-suggestion-replacements" placeholder="多个替换词用逗号分隔，例如：确保,保证,维护" />
+                    </div>
+                    <div class="form-group">
+                        <label>补充意见：</label>
+                        <textarea id="manual-suggestion-note" placeholder="补充审核意见（可选）"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>规则类型：</label>
+                        <select id="manual-suggestion-type">
+                            <option value="company">公司规则</option>
+                            <option value="legal">法律规则</option>
+                            <option value="business">业务规则</option>
+                            <option value="qualification">资质审核</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>优先级：</label>
+                        <select id="manual-suggestion-priority">
+                            <option value="normal">普通</option>
+                            <option value="high">高</option>
+                            <option value="critical">紧急</option>
+                        </select>
+                    </div>
+                    <div class="dialog-actions">
+                        <button class="btn btn-default" onclick="closeManualSuggestionModal()">取消</button>
+                        <button class="btn btn-primary" onclick="saveManualSuggestion()">保存建议</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // 点击弹窗外部关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeManualSuggestionModal();
+                }
+            });
+            
+            // 添加文本选择功能
+            setupTextSelection();
+        }
+
+        // 设置文本选择功能
+        function setupTextSelection() {
+            // 为每个段落添加文本选择监听
+            setTimeout(() => {
+                document.querySelectorAll('.segment-content').forEach(segment => {
+                    // 移除旧的监听器（如果存在）
+                    segment.removeEventListener('mouseup', handleTextSelection);
+                    // 添加新的监听器
+                    segment.addEventListener('mouseup', handleTextSelection);
+                });
+            }, 100);
+        }
+
+        // 处理文本选择
+        function handleTextSelection(e) {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            
+            if (selectedText.length > 0 && selectedText.length < 500) { // 限制选择长度
+                const segmentElement = this.closest('.content-segment');
+                const segmentIndex = segmentElement ? parseInt(segmentElement.getAttribute('data-segment-index')) : -1;
+                
+                // 显示选中文本
+                const previewElement = document.getElementById('selected-text-preview');
+                if (previewElement) {
+                    previewElement.textContent = selectedText;
+                    selectedTextForSuggestion = selectedText;
+                    selectedSegmentIndex = segmentIndex;
+                }
+            }
+        }
+
+        // 关闭手动添加建议弹窗
+        function closeManualSuggestionModal() {
+            document.getElementById('manual-suggestion-modal').classList.remove('active');
+            // 清除选中文本
+            window.getSelection().removeAllRanges();
+        }
+
+        // 保存手动添加的审核建议
+        function saveManualSuggestion() {
+            const title = document.getElementById('manual-suggestion-title').value.trim();
+            const rule = document.getElementById('manual-suggestion-rule').value.trim();
+            const replacementsText = document.getElementById('manual-suggestion-replacements').value.trim();
+            const note = document.getElementById('manual-suggestion-note').value.trim();
+            const type = document.getElementById('manual-suggestion-type').value;
+            const priority = document.getElementById('manual-suggestion-priority').value;
+            
+            if (!title || !rule) {
+                alert('请填写问题描述和规则解读！');
+                return;
+            }
+            
+            // 解析替换词
+            const replacements = replacementsText ? replacementsText.split(/[,，]/).map(r => r.trim()).filter(r => r) : [];
+            
+            // 从选中文本中提取关键词
+            const keywords = [selectedTextForSuggestion];
+            
+            // 创建新的审核建议
+            const newSuggestion = {
+                id: 'manual-' + Date.now(),
+                type: type,
+                priority: priority,
+                title: title,
+                rule: rule,
+                keywords: keywords,
+                replacements: replacements.length > 0 ? replacements : ['请手动修改'],
+                manualNote: note,
+                isManual: true, // 标记为手动添加
+                segmentIndex: selectedSegmentIndex,
+                selectedText: selectedTextForSuggestion // 保存选中的文本
+            };
+            
+            // 添加到审核结果中
+            if (!auditResult) {
+                auditResult = {
+                    original: document.getElementById('content-input').value.trim(),
+                    suggestions: [],
+                    modified: document.getElementById('content-input').value.trim()
+                };
+            }
+            
+            auditResult.suggestions.push(newSuggestion);
+            
+            // 在原文中高亮显示手动添加的建议
+            highlightManualSuggestion(newSuggestion);
+            
+            // 重新渲染分析结果
+            renderAnalysisResult();
+            
+            // 关闭弹窗
+            closeManualSuggestionModal();
+            
+            // 清空表单
+            document.getElementById('manual-suggestion-title').value = '';
+            document.getElementById('manual-suggestion-rule').value = '';
+            document.getElementById('manual-suggestion-replacements').value = '';
+            document.getElementById('manual-suggestion-note').value = '';
+            
+            alert('审核建议已添加！');
         }
 
         // 导出Word文档

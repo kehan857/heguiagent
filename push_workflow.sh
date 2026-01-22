@@ -61,3 +61,7 @@ echo "  2. 检查 .github/workflows/ 目录是否在仓库中"
 echo "  3. 手动触发: Actions → 选择工作流 → Run workflow"
 echo ""
 
+
+
+
+

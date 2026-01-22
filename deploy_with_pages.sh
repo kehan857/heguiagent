@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 PROJECT_DIR="/Users/kexiaobin/Desktop/其他/天九/天九需求包/合规智能体/合规智能体方案"
-REPO_URL="https://github.com/kehan857/heguiagent.git"
+REPO_URL="https://github.com/shangbian/heguiagent.git"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}  合规智能体方案 - GitHub Pages 部署${NC}"
@@ -122,9 +122,9 @@ if git push -u origin main --force 2>&1; then
     echo -e "${GREEN}  ✓ 推送成功！${NC}"
     echo -e "${GREEN}========================================${NC}"
     echo ""
-    echo -e "${BLUE}📦 仓库地址:${NC} https://github.com/kehan857/heguiagent"
-    echo -e "${BLUE}🌐 GitHub Pages:${NC} https://kehan857.github.io/heguiagent/"
-    echo -e "${BLUE}⚙️  Actions:${NC} https://github.com/kehan857/heguiagent/actions"
+    echo -e "${BLUE}📦 仓库地址:${NC} https://github.com/shangbian/heguiagent"
+    echo -e "${BLUE}🌐 GitHub Pages:${NC} https://shangbian.github.io/heguiagent/"
+    echo -e "${BLUE}⚙️  Actions:${NC} https://github.com/shangbian/heguiagent/actions"
     echo ""
     echo -e "${YELLOW}下一步:${NC}"
     echo -e "1. 访问 Actions 页面查看部署状态"
@@ -149,4 +149,8 @@ else
 fi
 
 echo -e "${GREEN}完成！${NC}"
+
+
+
+
 

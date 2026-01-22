@@ -21,7 +21,7 @@ cd "/Users/kexiaobin/Desktop/其他/天九/天九需求包/合规智能体/合�
 
 ### 1. 检查仓库设置
 
-访问：https://github.com/kehan857/heguiagent/settings/pages
+访问：https://github.com/shangbian/heguiagent/settings/pages
 
 ### 2. 配置 Pages 源
 
@@ -31,7 +31,7 @@ cd "/Users/kexiaobin/Desktop/其他/天九/天九需求包/合规智能体/合�
 
 ### 3. 检查 Actions 工作流
 
-访问：https://github.com/kehan857/heguiagent/actions
+访问：https://github.com/shangbian/heguiagent/actions
 
 确保：
 - `Deploy to GitHub Pages` 工作流已运行
@@ -51,8 +51,8 @@ cd "/Users/kexiaobin/Desktop/其他/天九/天九需求包/合规智能体/合�
 ### 5. 访问 GitHub Pages
 
 部署成功后，访问：
-- https://kehan857.github.io/heguiagent/
-- https://kehan857.github.io/heguiagent/compliance_agent_solution.html
+- https://shangbian.github.io/heguiagent/
+- https://shangbian.github.io/heguiagent/compliance_agent_solution.html
 
 ## 文件说明
 
@@ -113,4 +113,8 @@ cd "/Users/kexiaobin/Desktop/其他/天九/天九需求包/合规智能体/合�
 - GitHub Actions 日志
 - 浏览器控制台错误
 - GitHub Pages 设置
+
+
+
+
 

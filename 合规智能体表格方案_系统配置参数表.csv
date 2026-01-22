@@ -1,0 +1,8 @@
+参数名称,参数代码,参数值,参数类型,说明,可调整范围
+知识库检索Top K,KB_TOP_K,5-10,Integer,返回最相关的规则数量,1-20
+相似度阈值,SIM_THRESHOLD,0.7,Float,规则匹配相似度阈值,0.5-0.9
+分段显示阈值,SEGMENT_THRESHOLD,200,Integer,段落长度阈值（字符）,100-500
+文本选择最大长度,SELECT_MAX_LEN,500,Integer,手动选择文本最大长度,100-1000
+API超时时间,API_TIMEOUT,30000,Integer,API调用超时时间（毫秒）,10000-60000
+最大审核长度,MAX_CONTENT_LEN,10000,Integer,单次审核内容最大长度,5000-50000
+
